@@ -462,6 +462,41 @@ $(function () {
                     
 
                     
+                        
+
+<link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<div class="music-player">
+    
+    <div class="title center-align">
+        <i class="fa fa-music"></i>&nbsp;&nbsp;音乐相伴
+    </div>
+    
+    <div class="row">
+        <div class="col l8 offset-l2 m10 offset-m1 s12">
+            <div id="aplayer" class="music"></div>
+        </div>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script>
+$(function () {
+    new APlayer({
+        container: document.getElementById('aplayer'),
+        fixed: 'false' === 'true',
+        autoplay: 'false' === 'true',
+        theme: '#42b983',
+        loop: 'all',
+        order: 'list',
+        preload: 'auto',
+        volume: Number('0.7'),
+        listFolded: 'true' === 'true',
+        listMaxHeight: '',
+        audio: JSON.parse('[{"name":"原谅我不明白你的悲伤","artist":"那我懂你意思了","url":"http://music.163.com/song/media/outer/url?id=26045007.mp3","cover":"http://img2.kuwo.cn/star/albumcover/300/56/46/3878079541.jpg"},{"name":"寻","artist":"华晨宇","url":"http://music.163.com/song/media/outer/url?id=475277742.mp3","cover":"http://img4.kuwo.cn/star/albumcover/300/80/64/3346942221.jpg"},{"name":"寻人启事","artist":"徐佳莹","url":"http://music.163.com/song/media/outer/url?id=28561288.mp3","cover":"https://y.gtimg.cn/music/photo_new/T002R300x300M000000ptrJo4F6Pxd.jpg?max_age=2592000"},{"name":"无知的岁月","artist":"张雨生","url":"http://music.163.com/song/media/outer/url?id=188028.mp3","cover":"https://y.gtimg.cn/music/photo_new/T002R300x300M000004CRDXx0AAzQh.jpg?max_age=2592000"}]')
+    });
+});
+</script>
+                    
 
                     
 
