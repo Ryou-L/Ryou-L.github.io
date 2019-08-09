@@ -398,6 +398,15 @@ public class TestFile {
                 </div>
                 <div class="col s5 right-align">
                     
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/java/" class="post-category" target="_blank">
+                                java
+                            </a>
+                        
+                    </div>
+                    
                 </div>
             </div>
 
@@ -411,14 +420,14 @@ public class TestFile {
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                        2.6k
+                        2.5k
                     </div>
                     
 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                        11 分
+                        10 分
                     </div>
                     
                 
@@ -435,327 +444,335 @@ public class TestFile {
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h1 id="JavaI-O知识-上"><a href="#JavaI-O知识-上" class="headerlink" title="JavaI/O知识(上)"></a>JavaI/O知识(上)</h1><h3 id="文件对象"><a href="#文件对象" class="headerlink" title="文件对象"></a>文件对象</h3><h4 id="一：创建一个文件对象"><a href="#一：创建一个文件对象" class="headerlink" title="一：创建一个文件对象"></a>一：创建一个文件对象</h4><p>使用绝对路径或者相对路径创建File对象</p>
-<pre><code>package file;
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">package</span> file<span class="token punctuation">;</span>
 
-import java.io.File;
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>File<span class="token punctuation">;</span>
 
-public class TestFile {
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestFile</span> <span class="token punctuation">{</span>
 
-    public static void main(String[] args) {
-        // 绝对路径
-        File f1 = new File(&quot;d:/LOLFolder&quot;);
-        System.out.println(&quot;f1的绝对路径：&quot; + f1.getAbsolutePath());
-        // 相对路径,相对于工作目录，如果在eclipse中，就是项目目录
-        File f2 = new File(&quot;LOL.exe&quot;);
-        System.out.println(&quot;f2的绝对路径：&quot; + f2.getAbsolutePath());
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 绝对路径</span>
+        File f1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span><span class="token string">"d:/LOLFolder"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"f1的绝对路径："</span> <span class="token operator">+</span> f1<span class="token punctuation">.</span><span class="token function">getAbsolutePath</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 相对路径,相对于工作目录，如果在eclipse中，就是项目目录</span>
+        File f2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span><span class="token string">"LOL.exe"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"f2的绝对路径："</span> <span class="token operator">+</span> f2<span class="token punctuation">.</span><span class="token function">getAbsolutePath</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        // 把f1作为父目录创建文件对象
-        File f3 = new File(f1, &quot;LOL.exe&quot;);
+        <span class="token comment" spellcheck="true">// 把f1作为父目录创建文件对象</span>
+        File f3 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span>f1<span class="token punctuation">,</span> <span class="token string">"LOL.exe"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        System.out.println(&quot;f3的绝对路径：&quot; + f3.getAbsolutePath());
-    }
-}</code></pre><h4 id="文件常用方法"><a href="#文件常用方法" class="headerlink" title="文件常用方法"></a>文件常用方法</h4><p>exists():文件是否存在<br>isDirectory()：是否是文件夹<br>isFile()：是否是文件夹(非文件夹)<br>length()：文件长度<br>getParentFile():获取文件所在的目录（这个文件的父文件）<br>lastModified()：文件最后修改时间<br>setLastModified(0)：设置文件修改时间为1970.1.1 08:00:00<br>File f = new File(“d:/LOLFolder/skin/garen.ski”);<br>f.list()：以字符串数组的形式，返回当前文件夹下的所有文件（不包含子文件及子文件夹）<br>mkdir()：创建文件夹，如果父文件夹skin不存在，创建无效<br>mkdirs()：创建文件夹，如果父文件夹skin不存在，就会创建父文件夹<br>createNewFile()：创建一个空文件,如果父文件夹skin不存在，就会抛出异常<br>listRoots()：列出所有的盘符c: d: e: 等等<br>delete()：刪除文件<br>f.deleteOnExit()：JVM结束的时候，刪除文件，常用于临时文件的删除<br>File[]fs= f.listFiles()：以文件数组的形式，返回当前文件夹下的所有文件（不包含子文件及子文件夹）</p>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"f3的绝对路径："</span> <span class="token operator">+</span> f3<span class="token punctuation">.</span><span class="token function">getAbsolutePath</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="文件常用方法"><a href="#文件常用方法" class="headerlink" title="文件常用方法"></a>文件常用方法</h4><p>exists():文件是否存在<br>isDirectory()：是否是文件夹<br>isFile()：是否是文件夹(非文件夹)<br>length()：文件长度<br>getParentFile():获取文件所在的目录（这个文件的父文件）<br>lastModified()：文件最后修改时间<br>setLastModified(0)：设置文件修改时间为1970.1.1 08:00:00<br>File f = new File(“d:/LOLFolder/skin/garen.ski”);<br>f.list()：以字符串数组的形式，返回当前文件夹下的所有文件（不包含子文件及子文件夹）<br>mkdir()：创建文件夹，如果父文件夹skin不存在，创建无效<br>mkdirs()：创建文件夹，如果父文件夹skin不存在，就会创建父文件夹<br>createNewFile()：创建一个空文件,如果父文件夹skin不存在，就会抛出异常<br>listRoots()：列出所有的盘符c: d: e: 等等<br>delete()：刪除文件<br>f.deleteOnExit()：JVM结束的时候，刪除文件，常用于临时文件的删除<br>File[]fs= f.listFiles()：以文件数组的形式，返回当前文件夹下的所有文件（不包含子文件及子文件夹）</p>
 <p><font color="red">注意1： 需要在D:\LOLFolder确实存在一个LOL.exe,才可以看到对应的文件长度、修改时间等信息</font><br><font color="red">注意2： renameTo方法用于对物理文件名称进行修改，但是并不会修改File对象的name属性。</font></p>
-<pre><code>package file;
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">package</span> file<span class="token punctuation">;</span>
 
-import java.io.File;
-import java.util.Date;
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>File<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>Date<span class="token punctuation">;</span>
 
-public class TestFile {
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestFile</span> <span class="token punctuation">{</span>
 
-    public static void main(String[] args) {
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
 
-        File f = new File(&quot;d:/LOLFolder/LOL.exe&quot;);
-        System.out.println(&quot;当前文件是：&quot; +f);
-        //文件是否存在
-        System.out.println(&quot;判断是否存在：&quot;+f.exists());
+        File f <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span><span class="token string">"d:/LOLFolder/LOL.exe"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"当前文件是："</span> <span class="token operator">+</span>f<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//文件是否存在</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"判断是否存在："</span><span class="token operator">+</span>f<span class="token punctuation">.</span><span class="token function">exists</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        //是否是文件夹
-        System.out.println(&quot;判断是否是文件夹：&quot;+f.isDirectory());
+        <span class="token comment" spellcheck="true">//是否是文件夹</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"判断是否是文件夹："</span><span class="token operator">+</span>f<span class="token punctuation">.</span><span class="token function">isDirectory</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        //是否是文件（非文件夹）
-        System.out.println(&quot;判断是否是文件：&quot;+f.isFile());
+        <span class="token comment" spellcheck="true">//是否是文件（非文件夹）</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"判断是否是文件："</span><span class="token operator">+</span>f<span class="token punctuation">.</span><span class="token function">isFile</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        //文件长度
-        System.out.println(&quot;获取文件的长度：&quot;+f.length());
+        <span class="token comment" spellcheck="true">//文件长度</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"获取文件的长度："</span><span class="token operator">+</span>f<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        //文件最后修改时间
-        long time = f.lastModified();
-        Date d = new Date(time);
-        System.out.println(&quot;获取文件的最后修改时间：&quot;+d);
-        //设置文件修改时间为1970.1.1 08:00:00
-        f.setLastModified(0);
+        <span class="token comment" spellcheck="true">//文件最后修改时间</span>
+        <span class="token keyword">long</span> time <span class="token operator">=</span> f<span class="token punctuation">.</span><span class="token function">lastModified</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Date d <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span>time<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"获取文件的最后修改时间："</span><span class="token operator">+</span>d<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//设置文件修改时间为1970.1.1 08:00:00</span>
+        f<span class="token punctuation">.</span><span class="token function">setLastModified</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        //文件重命名
-        File f2 =new File(&quot;d:/LOLFolder/DOTA.exe&quot;);
-        f.renameTo(f2);
-        System.out.println(&quot;把LOL.exe改名成了DOTA.exe&quot;);
+        <span class="token comment" spellcheck="true">//文件重命名</span>
+        File f2 <span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span><span class="token string">"d:/LOLFolder/DOTA.exe"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        f<span class="token punctuation">.</span><span class="token function">renameTo</span><span class="token punctuation">(</span>f2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"把LOL.exe改名成了DOTA.exe"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        System.out.println(&quot;注意： 需要在D:\\LOLFolder确实存在一个LOL.exe,\r\n才可以看到对应的文件长度、修改时间等信息&quot;);
-    }
-}</code></pre><h3 id="流的定义"><a href="#流的定义" class="headerlink" title="流的定义"></a>流的定义</h3><h4 id="什么是流"><a href="#什么是流" class="headerlink" title="什么是流"></a>什么是流</h4><p>当不同的介质之间有数据交互的时候，JAVA就使用流来实现。<br>数据源可以是文件，还可以是数据库，网络甚至是其他的程序</p>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"注意： 需要在D:\\LOLFolder确实存在一个LOL.exe,\r\n才可以看到对应的文件长度、修改时间等信息"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="流的定义"><a href="#流的定义" class="headerlink" title="流的定义"></a>流的定义</h3><h4 id="什么是流"><a href="#什么是流" class="headerlink" title="什么是流"></a>什么是流</h4><p>当不同的介质之间有数据交互的时候，JAVA就使用流来实现。<br>数据源可以是文件，还可以是数据库，网络甚至是其他的程序</p>
 <p>比如读取文件的数据到程序中，站在程序的角度来看，就叫做输入流<br>输入流： InputStream<br>输出流：OutputStream<br><img src="http://stepimagewm.how2j.cn/759.png" alt></p>
 <h4 id="文件输入流"><a href="#文件输入流" class="headerlink" title="文件输入流"></a>文件输入流</h4><p>建立了一个文件输入流，这个流可以用来把数据从硬盘的文件，读取到JVM(内存)。</p>
-<pre><code>package stream;
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">package</span> stream<span class="token punctuation">;</span>
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>File<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>FileInputStream<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>IOException<span class="token punctuation">;</span>
 
-public class TestStream {
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestStream</span> <span class="token punctuation">{</span>
 
-    public static void main(String[] args) {
-        try {
-            File f = new File(&quot;d:/lol.txt&quot;);
-            // 创建基于文件的输入流
-            FileInputStream fis = new FileInputStream(f);
-            // 通过这个输入流，就可以把数据从硬盘，读取到Java的虚拟机中来，也就是读取到内存中
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            File f <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span><span class="token string">"d:/lol.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">// 创建基于文件的输入流</span>
+            FileInputStream fis <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileInputStream</span><span class="token punctuation">(</span>f<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">// 通过这个输入流，就可以把数据从硬盘，读取到Java的虚拟机中来，也就是读取到内存中</span>
 
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// TODO Auto-generated catch block</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
 
-    }
-}</code></pre><p>文件输出流用:FileOutputStream</p>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>文件输出流用:FileOutputStream</p>
 <h3 id="字节流"><a href="#字节流" class="headerlink" title="字节流"></a>字节流</h3><h4 id="以字节流的形式读取文件内容"><a href="#以字节流的形式读取文件内容" class="headerlink" title="以字节流的形式读取文件内容"></a>以字节流的形式读取文件内容</h4><p>InputStream是字节输入流，同时也是抽象类，只提供方法声明，不提供方法的具体实现。<br>FileInputStream 是InputStream子类，以FileInputStream 为例进行文件读取</p>
-<pre><code>package stream;
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">package</span> stream<span class="token punctuation">;</span>
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>File<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>FileInputStream<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>IOException<span class="token punctuation">;</span>
 
-public class TestStream {
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestStream</span> <span class="token punctuation">{</span>
 
-    public static void main(String[] args) {
-        try {
-            //准备文件lol.txt其中的内容是AB，对应的ASCII分别是65 66
-            File f =new File(&quot;d:/lol.txt&quot;);
-            //创建基于文件的输入流
-            FileInputStream fis =new FileInputStream(f);
-            //创建字节数组，其长度就是文件的长度
-            byte[] all =new byte[(int) f.length()];
-            //以字节流的形式读取文件所有内容
-            fis.read(all);
-            for (byte b : all) {
-                //打印出来是65 66
-                System.out.println(b);
-            }
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">//准备文件lol.txt其中的内容是AB，对应的ASCII分别是65 66</span>
+            File f <span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span><span class="token string">"d:/lol.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//创建基于文件的输入流</span>
+            FileInputStream fis <span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">FileInputStream</span><span class="token punctuation">(</span>f<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//创建字节数组，其长度就是文件的长度</span>
+            <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> all <span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">byte</span><span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> f<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//以字节流的形式读取文件所有内容</span>
+            fis<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>all<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">byte</span> b <span class="token operator">:</span> all<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">//打印出来是65 66</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
 
-            //每次使用完流，都应该进行关闭
-            fis.close();
+            <span class="token comment" spellcheck="true">//每次使用完流，都应该进行关闭</span>
+            fis<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// TODO Auto-generated catch block</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
 
-    }
-}</code></pre><h4 id="以字节流的形式向文件写入数据"><a href="#以字节流的形式向文件写入数据" class="headerlink" title="以字节流的形式向文件写入数据"></a>以字节流的形式向文件写入数据</h4><p>OutputStream是字节输出流，同时也是抽象类，只提供方法声明，不提供方法的具体实现。<br>FileOutputStream 是OutputStream子类，以FileOutputStream 为例向文件写出数据</p>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="以字节流的形式向文件写入数据"><a href="#以字节流的形式向文件写入数据" class="headerlink" title="以字节流的形式向文件写入数据"></a>以字节流的形式向文件写入数据</h4><p>OutputStream是字节输出流，同时也是抽象类，只提供方法声明，不提供方法的具体实现。<br>FileOutputStream 是OutputStream子类，以FileOutputStream 为例向文件写出数据</p>
 <p><font color="red">注: 如果文件d:/lol2.txt不存在，写出操作会自动创建该文件。但是如果是文件 d:/xyz/lol2.txt，而目录xyz又不存在，会抛出异常<br></font></p>
-<pre><code>package stream;
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">package</span> stream<span class="token punctuation">;</span>
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>File<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>FileOutputStream<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>IOException<span class="token punctuation">;</span>
 
-public class TestStream {
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestStream</span> <span class="token punctuation">{</span>
 
-    public static void main(String[] args) {
-        try {
-            // 准备文件lol2.txt其中的内容是空的
-            File f = new File(&quot;d:/lol2.txt&quot;);
-            // 准备长度是2的字节数组，用88,89初始化，其对应的字符分别是X,Y
-            byte data[] = { 88, 89 };
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 准备文件lol2.txt其中的内容是空的</span>
+            File f <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span><span class="token string">"d:/lol2.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">// 准备长度是2的字节数组，用88,89初始化，其对应的字符分别是X,Y</span>
+            <span class="token keyword">byte</span> data<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token number">88</span><span class="token punctuation">,</span> <span class="token number">89</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
 
-            // 创建基于文件的输出流
-            FileOutputStream fos = new FileOutputStream(f);
-            // 把数据写入到输出流
-            fos.write(data);
-            // 关闭输出流
-            fos.close();
+            <span class="token comment" spellcheck="true">// 创建基于文件的输出流</span>
+            FileOutputStream fos <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileOutputStream</span><span class="token punctuation">(</span>f<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">// 把数据写入到输出流</span>
+            fos<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">// 关闭输出流</span>
+            fos<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// TODO Auto-generated catch block</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
 
-    }
-}</code></pre><h4 id="写入数据到文件"><a href="#写入数据到文件" class="headerlink" title="写入数据到文件"></a>写入数据到文件</h4><p>以字节流的形式向文件写入数据 中的例子，当lol2.txt不存在的时候，是会自动创建lol2.txt文件的。<br>但是，如果是写入数据到d:/xyz/lol2.txt，而目录xyz又不存在的话，就会抛出异常。<br>那么怎么自动创建xyz目录？<br>如果是多层目录 d:/xyz/abc/def/lol2.txt 呢？</p>
-<pre><code>package stream;
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="写入数据到文件"><a href="#写入数据到文件" class="headerlink" title="写入数据到文件"></a>写入数据到文件</h4><p>以字节流的形式向文件写入数据 中的例子，当lol2.txt不存在的时候，是会自动创建lol2.txt文件的。<br>但是，如果是写入数据到d:/xyz/lol2.txt，而目录xyz又不存在的话，就会抛出异常。<br>那么怎么自动创建xyz目录？<br>如果是多层目录 d:/xyz/abc/def/lol2.txt 呢？</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">package</span> stream<span class="token punctuation">;</span>
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>File<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>FileOutputStream<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>IOException<span class="token punctuation">;</span>
 
-public class TestStream {
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestStream</span> <span class="token punctuation">{</span>
 
-    public static void main(String[] args) {
-        try {
-            File f = new File(&quot;d:/xyz/abc/def/lol2.txt&quot;);
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            File f <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span><span class="token string">"d:/xyz/abc/def/lol2.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            //因为默认情况下，文件系统中不存在 d:\xyz\abc\def，所以输出会失败
+            <span class="token comment" spellcheck="true">//因为默认情况下，文件系统中不存在 d:\xyz\abc\def，所以输出会失败</span>
 
-            //首先获取文件所在的目录
-            File dir = f.getParentFile();
-            //如果该目录不存在，则创建该目录
-            if(!dir.exists()){
-//              dir.mkdir(); //使用mkdir会抛出异常，因为该目录的父目录也不存在
-                dir.mkdirs(); //使用mkdirs则会把不存在的目录都创建好
-            }
+            <span class="token comment" spellcheck="true">//首先获取文件所在的目录</span>
+            File dir <span class="token operator">=</span> f<span class="token punctuation">.</span><span class="token function">getParentFile</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//如果该目录不存在，则创建该目录</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>dir<span class="token punctuation">.</span><span class="token function">exists</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+<span class="token comment" spellcheck="true">//              dir.mkdir(); //使用mkdir会抛出异常，因为该目录的父目录也不存在</span>
+                dir<span class="token punctuation">.</span><span class="token function">mkdirs</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//使用mkdirs则会把不存在的目录都创建好</span>
+            <span class="token punctuation">}</span>
 
-            byte data[] = { 88, 89 };
+            <span class="token keyword">byte</span> data<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token number">88</span><span class="token punctuation">,</span> <span class="token number">89</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
 
-            FileOutputStream fos = new FileOutputStream(f);
+            FileOutputStream fos <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileOutputStream</span><span class="token punctuation">(</span>f<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            fos.write(data);
+            fos<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            fos.close();
+            fos<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
 
-    }
-}</code></pre><h4 id="拆分文件"><a href="#拆分文件" class="headerlink" title="拆分文件"></a>拆分文件</h4><p>找到一个大于100k的文件，按照100k为单位，拆分成多个子文件，并且以编号作为文件名结束。<br>比如文件 eclipse.exe，大小是309k。<br>拆分之后，成为<br>eclipse.exe-0<br>eclipse.exe-1<br>eclipse.exe-2<br>eclipse.exe-3<br>拆分的思路，先把源文件的所有内容读取到内存中，然后从内存中挨个分到子文件里<br>提示，这里用到了数组复制Arrays.copyOfRange</p>
-<pre><code>package stream;
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="拆分文件"><a href="#拆分文件" class="headerlink" title="拆分文件"></a>拆分文件</h4><p>找到一个大于100k的文件，按照100k为单位，拆分成多个子文件，并且以编号作为文件名结束。<br>比如文件 eclipse.exe，大小是309k。<br>拆分之后，成为<br>eclipse.exe-0<br>eclipse.exe-1<br>eclipse.exe-2<br>eclipse.exe-3<br>拆分的思路，先把源文件的所有内容读取到内存中，然后从内存中挨个分到子文件里<br>提示，这里用到了数组复制Arrays.copyOfRange</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">package</span> stream<span class="token punctuation">;</span>
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Arrays;
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>File<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>FileInputStream<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>FileOutputStream<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>IOException<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>Arrays<span class="token punctuation">;</span>
 
-public class TestStream {
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestStream</span> <span class="token punctuation">{</span>
 
-    public static void main(String[] args) {
-        int eachSize = 100 * 1024; // 100k
-        File srcFile = new File(&quot;d:/eclipse.exe&quot;);
-        splitFile(srcFile, eachSize);
-    }
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> eachSize <span class="token operator">=</span> <span class="token number">100</span> <span class="token operator">*</span> <span class="token number">1024</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 100k</span>
+        File srcFile <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span><span class="token string">"d:/eclipse.exe"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">splitFile</span><span class="token punctuation">(</span>srcFile<span class="token punctuation">,</span> eachSize<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
-    /**
+    <span class="token comment" spellcheck="true">/**
      * 拆分的思路，先把源文件的所有内容读取到内存中，然后从内存中挨个分到子文件里
      * @param srcFile 要拆分的源文件
      * @param eachSize 按照这个大小，拆分
-     */
-    private static void splitFile(File srcFile, int eachSize) {
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">splitFile</span><span class="token punctuation">(</span>File srcFile<span class="token punctuation">,</span> <span class="token keyword">int</span> eachSize<span class="token punctuation">)</span> <span class="token punctuation">{</span>
 
-        if (0 == srcFile.length())
-            throw new RuntimeException(&quot;文件长度为0，不可拆分&quot;);
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token number">0</span> <span class="token operator">==</span> srcFile<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span><span class="token string">"文件长度为0，不可拆分"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        byte[] fileContent = new byte[(int) srcFile.length()];
-        // 先把文件读取到数组中
-        try {
-            FileInputStream fis = new FileInputStream(srcFile);
-            fis.read(fileContent);
-            fis.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        // 计算需要被划分成多少份子文件
-        int fileNumber;
-        // 文件是否能被整除得到的子文件个数是不一样的
-        // (假设文件长度是25，每份的大小是5，那么就应该是5个)
-        // (假设文件长度是26，每份的大小是5，那么就应该是6个)
-        if (0 == fileContent.length % eachSize)
-            fileNumber = (int) (fileContent.length / eachSize);
-        else
-            fileNumber = (int) (fileContent.length / eachSize) + 1;
+        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> fileContent <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">byte</span><span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> srcFile<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 先把文件读取到数组中</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            FileInputStream fis <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileInputStream</span><span class="token punctuation">(</span>srcFile<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            fis<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>fileContent<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            fis<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// TODO Auto-generated catch block</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">// 计算需要被划分成多少份子文件</span>
+        <span class="token keyword">int</span> fileNumber<span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 文件是否能被整除得到的子文件个数是不一样的</span>
+        <span class="token comment" spellcheck="true">// (假设文件长度是25，每份的大小是5，那么就应该是5个)</span>
+        <span class="token comment" spellcheck="true">// (假设文件长度是26，每份的大小是5，那么就应该是6个)</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token number">0</span> <span class="token operator">==</span> fileContent<span class="token punctuation">.</span>length <span class="token operator">%</span> eachSize<span class="token punctuation">)</span>
+            fileNumber <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>fileContent<span class="token punctuation">.</span>length <span class="token operator">/</span> eachSize<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">else</span>
+            fileNumber <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>fileContent<span class="token punctuation">.</span>length <span class="token operator">/</span> eachSize<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
 
-        for (int i = 0; i &lt; fileNumber; i++) {
-            String eachFileName = srcFile.getName() + &quot;-&quot; + i;
-            File eachFile = new File(srcFile.getParent(), eachFileName);
-            byte[] eachContent;
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> fileNumber<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            String eachFileName <span class="token operator">=</span> srcFile<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"-"</span> <span class="token operator">+</span> i<span class="token punctuation">;</span>
+            File eachFile <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span>srcFile<span class="token punctuation">.</span><span class="token function">getParent</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> eachFileName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> eachContent<span class="token punctuation">;</span>
 
-            // 从源文件的内容里，复制部分数据到子文件
-            // 除开最后一个文件，其他文件大小都是100k
-            // 最后一个文件的大小是剩余的
-            if (i != fileNumber - 1) // 不是最后一个
-                eachContent = Arrays.copyOfRange(fileContent, eachSize * i, eachSize * (i + 1));
-            else // 最后一个
-                eachContent = Arrays.copyOfRange(fileContent, eachSize * i, fileContent.length);
+            <span class="token comment" spellcheck="true">// 从源文件的内容里，复制部分数据到子文件</span>
+            <span class="token comment" spellcheck="true">// 除开最后一个文件，其他文件大小都是100k</span>
+            <span class="token comment" spellcheck="true">// 最后一个文件的大小是剩余的</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>i <span class="token operator">!=</span> fileNumber <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 不是最后一个</span>
+                eachContent <span class="token operator">=</span> Arrays<span class="token punctuation">.</span><span class="token function">copyOfRange</span><span class="token punctuation">(</span>fileContent<span class="token punctuation">,</span> eachSize <span class="token operator">*</span> i<span class="token punctuation">,</span> eachSize <span class="token operator">*</span> <span class="token punctuation">(</span>i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">else</span> <span class="token comment" spellcheck="true">// 最后一个</span>
+                eachContent <span class="token operator">=</span> Arrays<span class="token punctuation">.</span><span class="token function">copyOfRange</span><span class="token punctuation">(</span>fileContent<span class="token punctuation">,</span> eachSize <span class="token operator">*</span> i<span class="token punctuation">,</span> fileContent<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            try {
-                // 写出去
-                FileOutputStream fos = new FileOutputStream(eachFile);
-                fos.write(eachContent);
-                // 记得关闭
-                fos.close();
-                System.out.printf(&quot;输出子文件%s，其大小是 %d字节%n&quot;, eachFile.getAbsoluteFile(), eachFile.length());
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-}</code></pre><h4 id="合并文件"><a href="#合并文件" class="headerlink" title="合并文件"></a>合并文件</h4><p>与拆分文件不同(先把所有数据读取到内存中)，合并文件采用另一种思路。</p>
+            <span class="token keyword">try</span> <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// 写出去</span>
+                FileOutputStream fos <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileOutputStream</span><span class="token punctuation">(</span>eachFile<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                fos<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>eachContent<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token comment" spellcheck="true">// 记得关闭</span>
+                fos<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"输出子文件%s，其大小是 %d字节%n"</span><span class="token punctuation">,</span> eachFile<span class="token punctuation">.</span><span class="token function">getAbsoluteFile</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> eachFile<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// TODO Auto-generated catch block</span>
+                e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="合并文件"><a href="#合并文件" class="headerlink" title="合并文件"></a>合并文件</h4><p>与拆分文件不同(先把所有数据读取到内存中)，合并文件采用另一种思路。</p>
 <p>这种思路，不需要把所有的子文件都先读取到内存中，而是一边读取子文件的内容，一边写出到目标文件</p>
 <p>即从eclipse.exe-0开始，读取到一个文件，就开始写出到 eclipse.exe中，然后处理eclipse.exe-1eclipse.exe-2 eclipse.exe-3 … 直到没有文件可以读</p>
-<pre><code>package stream;
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">package</span> stream<span class="token punctuation">;</span>
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>File<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>FileInputStream<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>FileNotFoundException<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>FileOutputStream<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>IOException<span class="token punctuation">;</span>
 
-import javax.security.auth.DestroyFailedException;
+<span class="token keyword">import</span> javax<span class="token punctuation">.</span>security<span class="token punctuation">.</span>auth<span class="token punctuation">.</span>DestroyFailedException<span class="token punctuation">;</span>
 
-public class TestStream {
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestStream</span> <span class="token punctuation">{</span>
 
-    public static void main(String[] args) {
-        murgeFile(&quot;d:/&quot;, &quot;eclipse.exe&quot;);
-    }
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">murgeFile</span><span class="token punctuation">(</span><span class="token string">"d:/"</span><span class="token punctuation">,</span> <span class="token string">"eclipse.exe"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
-    /**
+    <span class="token comment" spellcheck="true">/**
      * 合并的思路，就是从eclipse.exe-0开始，读取到一个文件，就开始写出到 eclipse.exe中，直到没有文件可以读
      * @param folder
      *            需要合并的文件所处于的目录
      * @param fileName
      *            需要合并的文件的名称
      * @throws FileNotFoundException
-     */
-    private static void murgeFile(String folder, String fileName) {
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">murgeFile</span><span class="token punctuation">(</span>String folder<span class="token punctuation">,</span> String fileName<span class="token punctuation">)</span> <span class="token punctuation">{</span>
 
-        try {
-            // 合并的目标文件
-            File destFile = new File(folder, fileName);
-            FileOutputStream fos = new FileOutputStream(destFile);
-            int index = 0;
-            while (true) {
-                //子文件
-                File eachFile = new File(folder, fileName + &quot;-&quot; + index++);
-                //如果子文件不存在了就结束
-                if (!eachFile.exists())
-                    break;
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 合并的目标文件</span>
+            File destFile <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span>folder<span class="token punctuation">,</span> fileName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            FileOutputStream fos <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileOutputStream</span><span class="token punctuation">(</span>destFile<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">int</span> index <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+            <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">//子文件</span>
+                File eachFile <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span>folder<span class="token punctuation">,</span> fileName <span class="token operator">+</span> <span class="token string">"-"</span> <span class="token operator">+</span> index<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token comment" spellcheck="true">//如果子文件不存在了就结束</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>eachFile<span class="token punctuation">.</span><span class="token function">exists</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                    <span class="token keyword">break</span><span class="token punctuation">;</span>
 
-                //读取子文件的内容
-                FileInputStream fis = new FileInputStream(eachFile);
-                byte[] eachContent = new byte[(int) eachFile.length()];
-                fis.read(eachContent);
-                fis.close();
+                <span class="token comment" spellcheck="true">//读取子文件的内容</span>
+                FileInputStream fis <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileInputStream</span><span class="token punctuation">(</span>eachFile<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> eachContent <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">byte</span><span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> eachFile<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+                fis<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>eachContent<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                fis<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-                //把子文件的内容写出去
-                fos.write(eachContent);
-                fos.flush();
-                System.out.printf(&quot;把子文件 %s写出到目标文件中%n&quot;,eachFile);
-            }
+                <span class="token comment" spellcheck="true">//把子文件的内容写出去</span>
+                fos<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>eachContent<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                fos<span class="token punctuation">.</span><span class="token function">flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"把子文件 %s写出到目标文件中%n"</span><span class="token punctuation">,</span>eachFile<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
 
-            fos.close();
-            System.out.printf(&quot;最后目标文件的大小：%,d字节&quot; , destFile.length());
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+            fos<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"最后目标文件的大小：%,d字节"</span> <span class="token punctuation">,</span> destFile<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">FileNotFoundException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// TODO Auto-generated catch block</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// TODO Auto-generated catch block</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
 
-    }
+    <span class="token punctuation">}</span>
 
-}</code></pre><h5 id="以上内容是在-http-how2j-cn-学习的时候的记录"><a href="#以上内容是在-http-how2j-cn-学习的时候的记录" class="headerlink" title="以上内容是在(http://how2j.cn) 学习的时候的记录"></a>以上内容是在(<a href="http://how2j.cn" target="_blank" rel="noopener">http://how2j.cn</a>) 学习的时候的记录</h5>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="以上内容是在-http-how2j-cn-学习的时候的记录"><a href="#以上内容是在-http-how2j-cn-学习的时候的记录" class="headerlink" title="以上内容是在(http://how2j.cn) 学习的时候的记录"></a>以上内容是在(<a href="http://how2j.cn" target="_blank" rel="noopener">http://how2j.cn</a>) 学习的时候的记录</h5>
             </div>
             <hr/>
 
@@ -985,9 +1002,9 @@ public class TestStream {
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="JavaI/O流(下）">
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="JavaI/O流(中)">
                         
-                        <span class="card-title">JavaI/O流(下）</span>
+                        <span class="card-title">JavaI/O流(中)</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1002,8 +1019,12 @@ public class TestStream {
                         </span>
                         <span class="publish-author">
                             
-                            <i class="fa fa-user fa-fw"></i>
-                            何必酷
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/java/" class="post-category" target="_blank">
+                                    java
+                                </a>
+                            
                             
                         </span>
                     </div>
@@ -1051,8 +1072,12 @@ public class TestStream {
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fa fa-user fa-fw"></i>
-                            何必酷
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/java/" class="post-category" target="_blank">
+                                    java
+                                </a>
+                            
                             
                         </span>
                     </div>
@@ -1186,7 +1211,7 @@ public class TestStream {
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">5.1k</span>
+                <span class="white-color">8.4k</span>
             
 
             
