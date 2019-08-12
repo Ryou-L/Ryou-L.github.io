@@ -4,9 +4,9 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="Java 容器类, 何必酷">
-    <meta name="description" content="ArrayList为了解决数组的局限性，引入容器类的概念。 最常见的容器类就是：ArrayList容器的容量”capacity”会随着对象的增加，自动增长，只需要不断往容器里增加英雄即可，不用担心会出现数组的边界问题。
-常用方法增加add ">
+    <meta name="keywords" content="Java 泛型, 何必酷">
+    <meta name="description" content="泛型集合中的泛型使用泛型使用泛型的好处：泛型的用法是在容器后面添加Type可以是类，抽象类，接口泛型表示这种容器，只能存放APHero，ADHero就放不进去了。
+子类对象假设容器的泛型是Hero,那么Hero的子类APHero,ADHer">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -14,7 +14,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Java 容器类 | 何必酷</title>
+    <title>Java 泛型 | 何必酷</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -266,13 +266,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cn.bing.com/th?id=OHR.HumpbackSanctuary_EN-CN3637668595_400x240.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('http://english.cri.cn/mmsource/images/2017/12/22/20171222164519575_77807.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        Java 容器类
+                        Java 泛型
                     </div>
                 </div>
             </div>
@@ -387,8 +387,8 @@
                                 <span class="chip bg-color">Java</span>
                             </a>
                         
-                            <a href="/tags/容器类/" target="_blank">
-                                <span class="chip bg-color">容器类</span>
+                            <a href="/tags/泛型/" target="_blank">
+                                <span class="chip bg-color">泛型</span>
                             </a>
                         
                     </div>
@@ -411,7 +411,7 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2019-08-09
+                    2019-08-10
                 </div>
 
                 
@@ -441,84 +441,122 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="ArrayList"><a href="#ArrayList" class="headerlink" title="ArrayList"></a>ArrayList</h1><p>为了解决数组的局限性，引入容器类的概念。 最常见的容器类就是：ArrayList<br>容器的容量”capacity”会随着对象的增加，自动增长，只需要不断往容器里增加英雄即可，不用担心会出现数组的边界问题。</p>
-<h3 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h3><h4 id="增加"><a href="#增加" class="headerlink" title="增加"></a>增加</h4><p>add 有两种用法<br>第一种是直接add对象，把对象加在最后面</p>
-<pre class="line-numbers language-java"><code class="language-java">heros<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Hero</span><span class="token punctuation">(</span><span class="token string">"hero "</span> <span class="token operator">+</span> i<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>第二种是在指定位置加对象</p>
-<pre class="line-numbers language-java"><code class="language-java">heros<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> specialHero<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="判断是否存在"><a href="#判断是否存在" class="headerlink" title="判断是否存在"></a>判断是否存在</h4><p>通过方法contains 判断一个对象是否在容器中<br>判断标准： 是否是同一个对象，而不是name是否相同</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">package</span> collection<span class="token punctuation">;</span>
+                <h1 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h1><h3 id="集合中的泛型"><a href="#集合中的泛型" class="headerlink" title="集合中的泛型"></a>集合中的泛型</h3><h4 id="使用泛型"><a href="#使用泛型" class="headerlink" title="使用泛型"></a>使用泛型</h4><p>使用泛型的好处：<br>泛型的用法是在容器后面添加<type><br>Type可以是类，抽象类，接口<br>泛型表示这种容器，只能存放APHero，ADHero就放不进去了。</type></p>
+<h4 id="子类对象"><a href="#子类对象" class="headerlink" title="子类对象"></a>子类对象</h4><p>假设容器的泛型是Hero,那么Hero的子类APHero,ADHero都可以放进去，和Hero无关的类型Item还是放不进去</p>
+<h3 id="通配符"><a href="#通配符" class="headerlink" title="通配符"></a>通配符</h3><h4 id="extends"><a href="#extends" class="headerlink" title="? extends"></a>? extends</h4><p>ArrayList heroList&lt;? extends Hero&gt; 表示这是一个Hero泛型或者其子类泛型<br>heroList 的泛型可能是Hero<br>heroList 的泛型可能是APHero<br>heroList 的泛型可能是ADHero<br>所以 可以确凿的是，从heroList取出来的对象，一定是可以转型成Hero的，但是，不能往里面放东西，因为<br>放APHero就不满足<adhero><br>放ADHero又不满足<aphero></aphero></adhero></p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">package</span> generic<span class="token punctuation">;</span>
 
 <span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>ArrayList<span class="token punctuation">;</span>
 
+<span class="token keyword">import</span> charactor<span class="token punctuation">.</span>ADHero<span class="token punctuation">;</span>
+<span class="token keyword">import</span> charactor<span class="token punctuation">.</span>APHero<span class="token punctuation">;</span>
 <span class="token keyword">import</span> charactor<span class="token punctuation">.</span>Hero<span class="token punctuation">;</span>
 
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestCollection</span> <span class="token punctuation">{</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestGeneric</span> <span class="token punctuation">{</span>
+
     <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        ArrayList heros <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        <span class="token comment" spellcheck="true">// 初始化5个对象</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">5</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            heros<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Hero</span><span class="token punctuation">(</span><span class="token string">"hero "</span> <span class="token operator">+</span> i<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        Hero specialHero <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Hero</span><span class="token punctuation">(</span><span class="token string">"special hero"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        heros<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>specialHero<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        ArrayList<span class="token operator">&lt;</span>APHero<span class="token operator">></span> apHeroList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span>APHero<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        apHeroList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">APHero</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>heros<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">// 判断一个对象是否在容器中</span>
-        <span class="token comment" spellcheck="true">// 判断标准： 是否是同一个对象，而不是name是否相同</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"虽然一个新的对象名字也叫 hero 1，但是contains的返回是:"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>heros<span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Hero</span><span class="token punctuation">(</span><span class="token string">"hero 1"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"而对specialHero的判断，contains的返回是:"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>heros<span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span>specialHero<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        ArrayList<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">Hero</span><span class="token operator">></span> heroList <span class="token operator">=</span> apHeroList<span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//? extends Hero 表示这是一个Hero泛型的子类泛型</span>
+
+        <span class="token comment" spellcheck="true">//heroList 的泛型可以是Hero</span>
+        <span class="token comment" spellcheck="true">//heroList 的泛型可以使APHero</span>
+        <span class="token comment" spellcheck="true">//heroList 的泛型可以使ADHero</span>
+
+        <span class="token comment" spellcheck="true">//可以确凿的是，从heroList取出来的对象，一定是可以转型成Hero的</span>
+
+        Hero h<span class="token operator">=</span> heroList<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//但是，不能往里面放东西</span>
+        heroList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ADHero</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//编译错误，因为heroList的泛型 有可能是APHero</span>
+
     <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="获取指定位置的对象"><a href="#获取指定位置的对象" class="headerlink" title="获取指定位置的对象"></a>获取指定位置的对象</h4><p>通过get获取指定位置的对象，如果输入的下标越界，一样会报错</p>
-<h4 id="获取对象所处的位置"><a href="#获取对象所处的位置" class="headerlink" title="获取对象所处的位置"></a>获取对象所处的位置</h4><p>indexOf用于判断一个对象在ArrayList中所处的位置<br>与contains一样，判断标准是对象是否相同，而非对象的name值是否相等</p>
-<h4 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h4><p>remove用于把对象从ArrayList中删除<br>remove可以根据下标删除ArrayList的元素</p>
-<pre class="line-numbers language-java"><code class="language-java">heros<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>也可以根据对象删除</p>
-<pre class="line-numbers language-java"><code class="language-java">heros<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span>specialHero<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="替换"><a href="#替换" class="headerlink" title="替换"></a>替换</h4><p>set用于替换指定位置的元素</p>
-<pre class="line-numbers language-java"><code class="language-java">heros<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Hero</span><span class="token punctuation">(</span><span class="token string">"hero 5"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="获取大小"><a href="#获取大小" class="headerlink" title="获取大小"></a>获取大小</h4><p>size 用于获取ArrayList的大小</p>
-<h4 id="转换为数组"><a href="#转换为数组" class="headerlink" title="转换为数组"></a>转换为数组</h4><p>toArray可以把一个ArrayList对象转换为数组。<br>需要注意的是，如果要转换为一个Hero数组，那么需要传递一个Hero数组类型的对象给toArray()，<br>这样toArray方法才知道，你希望转换为哪种类型的数组，否则只能转换为Object数组</p>
-<pre class="line-numbers language-java"><code class="language-java">Hero hs<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">(</span>Hero<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>heros<span class="token punctuation">.</span><span class="token function">toArray</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Hero</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="把另一个容器所有对象都加进来"><a href="#把另一个容器所有对象都加进来" class="headerlink" title="把另一个容器所有对象都加进来"></a>把另一个容器所有对象都加进来</h4><p>addAll 把另一个容器所有对象都加进来</p>
-<h4 id="清空"><a href="#清空" class="headerlink" title="清空"></a>清空</h4><p>clear清空一个ArrayList</p>
-<h3 id="List接口"><a href="#List接口" class="headerlink" title="List接口"></a>List接口</h3><p>ArrayList实现了接口List<br>常见的写法会把引用声明为接口List类型<br><font color="red">注意：是java.util.List,而不是java.awt.List</font></p>
-<h3 id="泛型-Generic"><a href="#泛型-Generic" class="headerlink" title="泛型 Generic"></a>泛型 Generic</h3><p>不指定泛型的容器，可以存放任何类型的元素<br>指定了泛型的容器，只能存放指定类型的元素以及其子类</p>
-<h4 id="泛型的简写"><a href="#泛型的简写" class="headerlink" title="泛型的简写"></a>泛型的简写</h4><p>JDK7提供了一个可以略微减少代码量的泛型简写方式</p>
-<pre class="line-numbers language-java"><code class="language-java">List<span class="token operator">&lt;</span>Hero<span class="token operator">></span> genericheros2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h3 id="遍历"><a href="#遍历" class="headerlink" title="遍历"></a>遍历</h3><h4 id="用for循环遍历"><a href="#用for循环遍历" class="headerlink" title="用for循环遍历"></a>用for循环遍历</h4><p>通过前面的学习，知道了可以用size()和get()分别得到大小，和获取指定位置的元素，结合for循环就可以遍历出ArrayList的内容</p>
-<pre class="line-numbers language-java"><code class="language-java">List<span class="token operator">&lt;</span>Hero<span class="token operator">></span> heros <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span>Hero<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> heros<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    Hero h <span class="token operator">=</span> heros<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>h<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="迭代器遍历"><a href="#迭代器遍历" class="headerlink" title="迭代器遍历"></a>迭代器遍历</h4><p>使用迭代器Iterator遍历集合中的元素<br><img src="http://stepimagewm.how2j.cn/806.png" alt></p>
-<pre class="line-numbers language-java"><code class="language-java">List<span class="token operator">&lt;</span>Hero<span class="token operator">></span> heros <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span>Hero<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-Iterator<span class="token operator">&lt;</span>Hero<span class="token operator">></span> it<span class="token operator">=</span> heros<span class="token punctuation">.</span><span class="token function">iterator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//从最开始的位置判断"下一个"位置是否有数据</span>
-<span class="token comment" spellcheck="true">//如果有就通过next取出来，并且把指针向下移动</span>
-<span class="token comment" spellcheck="true">//直到"下一个"位置没有数据</span>
-<span class="token keyword">while</span><span class="token punctuation">(</span>it<span class="token punctuation">.</span><span class="token function">hasNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-    Hero h <span class="token operator">=</span> it<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>h<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span class="token comment" spellcheck="true">//迭代器的for写法</span>
-System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"--------使用for的iterator-------"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">for</span> <span class="token punctuation">(</span>Iterator<span class="token operator">&lt;</span>Hero<span class="token operator">></span> iterator <span class="token operator">=</span> heros<span class="token punctuation">.</span><span class="token function">iterator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> iterator<span class="token punctuation">.</span><span class="token function">hasNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    Hero hero <span class="token operator">=</span> <span class="token punctuation">(</span>Hero<span class="token punctuation">)</span> iterator<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>hero<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="用增强型for循环"><a href="#用增强型for循环" class="headerlink" title="用增强型for循环"></a>用增强型for循环</h4><p>使用增强型for循环可以非常方便的遍历ArrayList中的元素，这是很多开发人员的首选。<br>不过增强型for循环也有不足：<br>无法用来进行ArrayList的初始化<br>无法得知当前是第几个元素了，当需要只打印单数元素的时候，就做不到了。 必须再自定下标变量。</p>
-<pre class="line-numbers language-java"><code class="language-java">List<span class="token operator">&lt;</span>Hero<span class="token operator">></span> heros <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span>Hero<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">// 第三种，增强型for循环</span>
-System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"--------增强型for循环-------"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">for</span> <span class="token punctuation">(</span>Hero h <span class="token operator">:</span> heros<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>h<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="super"><a href="#super" class="headerlink" title="? super"></a>? super</h4><p>ArrayList heroList&lt;? super Hero&gt; 表示这是一个Hero泛型或者其父类泛型<br>heroList的泛型可能是Hero<br>heroList的泛型可能是Object<br>可以往里面插入Hero以及Hero的子类,但是取出来有风险，因为不确定取出来是Hero还是Object</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">package</span> generic<span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>ArrayList<span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> charactor<span class="token punctuation">.</span>ADHero<span class="token punctuation">;</span>
+<span class="token keyword">import</span> charactor<span class="token punctuation">.</span>APHero<span class="token punctuation">;</span>
+<span class="token keyword">import</span> charactor<span class="token punctuation">.</span>Hero<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestGeneric</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+        ArrayList<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">super</span> Hero<span class="token operator">></span> heroList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span>Object<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//? super Hero 表示 heroList的泛型是Hero或者其父类泛型</span>
+
+        <span class="token comment" spellcheck="true">//heroList 的泛型可以是Hero</span>
+        <span class="token comment" spellcheck="true">//heroList 的泛型可以是Object</span>
+
+        <span class="token comment" spellcheck="true">//所以就可以插入Hero</span>
+        heroList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Hero</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//也可以插入Hero的子类</span>
+        heroList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">APHero</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        heroList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ADHero</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//但是，不能从里面取数据出来,因为其泛型可能是Object,而Object是强转Hero会失败</span>
+        Hero h<span class="token operator">=</span> heroList<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="泛型通配符"><a href="#泛型通配符" class="headerlink" title="泛型通配符?"></a>泛型通配符?</h4><p>泛型通配符? 代表任意泛型<br>既然?代表任意泛型，那么换句话说，这个容器什么泛型都有可能<br>所以只能以Object的形式取出来,但是无法转换成hero类型，会有风险，并且不能往里面放对象，因为不知道到底是一个什么泛型的容器</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">package</span> generic<span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>ArrayList<span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> property<span class="token punctuation">.</span>Item<span class="token punctuation">;</span>
+<span class="token keyword">import</span> charactor<span class="token punctuation">.</span>APHero<span class="token punctuation">;</span>
+<span class="token keyword">import</span> charactor<span class="token punctuation">.</span>Hero<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestGeneric</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+        ArrayList<span class="token operator">&lt;</span>APHero<span class="token operator">></span> apHeroList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span>APHero<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//?泛型通配符，表示任意泛型</span>
+        ArrayList<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> generalList <span class="token operator">=</span> apHeroList<span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//?的缺陷1： 既然?代表任意泛型，那么换句话说，你就不知道这个容器里面是什么类型</span>
+        <span class="token comment" spellcheck="true">//所以只能以Object的形式取出来</span>
+        Object o <span class="token operator">=</span> generalList<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//?的缺陷2： 既然?代表任意泛型，那么既有可能是Hero,也有可能是Item</span>
+        <span class="token comment" spellcheck="true">//所以，放哪种对象进去，都有风险，结果就什么什么类型的对象，都不能放进去</span>
+        generalList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Item</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//编译错误 因为?代表任意泛型，很有可能不是Item</span>
+        generalList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Hero</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//编译错误 因为?代表任意泛型，很有可能不是Hero</span>
+        generalList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">APHero</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//编译错误  因为?代表任意泛型，很有可能不是APHero</span>
+
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>如果希望只取出，不插入，就使用? extends Hero<br>如果希望只插入，不取出，就使用? super Hero<br>如果希望无法插入也无法取出，就使用 通配符?</p>
+<h3 id="泛型转型"><a href="#泛型转型" class="headerlink" title="泛型转型"></a>泛型转型</h3><h4 id="对象转型"><a href="#对象转型" class="headerlink" title="对象转型"></a>对象转型</h4><p>根据面向对象学习的知识，子类转父类 是一定可以成功的</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">package</span> generic<span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> charactor<span class="token punctuation">.</span>ADHero<span class="token punctuation">;</span>
+<span class="token keyword">import</span> charactor<span class="token punctuation">.</span>Hero<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestGeneric</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+        Hero h <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Hero</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        ADHero ad <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ADHero</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">//子类转父类</span>
+        h <span class="token operator">=</span> ad<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="子类泛型转父类泛型"><a href="#子类泛型转父类泛型" class="headerlink" title="子类泛型转父类泛型"></a>子类泛型转父类泛型</h4><p>假设可以转型成功<br>引用hs指向了ADHero泛型的容器,作为Hero泛型的引用hs, 看上去是可以往里面加一个APHero的。但是hs这个引用，实际上是指向的一个ADHero泛型的容器<br>如果能加进去，就变成了ADHero泛型的容器里放进了APHero，这就矛盾了,所以子类泛型不可以转换为父类泛型<br><img src="http://stepimagewm.how2j.cn/835.png" alt><br>同理父类泛型不能转型为子类泛型</p>
 <h5 id="以上内容是在-http-how2j-cn-学习的时候的记录"><a href="#以上内容是在-http-how2j-cn-学习的时候的记录" class="headerlink" title="以上内容是在(http://how2j.cn) 学习的时候的记录"></a>以上内容是在(<a href="http://how2j.cn" target="_blank" rel="noopener">http://how2j.cn</a>) 学习的时候的记录</h5>
             </div>
             <hr/>
@@ -677,9 +715,9 @@ System<span class="token punctuation">.</span>out<span class="token punctuation"
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《Java 容器类》
+                    《Java 泛型》
                 </span> 由
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/08/09/java-ji-he-kuang-jia/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/08/10/java-fan-xing/" property="cc:attributionName"
                rel="cc:attributionURL">
                 何必酷
             </a> 采用
@@ -720,7 +758,7 @@ System<span class="token punctuation">.</span>out<span class="token punctuation"
         repo: 'silenceButKeep.github.io',
         owner: 'silenceButKeep',
         admin: "silenceButKeep",
-        id: '2019-08-09T15-42-59',
+        id: '2019-08-10T09-45-27',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -745,12 +783,12 @@ System<span class="token punctuation">.</span>out<span class="token punctuation"
             <div class="article-badge left-badge text-color">
                 <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2019/08/10/java-fan-xing/">
+                <a href="/2019/08/10/java-lambda/">
                     <div class="card-image">
                         
-                        <img src="http://english.cri.cn/mmsource/images/2017/12/22/20171222164519575_77807.jpg" class="responsive-img" alt="Java 泛型">
+                        <img src="https://pic.qyer.com/album/user/3029/37/QklXSxkAYk4/index/180180" class="responsive-img" alt="Java LAMBDA表达式">
                         
-                        <span class="card-title">Java 泛型</span>
+                        <span class="card-title">Java LAMBDA表达式</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -782,8 +820,8 @@ System<span class="token punctuation">.</span>out<span class="token punctuation"
                         <span class="chip bg-color">Java</span>
                     </a>
                     
-                    <a href="/tags/泛型/" target="_blank">
-                        <span class="chip bg-color">泛型</span>
+                    <a href="/tags/LAMBDA表达式/" target="_blank">
+                        <span class="chip bg-color">LAMBDA表达式</span>
                     </a>
                     
                 </div>
@@ -797,12 +835,12 @@ System<span class="token punctuation">.</span>out<span class="token punctuation"
                 下一篇&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2019/08/09/java-io3/">
+                <a href="/2019/08/09/java-ji-he-kuang-jia/">
                     <div class="card-image">
                         
-                        <img src="https://cn.bing.com/th?id=OHR.NubbleLight_EN-CN3940339506_800x480.jpg" class="responsive-img" alt="Java I/O流(下)">
+                        <img src="https://cn.bing.com/th?id=OHR.HumpbackSanctuary_EN-CN3637668595_400x240.jpg" class="responsive-img" alt="Java 容器类">
                         
-                        <span class="card-title">Java I/O流(下)</span>
+                        <span class="card-title">Java 容器类</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -834,8 +872,8 @@ System<span class="token punctuation">.</span>out<span class="token punctuation"
                         <span class="chip bg-color">Java</span>
                     </a>
                     
-                    <a href="/tags/I-O/" target="_blank">
-                        <span class="chip bg-color">I/O</span>
+                    <a href="/tags/容器类/" target="_blank">
+                        <span class="chip bg-color">容器类</span>
                     </a>
                     
                 </div>
