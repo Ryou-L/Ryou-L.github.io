@@ -788,7 +788,7 @@ bAdd<span class="token punctuation">.</span><span class="token function">addActi
         t<span class="token punctuation">.</span><span class="token function">updateUI</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="输入项验证"><a href="#输入项验证" class="headerlink" title="输入项验证"></a>输入项验证</h4><p>如果用户输入的名称为空，或者血量不是小数，在提交数据的时候都会报错。<br>“感觉上” 界面就卡住了。 这是不友好的人机交互行为。<br>所以需要加上输入项的验证，如果输入的数据不合格，应该<a href>弹出对话框</a>提示用户具体原因。</p>
+<h4 id="输入项验证"><a href="#输入项验证" class="headerlink" title="输入项验证"></a>输入项验证</h4><p>如果用户输入的名称为空，或者血量不是小数，在提交数据的时候都会报错。<br>“感觉上” 界面就卡住了。 这是不友好的人机交互行为。<br>所以需要加上输入项的验证，如果输入的数据不合格，应该<a href="https://silencebutkeep.github.io/2019/08/12/java-tu-xiang-jie-mian/#toc-heading-28" target="_blank" rel="noopener">弹出对话框</a>提示用户具体原因。</p>
 <pre class="line-numbers language-java"><code class="language-java">bAdd<span class="token punctuation">.</span><span class="token function">addActionListener</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ActionListener</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 
     <span class="token annotation punctuation">@Override</span>
@@ -906,7 +906,7 @@ t<span class="token punctuation">.</span><span class="token function">getSelecti
         <span class="token punctuation">}</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="事件调度线程"><a href="#事件调度线程" class="headerlink" title="事件调度线程"></a>事件调度线程</h4><p>以<a href>按钮监听</a>中的代码为例，ActionListener.actionPerformed 中的代码，就是事件调度线程执行的。<br>可以借助SwingUtilities.isEventDispatchThread() 确认，是事件调度线程在执行相应的代码</p>
+<h4 id="事件调度线程"><a href="#事件调度线程" class="headerlink" title="事件调度线程"></a>事件调度线程</h4><p>以<a href="https://silencebutkeep.github.io/2019/08/12/java-tu-xiang-jie-mian/#toc-heading-4" target="_blank" rel="noopener">按钮监听</a>中的代码为例，ActionListener.actionPerformed 中的代码，就是事件调度线程执行的。<br>可以借助SwingUtilities.isEventDispatchThread() 确认，是事件调度线程在执行相应的代码</p>
 <h4 id="长耗时任务线程"><a href="#长耗时任务线程" class="headerlink" title="长耗时任务线程"></a>长耗时任务线程</h4><p>有时候需要执行长耗时任务，比如数据库查询，文件复制，访问网络等等。<br>而这些操作一般都会在事件响应后发起，就会自动进入事件调度线程。 而事件调度线程又是单线程模式，其结果就会是在执行这些长耗时任务的时候，界面就无响应了。<br>为了解决这个问题，Swing提供了一个SwingWorker类来解决。 SwingWorker是一个抽象类，为了使用，必须实现方法 doInBackground，在doInBackground中，就可以编写我们的任务，然后执行SwingWorker的execute方法，放在专门的工作线程中去运行。</p>
 <pre class="line-numbers language-java"><code class="language-java">SwingWorker worker <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SwingWorker</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">protected</span> Object <span class="token function">doInBackground</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
@@ -1186,17 +1186,16 @@ b2<span class="token punctuation">.</span><span class="token function">addAction
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
-            </div>
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2019/08/13/java-tu-xiang-jie-mian-xia/">
+                <a href="/2019/08/15/java-fan-she-ji-zhi/">
                     <div class="card-image">
                         
-                        <img src="https://cn.bing.com/th?id=OHR.MartianSouthPole_EN-CN4307593349_800x480.jpg" class="responsive-img" alt="Java 图形界面(下)">
+                        <img src="https://cdn.pixabay.com/photo/2018/10/15/16/23/photography-3749383_960_720.jpg" class="responsive-img" alt="Java 反射">
                         
-                        <span class="card-title">Java 图形界面(下)</span>
+                        <span class="card-title">Java 反射</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1206,9 +1205,9 @@ b2<span class="token punctuation">.</span><span class="token function">addAction
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-08-13
-                            </span>
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-08-15
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
@@ -1221,7 +1220,6 @@ b2<span class="token punctuation">.</span><span class="token function">addAction
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
@@ -1229,8 +1227,8 @@ b2<span class="token punctuation">.</span><span class="token function">addAction
                         <span class="chip bg-color">Java</span>
                     </a>
                     
-                    <a href="/tags/Swing/" target="_blank">
-                        <span class="chip bg-color">Swing</span>
+                    <a href="/tags/反射/" target="_blank">
+                        <span class="chip bg-color">反射</span>
                     </a>
                     
                 </div>
@@ -1403,7 +1401,7 @@ b2<span class="token punctuation">.</span><span class="token function">addAction
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">29.8k</span>
+                <span class="white-color">51.9k</span>
             
 
             

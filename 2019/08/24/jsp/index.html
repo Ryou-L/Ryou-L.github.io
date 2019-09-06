@@ -1,0 +1,1143 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="JSP, 何必酷">
+    <meta name="description" content="JSPHello JSPjsp能够做到直接使用Html代码，然后在html中写java代码
+hello.jsp在web目录下下新建一个文件hello.jsp访问网页 http://127.0.0.1/hello.jsp
+&amp;lt;%@page">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>JSP | 何必酷</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+        code[class*="language-"], pre[class*="language-"] {
+            white-space: pre !important;
+        }
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">何必酷</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">何必酷</div>
+        <div class="logo-desc">
+            
+            make a friend
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/silenceButKeep" class="waves-effect waves-light" target="_blank">
+                <i class="fa fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/silenceButKeep" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.pixabay.com/photo/2018/02/07/09/47/travel-3136679_960_720.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        JSP
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Java/" target="_blank">
+                                <span class="chip bg-color">Java</span>
+                            </a>
+                        
+                            <a href="/tags/JSP/" target="_blank">
+                                <span class="chip bg-color">JSP</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/j2ee/" class="post-category" target="_blank">
+                                j2ee
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-08-24
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        3.7k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        15 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="JSP"><a href="#JSP" class="headerlink" title="JSP"></a>JSP</h1><h3 id="Hello-JSP"><a href="#Hello-JSP" class="headerlink" title="Hello JSP"></a>Hello JSP</h3><p>jsp能够做到直接使用Html代码，然后在html中写java代码</p>
+<h4 id="hello-jsp"><a href="#hello-jsp" class="headerlink" title="hello.jsp"></a>hello.jsp</h4><p>在web目录下下新建一个文件hello.jsp<br>访问网页 <code>http://127.0.0.1/hello.jsp</code></p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token operator">&lt;</span><span class="token operator">%</span><span class="token annotation punctuation">@page</span> contentType<span class="token operator">=</span><span class="token string">"text/html; charset=UTF-8"</span>
+    pageEncoding<span class="token operator">=</span><span class="token string">"UTF-8"</span> <span class="token keyword">import</span><span class="token operator">=</span><span class="token string">"java.util.*"</span><span class="token operator">%</span><span class="token operator">></span>
+
+你好 JSP
+
+<span class="token operator">&lt;</span>br<span class="token operator">></span>
+
+<span class="token operator">&lt;</span><span class="token operator">%=</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toLocaleString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">%</span><span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="代码解释"><a href="#代码解释" class="headerlink" title="代码解释"></a>代码解释</h4><p><code>&lt;%@page contentType=&quot;text/html; charset=UTF-8&quot;  pageEncoding=&quot;UTF-8&quot; import=&quot;java.util.*&quot;%&gt;</code><br>是JSP的<code>&lt;%@page指令</code><br><code>contentType=&quot;text/html; charset=UTF-8&quot;</code>  相当于response.setContentType(“text/html; charset=UTF-8”); 通知浏览器以UTF-8进行中文解码<br><code>pageEncoding=&quot;UTF-8&quot;</code> 如果jsp文件中出现了中文，这些中文使用UTF-8进行编码<br><code>import=&quot;java.util.*</code> 导入其他类，如果导入多个类，彼此用,逗号隔开，像这样 <code>import=&quot;java.util.*,java.sql.*&quot;</code><br><code>&lt;%=</code><br><code>&lt;%=new Date().toLocaleString()%&gt;</code> 输出当前时间，相当于在Servlet中使用response.getWriter()进行输出<br><code>response.getWriter().println(new Date().toLocaleString());</code></p>
+<h4 id="执行过程"><a href="#执行过程" class="headerlink" title="执行过程"></a>执行过程</h4><ul>
+<li>把 hello.jsp转译为hello_jsp.java</li>
+<li>hello_jsp.java 位于<br>d:\tomcat\work\Catalina\localhost_\org\apache\jsp</li>
+<li>hello_jsp.java是一个servlet</li>
+<li>把hello_jsp.java 编译为hello_jsp.class</li>
+<li>执行hello_jsp，生成html</li>
+<li>通过http协议把html 响应返回给浏览器<br><img src="https://s2.ax1x.com/2019/08/24/m6Q4ZF.png" alt></li>
+</ul>
+<h4 id="hello-jsp-java-为什么是Servlet"><a href="#hello-jsp-java-为什么是Servlet" class="headerlink" title="hello_jsp.java 为什么是Servlet"></a>hello_jsp.java 为什么是Servlet</h4><p>在Servlet章节中，我们说HelloServlet是一个Servlet，不是因为它的类名里有一个”Servlet”，而是因为它继承了 HttpServlet<br>打开转译hello.jsp 后得到的hello_jsp.java，可以发现它继承了类</p>
+<h3 id="页面元素"><a href="#页面元素" class="headerlink" title="页面元素"></a>页面元素</h3><p>jsp由这些页面元素组成：</p>
+<ul>
+<li>静态内容<br>就是html,css,javascript等内容</li>
+<li>指令<br>以&lt;%@开始 %&gt; 结尾，比如&lt;%@page import=”java.util.*”%&gt;</li>
+<li>表达式 &lt;%=%&gt;<br>用于输出一段html</li>
+<li>Scriptlet<br>在&lt;%%&gt; 之间，可以写任何java 代码</li>
+<li>声明<br>在&lt;%!%&gt; 之间可以声明字段或者方法。但是不建议这么做。</li>
+<li>动作<br>&lt;jsp:include page=”Filename” &gt; 在jsp页面中包含另一个页面。在包含的章节有详细的讲解</li>
+<li>注释 &lt;%– – %&gt;<br>不同于 html的注释 <!-- --> 通过jsp的注释，浏览器也看不到相应的代码，相当于在servlet中注释掉了<br><img src="http://stepimagewm.how2j.cn/1657.png" alt></li>
+</ul>
+<h4 id="lt-gt-和-lt-out-println-gt"><a href="#lt-gt-和-lt-out-println-gt" class="headerlink" title="&lt;%=%&gt;和 &lt;%out.println()%&gt;"></a>&lt;%=%&gt;和 &lt;%out.println()%&gt;</h4><pre class="line-numbers language-java"><code class="language-java"><span class="token operator">&lt;</span><span class="token operator">%=</span><span class="token string">"hello jsp"</span><span class="token operator">%</span><span class="token operator">></span> <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>就相当于</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token operator">&lt;</span><span class="token operator">%</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"hello jsp"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token operator">%</span><span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>out是jsp的隐式对象，可以直接使用。一共有9种隐式对象<br><font color="red">注: &lt;%=%&gt; 不需要分号结尾，&lt;%%&gt; 需要以分号结尾，和java代码一样</font></p>
+<h4 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h4><pre class="line-numbers language-java"><code class="language-java"><span class="token operator">&lt;</span><span class="token operator">%</span>@ page language<span class="token operator">=</span><span class="token string">"java"</span> contentType<span class="token operator">=</span><span class="token string">"text/html; charset=UTF-8"</span>
+    pageEncoding<span class="token operator">=</span><span class="token string">"UTF-8"</span> <span class="token keyword">import</span><span class="token operator">=</span><span class="token string">"java.util.*"</span><span class="token operator">%</span><span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">%</span>
+    List<span class="token operator">&lt;</span>String<span class="token operator">></span> words <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span>String<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    words<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"today"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    words<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"is"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    words<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"a"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    words<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"great"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    words<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"day"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token operator">%</span><span class="token operator">></span>
+
+<span class="token operator">&lt;</span>table width<span class="token operator">=</span><span class="token string">"200px"</span> align<span class="token operator">=</span><span class="token string">"center"</span> border<span class="token operator">=</span><span class="token string">"1"</span> cellspacing<span class="token operator">=</span><span class="token string">"0"</span><span class="token operator">></span>
+
+<span class="token operator">&lt;</span><span class="token operator">%</span><span class="token keyword">for</span> <span class="token punctuation">(</span>String word <span class="token operator">:</span> words<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token operator">%</span><span class="token operator">></span>
+ 
+<span class="token operator">&lt;</span>tr<span class="token operator">></span>
+    <span class="token operator">&lt;</span>td<span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">%=</span>word<span class="token operator">%</span><span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">/</span><span class="token operator">%=</span>word<span class="token operator">%</span><span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">/</span>td<span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>tr<span class="token operator">></span>
+ 
+<span class="token operator">&lt;</span><span class="token operator">%</span><span class="token punctuation">}</span><span class="token operator">%</span><span class="token operator">></span> <span class="token operator">&lt;</span> table<span class="token operator">></span><span class="token operator">&lt;</span> code<span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">/</span><span class="token operator">%</span><span class="token punctuation">}</span><span class="token operator">%</span><span class="token operator">>></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="include"><a href="#include" class="headerlink" title="include"></a>include</h3><p>每个网页的最下方都有 版权声明等信息。 如果不使用包含，那么每个网页都需要单独写，如果版权声明要修改，则需要很大的工作量。<br>使用include的办法，只需要准备一个footer.jsp，然后在其他页面包含footer.jsp即可。<br>修改的时候，只需要修改footer.jsp所有的页面就都修改了，维护成本降低了很多。<br>include有两种方式指令include和动作include</p>
+<h4 id="首先准备一个footer-jsp"><a href="#首先准备一个footer-jsp" class="headerlink" title="首先准备一个footer.jsp"></a>首先准备一个footer.jsp</h4><pre class="line-numbers language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>hr</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token style-attr language-css"><span class="token attr-name"> <span class="token attr-name">style</span></span><span class="token punctuation">="</span><span class="token attr-value"><span class="token property">text-align</span><span class="token punctuation">:</span>center</span><span class="token punctuation">"</span></span><span class="token punctuation">></span></span>copyright@2016
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h4 id="指令include"><a href="#指令include" class="headerlink" title="指令include"></a>指令include</h4><p>通过指令<code>&lt;%@include file=&quot;footer.jsp&quot; %&gt;</code>在hello.jsp中包含该页面</p>
+<h4 id="动作include"><a href="#动作include" class="headerlink" title="动作include"></a>动作include</h4><p>通过动作<code>&lt;jsp:include page=&quot;footer.jsp&quot; /&gt;</code>在hello.jsp中包含该页面</p>
+<h4 id="指令include和动作include的区别"><a href="#指令include和动作include的区别" class="headerlink" title="指令include和动作include的区别"></a>指令include和动作include的区别</h4><p>通过之前的学习知道，JSP最后会被转译成Servlet<br>如果是指令include <code>&lt;%@include file=&quot;footer.jsp&quot; %&gt;</code><br>footer.jsp的内容会被插入到 hello.jsp 转译 成的hello_jsp.java中，最后只会生成一个hello_jsp.java文件<br>如果是动作include <code>&lt;jsp:include page=&quot;footer.jsp&quot; /&gt;</code><br>footer.jsp的内容不会被插入到 hello.jsp 转译 成的hello_jsp.java中，还会有一个footer_jsp.java独立存在。 hello_jsp.java 会在服务端访问footer_jsp.java,然后把返回的结果，嵌入到响应中。</p>
+<h3 id="跳转"><a href="#跳转" class="headerlink" title="跳转"></a>跳转</h3><p>和Servlet的跳转一样，JSP的跳转也分服务端跳转和客户端跳转</p>
+<h4 id="客户端跳转"><a href="#客户端跳转" class="headerlink" title="客户端跳转"></a>客户端跳转</h4><p>jsp的客户端跳转和Servlet中是一样的。<code>response.sendRedirect(&quot;hello.jsp&quot;);</code></p>
+<h4 id="服务端跳转"><a href="#服务端跳转" class="headerlink" title="服务端跳转"></a>服务端跳转</h4><p>与Servlet的服务端跳转一样，也可以使用<code>request.getRequestDispatcher(&quot;hello.jsp&quot;).forward(request, response);</code><br>或者使用动作，简化代码<code>&lt;jsp:forward page=&quot;hello.jsp&quot;/&gt;</code></p>
+<h3 id="cookie"><a href="#cookie" class="headerlink" title="cookie"></a>cookie</h3><p>cookie 在平时生活中的运用:有的网站，登陆的时候，会出现一个选项，问你是否要一周内或者一个月内保持登陆状态。<br>如果你选了，那么一周之内，都不需要再输入账号密码。<br>这个功能，就是靠cookie来实现的</p>
+<h4 id="什么是cookie"><a href="#什么是cookie" class="headerlink" title="什么是cookie"></a>什么是cookie</h4><p>Cookie是一种浏览器和服务器交互数据的方式。<br>Cookie是由服务器端创建，但是不会保存在服务器。<br>创建好之后，发送给浏览器。浏览器保存在用户本地。<br>下一次访问网站的时候，就会把该Cookie发送给服务器。</p>
+<h4 id="setCookie-jsp"><a href="#setCookie-jsp" class="headerlink" title="setCookie.jsp"></a>setCookie.jsp</h4><p>在web目录下创建一个文件 setCookie.jsp<br><code>Cookie c = new Cookie(&quot;name&quot;, &quot;Gareen&quot;);</code>创建了一个cookie,名字是”name” 值是”Gareen”<br><code>c.setMaxAge(24 * 60 * 60);</code>表示这个cookie可以保留一天，如果是0，表示浏览器一关闭就销毁<br><code>c.setPath(&quot;/&quot;);</code>Path表示访问服务器的所有应用都会提交这个cookie到服务端，如果其值是 /a, 那么就表示仅仅访问 /a 路径的时候才会提交 cookie<br><code>response.addCookie(c);</code>通过response把这个cookie保存在浏览器端</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token operator">&lt;</span><span class="token operator">%</span>@ page language<span class="token operator">=</span><span class="token string">"java"</span> contentType<span class="token operator">=</span><span class="token string">"text/html; charset=UTF-8"</span>
+    pageEncoding<span class="token operator">=</span><span class="token string">"UTF-8"</span> <span class="token keyword">import</span><span class="token operator">=</span><span class="token string">"javax.servlet.http.Cookie"</span><span class="token operator">%</span><span class="token operator">></span>
+
+<span class="token operator">&lt;</span><span class="token operator">%</span>
+    Cookie c <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Cookie</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">,</span> <span class="token string">"Gareen"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    c<span class="token punctuation">.</span><span class="token function">setMaxAge</span><span class="token punctuation">(</span><span class="token number">60</span> <span class="token operator">*</span> <span class="token number">24</span> <span class="token operator">*</span> <span class="token number">60</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    c<span class="token punctuation">.</span><span class="token function">setPath</span><span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    response<span class="token punctuation">.</span><span class="token function">addCookie</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token operator">%</span><span class="token operator">></span>
+
+<span class="token operator">&lt;</span>a href<span class="token operator">=</span><span class="token string">"getCookie.jsp"</span><span class="token operator">></span>跳转到获取cookie的页面<span class="token operator">&lt;</span><span class="token operator">/</span>a<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="getCookie-jsp"><a href="#getCookie-jsp" class="headerlink" title="getCookie.jsp"></a>getCookie.jsp</h4><p><code>Cookie[] cookies  = request.getCookies();</code>表示获取所有浏览器传递过来的cookie<br><code>if (null != cookies )</code>如果浏览器端没有任何cookie，得到的Cookie数组是null</p>
+<pre class="line-numbers language-for"><code class="language-for">   out.print(cookies[d].getName() + ":" + cookies[d].getValue() + "<br>");
+} <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>遍历所有的cookie<br>可以看到name:Gareen，这个在setCookie.jsp中设置的cookie<br><font color="red">注； JSESSIONID 这个不是我们自己设置的cookie，这是tomcat设置的cookie</font></p>
+<h3 id="Session"><a href="#Session" class="headerlink" title="Session"></a>Session</h3><h4 id="什么是Session"><a href="#什么是Session" class="headerlink" title="什么是Session"></a>什么是Session</h4><p>Session对应的中文翻译是会话。<br>会话指的是从用户打开浏览器访问一个网站开始，无论在这个网站中访问了多少页面，点击了多少链接，都属于同一个会话。 直到该用户关闭浏览器为止，都属于同一个会话。</p>
+<h4 id="setSession-jsp"><a href="#setSession-jsp" class="headerlink" title="setSession.jsp"></a>setSession.jsp</h4><p><code>session.setAttribute(&quot;name&quot;, &quot;teemo&quot;);</code><br>session对象保存数据的方式，有点像Map的键值对(key-value),”name”是键，”teemo” 是值</p>
+<h4 id="getSession-jsp"><a href="#getSession-jsp" class="headerlink" title="getSession.jsp"></a>getSession.jsp</h4><p><code>session.getAttribute(&quot;name&quot;);</code><br>通过session,根据”name” 取出对应的名称</p>
+<h4 id="Session和Cookie的关系"><a href="#Session和Cookie的关系" class="headerlink" title="Session和Cookie的关系"></a>Session和Cookie的关系</h4><p>盒子对应服务器上的Session。<br>钥匙对应浏览器上的Cookie。</p>
+<h3 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h3><p>JSP有4个作用域，分别是 </p>
+<ul>
+<li>pageContext 当前页面 </li>
+<li>requestContext 一次请求 </li>
+<li>sessionContext 当前会话 </li>
+<li>applicationContext 全局，所有用户共享</li>
+</ul>
+<h4 id="pageContext"><a href="#pageContext" class="headerlink" title="pageContext"></a>pageContext</h4><p>pageContext表示当前页面作用域<br>通过pageContext.setAttribute(key,value)的数据，只能在当前页面访问，在其他页面就不能访问了。</p>
+<pre class="line-numbers language-html"><code class="language-html">&lt;%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>%</span>
+    <span class="token attr-name">pageContext.setAttribute("name","gareen");</span>
+<span class="token attr-name">%</span><span class="token punctuation">></span></span>
+
+&lt;%=pageContext.getAttribute("name")%><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="requestContext"><a href="#requestContext" class="headerlink" title="requestContext"></a>requestContext</h4><p>requestContext 表示一次请求。随着本次请求结束，其中的数据也就被回收。<br>常用写法是<br><code>request.setAttribute(&quot;name&quot;,&quot;gareen&quot;); request.getAttribute(&quot;name&quot;)</code><br>但是也可以用pageContext来做，写成<br><code>pageContext.setAttribute(&quot;name&quot;,&quot;gareen&quot;,pageContext.REQUEST_SCOPE); pageContext.getAttribute(&quot;name&quot;,pageContext.REQUEST_SCOPE)</code><br>不过不常用</p>
+<h4 id="requestContext与服务端跳转"><a href="#requestContext与服务端跳转" class="headerlink" title="requestContext与服务端跳转"></a>requestContext与服务端跳转</h4><p>requestContext指的是一次请求<br>如果发生了服务端跳转，从setContext.jsp跳转到getContext.jsp，这其实，还是一次请求。 所以在getContext.jsp中，可以取到在requestContext中设置的值<br>这也是一种页面间传递数据的方式</p>
+<h4 id="requestContext与客户端跳转"><a href="#requestContext与客户端跳转" class="headerlink" title="requestContext与客户端跳转"></a>requestContext与客户端跳转</h4><p>客户端跳转，浏览器会发生一次新的访问，新的访问会产生一个新的request对象。<br>所以页面间客户端跳转的情况下，是无法通过request传递数据的。</p>
+<h4 id="sessionContext"><a href="#sessionContext" class="headerlink" title="sessionContext"></a>sessionContext</h4><p>sessionContext 指的是会话，从一个用户打开网站的那一刻起，无论访问了多少网页，链接都属于同一个会话，直到浏览器关闭。<br>所以页面间传递数据，也是可以通过session传递的。<br>但是，不同用户对应的session是不一样的，所以session无法在不同的用户之间共享数据。<br>与requestContext类似的，也可以用如下方式来做<br><code>pageContext.setAttribute(&quot;name&quot;,&quot;gareen&quot;,pageContext.SESSION_SCOPE);
+pageContext.getAttribute(&quot;name&quot;,pageContext.SESSION_SCOPE)</code></p>
+<h4 id="applicationContext"><a href="#applicationContext" class="headerlink" title="applicationContext"></a>applicationContext</h4><p>applicationContext 指的是全局，所有用户共享同一个数据</p>
+<p>在JSP中使用application对象， application对象是ServletContext接口的实例<br>也可以通过 request.getServletContext()来获取。<br>所以 application == request.getServletContext() 会返回true<br>application映射的就是web应用本身。<br>与requestContext类似的，也可以用如下方式来做<br><code>pageContext.setAttribute(&quot;name&quot;,&quot;gareen&quot;,pageContext.APPLICATION_SCOPE);
+pageContext.getAttribute(&quot;name&quot;,pageContext.APPLICATION_SCOPE)</code></p>
+<h3 id="隐式对象"><a href="#隐式对象" class="headerlink" title="隐式对象"></a>隐式对象</h3><p>JSP的隐式对象指的是不需要显示定义，直接就可以使用的对象，比如request,response<br>JSP一共有9个隐式对象，分别是<br>request,response,out<br>pageContext, session,application<br>page,config,exception</p>
+<h4 id="request-response-out"><a href="#request-response-out" class="headerlink" title="request,response,out"></a>request,response,out</h4><ul>
+<li>request 代表请求</li>
+<li>response 代表响应</li>
+<li>out 代表 输出</li>
+</ul>
+<h4 id="pageContext-session-application"><a href="#pageContext-session-application" class="headerlink" title="pageContext, session,application"></a>pageContext, session,application</h4><ul>
+<li>pageContext 代表当前页面作用域</li>
+<li>session 代表当会话作用域</li>
+<li>application 代表当全局作用域</li>
+</ul>
+<h4 id="page"><a href="#page" class="headerlink" title="page"></a>page</h4><p>page 对象即表示当前对象<br>JSP 会被编译为一个Servlet类 ，运行的时候是一个Servlet实例。 page即代表this</p>
+<h4 id="config"><a href="#config" class="headerlink" title="config"></a>config</h4><p>config可以获取一些在web.xml中初始化的参数。<br>在JSP中使用config比较复杂，需要如下几个步骤</p>
+<ul>
+<li>在web.xml中进行配置</li>
+<li>创建一个testconfig.jsp<br>通过config.getInitParameter(“database-ip”) 获取参数</li>
+<li>访问路径，获取web.xml中配置的参数<br><a href="http://127.0.0.1/testconfig" target="_blank" rel="noopener">http://127.0.0.1/testconfig</a><br><font color="red">注1: 不能通过<a href="http://127.0.0.1/testconfig.jsp" target="_blank" rel="noopener">http://127.0.0.1/testconfig.jsp</a> 获取参数，只能通过/testconfig路径</font></li>
+</ul>
+<h4 id="exception"><a href="#exception" class="headerlink" title="exception"></a>exception</h4><p>exception 对象只有当前页面的&lt;%@page 指令设置为isErrorPage=”true”的时候才可以使用。<br>同时，在其他页面也需要设置 &lt;%@page 指令 errorPage=”” 来指定一个专门处理异常的页面。</p>
+<ul>
+<li>准备一个try.jsp<br>设置errorPage=”catch.jsp”，表示有异常产生的话，就交给catch.jsp处理<br>故意在里面造成数组越界异常</li>
+<li>准备一个catch.jsp<br>设置 isErrorPage=”true”，表示当前页面可以使用exception对象<h3 id="JSTL"><a href="#JSTL" class="headerlink" title="JSTL"></a>JSTL</h3>JSTL JSP Standard Tag Library 标准标签库<br>JSTL允许开人员可以像使用HTML标签 那样在JSP中开发Java功能。<br>JSTL库有core, i18n, fmt, sql 等等。 <h4 id="导入jar包"><a href="#导入jar包" class="headerlink" title="导入jar包"></a>导入jar包</h4>为了能够在JSP 中使用JSTL，首先需要两个jar包，分别是jstl.jar 和standard.jar<h4 id="set-out-remove"><a href="#set-out-remove" class="headerlink" title="set out remove"></a>set out remove</h4>在页面中使用JSTL需要在jsp中 通过指令进行设置</li>
+</ul>
+<p><code>&lt;%@ taglib uri=&quot;http://java.sun.com/jsp/jstl/core&quot; prefix=&quot;c&quot;%&gt;</code><br>prefix=”c” 表示后续的标签使用都会以&lt;c: 开头<br><code>&lt;c:set var=&quot;name&quot; value=&quot;${&#39;gareen&#39;}&quot; scope=&quot;request&quot; /&gt;</code><br>在作用域request中设置name,相当于<code>&lt;%request.setAttribute(&quot;name&quot;,&quot;gareen&quot;)%&gt;</code><br><code>&lt;c:out value=&quot;${name}&quot; /&gt;</code>相当于<code>&lt;%=request.getAttribute(&quot;name&quot;)%&gt;</code><br><code>&lt;c:remove var=&quot;name&quot; scope=&quot;request&quot; /&gt;</code>在作用域request中删掉name,相当于<code>&lt;%request.removeAttribute(&quot;name&quot;)%&gt;</code><br>作用域可以是pageContext, request, session, application,</p>
+<h4 id="if-else"><a href="#if-else" class="headerlink" title="if else"></a>if else</h4><p>JSTL通过&lt;c:if test=””&gt; 进行条件判断<br>但是JSTL没有&lt;c:else，所以常用的办法是在&lt;c:if的条件里取反</p>
+<h4 id="choose"><a href="#choose" class="headerlink" title="choose"></a>choose</h4><p>虽然JSTL没有提供else标签，但是提供了一个else功能的标签<br><code>&lt;c:choose&gt;
+    &lt;c:when test=&quot;${hp&lt;5}&quot;&gt;
+    &lt;/c:when&gt;
+    &lt;c:otherwise&gt;
+    &lt;/c:otherwise&gt;
+&lt;/c:choose&gt;</code></p>
+<h4 id="forEach"><a href="#forEach" class="headerlink" title="forEach"></a>forEach</h4><p>可以在JSP中使用for循环，但是其可读性很差。 借助JSTL的c:forEach标签，可以改善可读性<br>在本例中，分别使用for循环和&lt;c:forEach标签来演示遍历一个List的区别<br><code>&lt;c:forEach items=&quot;${heros}&quot; var=&quot;hero&quot; varStatus=&quot;st&quot;  &gt;</code><br>items=”${heros}” 表示遍历的集合<br>var=”hero” 表示把每一个集合中的元素放在hero上<br>varStatus=”st” 表示遍历的状态</p>
+<h4 id="forTokens"><a href="#forTokens" class="headerlink" title="forTokens"></a>forTokens</h4><p>&lt;c:forTokens专门用于字符串拆分，并且可以指定多个分隔符</p>
+<h4 id="fmt-formatNumber-格式化数字"><a href="#fmt-formatNumber-格式化数字" class="headerlink" title="fmt:formatNumber 格式化数字"></a>fmt:formatNumber 格式化数字</h4><p>fmt 标签常用来进行格式化，其中fmt:formatNumber用于格式化数字<br>使用之前要加上 <code>&lt;%@ taglib uri=&quot;http://java.sun.com/jsp/jstl/fmt&quot;  prefix=&#39;fmt&#39; %&gt;</code><br><code>&lt;fmt:formatNumber type=&quot;number&quot; value=&quot;${money}&quot; minFractionDigits=&quot;2&quot;/&gt;</code><br>&lt;fmt:formatNumber 表示格式化数字<br>minFractionDigits 小数点至少要有的位数<br>maxFractionDigits 小数点最多能有的位数</p>
+<h4 id="fmt-formatDate-格式化日期"><a href="#fmt-formatDate-格式化日期" class="headerlink" title="fmt:formatDate 格式化日期"></a>fmt:formatDate 格式化日期</h4><p>fmt 标签常用来进行格式化，其中fmt:formatDate 用于格式化日期<br>和fmt:formatNumber 格式化数字一样，使用之前要加上<br><code>&lt;%@ taglib uri=&quot;http://java.sun.com/jsp/jstl/fmt&quot;  prefix=&#39;fmt&#39; %&gt;</code><br><code>&lt;fmt:formatDate value=&quot;${now}&quot; pattern=&quot;G yyyy年MM月dd日 E&quot;/&gt;</code><br><code>&lt;fmt:formatDate value=&quot;${now}&quot; pattern=&quot;a HH:mm:ss.S z&quot;/&gt;</code><br><code>&lt;fmt:formatDate value=&quot;${now}&quot; pattern=&quot;yyyy-MM-dd HH:mm:ss&quot;/&gt;</code><br>&lt;fmt:formatDate 表示格式化日期<br>yyyy 表示年份<br>MM 表示月份<br>dd 表示日期<br>E 表示星期几<br>a 表示是上午还是下午<br>HH 表示小时<br>mm 表示分钟<br>ss 表示秒<br>S 表示毫秒<br>z 表示时区</p>
+<h3 id="EL表达式语言"><a href="#EL表达式语言" class="headerlink" title="EL表达式语言"></a>EL表达式语言</h3><h4 id="取值"><a href="#取值" class="headerlink" title="取值"></a>取值</h4><p>不同版本的tomcat是否默认开启对EL表达式的支持，是不一定的。<br>所以为了保证EL表达式能够正常使用，需要在&lt;%@page 标签里加上isELIgnored=”false”<br>使用EL表达式，非常简单<br>比如使用JSTL输出要写成<br><font color="green">&lt;c:out value=”${name}” /&gt; </font><br>但是用EL只需要<br><font color="green">${name}</font></p>
+<h4 id="作用域优先级"><a href="#作用域优先级" class="headerlink" title="作用域优先级"></a>作用域优先级</h4><p>EL表达式可以从pageContext,request,session,application四个作用域中取到值，如果4个作用域都有name属性怎么办？<br>EL会按照从高到低的优先级顺序获取<br>pageContext&gt;request&gt;session&gt;application</p>
+<h4 id="JavaBean概念"><a href="#JavaBean概念" class="headerlink" title="JavaBean概念"></a>JavaBean概念</h4><p>EL可以很方便的访问JavaBean的属性，<br>JavaBean的标准</p>
+<ul>
+<li>提供无参public的构造方法(默认提供)</li>
+<li>每个属性，都有public的getter和setter</li>
+<li>如果属性是boolean,那么就对应is和setter方法</li>
+</ul>
+<h4 id="获取JavaBean的属性"><a href="#获取JavaBean的属性" class="headerlink" title="获取JavaBean的属性"></a>获取JavaBean的属性</h4><p>获取JavaBean的属性，只需要通过.符号操作就可以了。<br>像这样 ${hero.name} ，就会自动调用getName方法了<br><font color="red">注： 如果属性是boolean类型，那么就会自动调用isXXX方法了</font></p>
+<h4 id="取参"><a href="#取参" class="headerlink" title="取参"></a>取参</h4><p>EL表达式还可以做到request.getParameter(“name”) 这样的形式获取浏览器传递过来的参数</p>
+<h4 id="eq"><a href="#eq" class="headerlink" title="eq"></a>eq</h4><p>进行条件判断，大大简化了 JSTL的 c:if 和 c:choose 代码<br>如例，一行代码就能起到其他好几行代码的效果<br><font color="green">${killNumber ge 10? “超神”:”还没超神” }</font><br>例子中讲的是大于等于，除此之外的其他用法如下:<br>eq相等 ne、neq不相等<br>gt大于， lt小于<br>gt大于， lt小于<br>gte、ge大于等于<br>lte、le 小于等于<br>not非 mod求模<br>is [not] div by是否能被某数整除<br>is [not] even是否为偶数<br>is [not] odd是否为奇</p>
+
+            </div>
+            <hr/>
+
+            
+            <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.88rem;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-large waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fa fa-close"></i></a>
+            <h4 class="reward-title">觉得可以就打钱给我买糖吃</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>转载规则</span>
+        </p>
+        
+            <div class="center-align">
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                    <img alt=""
+                         style="border-width:0"
+                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+                </a>
+            </div>
+            <br/>
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《JSP》
+                </span> 由
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/08/24/jsp/" property="cc:attributionName"
+               rel="cc:attributionURL">
+                何必酷
+            </a> 采用
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                知识共享署名 4.0 国际许可协议
+            </a>进行许可。
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '0832266fa5f4e404f663',
+        clientSecret: '8472ad3803edc301eeeb98767910e11bb2d201da',
+        repo: 'silenceButKeep.github.io',
+        owner: 'silenceButKeep',
+        admin: "silenceButKeep",
+        id: '2019-08-24T16-00-30',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/08/30/css-ji-chu/">
+                    <div class="card-image">
+                        
+                        <img src="https://cn.bing.com/th?id=OHR.BlackRockCity_EN-CN1224845862_800x480.jpg" class="responsive-img" alt="CSS基础">
+                        
+                        <span class="card-title">CSS基础</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            CSS基础部分
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-08-30
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/前端/" class="post-category" target="_blank">
+                                    前端
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/前端/" target="_blank">
+                        <span class="chip bg-color">前端</span>
+                    </a>
+                    
+                    <a href="/tags/css/" target="_blank">
+                        <span class="chip bg-color">css</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/08/24/dong-tai-web-xiang-mu/">
+                    <div class="card-image">
+                        
+                        <img src="https://cdn.pixabay.com/photo/2019/08/21/19/26/rain-4421893_960_720.jpg" class="responsive-img" alt="创建动态Web项目">
+                        
+                        <span class="card-title">创建动态Web项目</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Servlet
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-08-24
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/j2ee/" class="post-category" target="_blank">
+                                    j2ee
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java/" target="_blank">
+                        <span class="chip bg-color">Java</span>
+                    </a>
+                    
+                    <a href="/tags/Servlet/" target="_blank">
+                        <span class="chip bg-color">Servlet</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">51.9k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/silenceButKeep" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1768045935@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=485734107" class="tooltipped" data-tooltip="QQ联系我: 485734107" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!--单击显示烟花-->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/js/fireworks.js"></script>
+
+<!-- 
+雪花特效 
+<script type="text/javascript" src="\js\snow.js"></script>
+-->
+
+
+<!--单击显示文字-->
+<script type="text/javascript" src="/js/click_show_text.js"></script>
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+    <script src="/libs/others/clicklove.js"></script>
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

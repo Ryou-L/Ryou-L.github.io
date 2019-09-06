@@ -418,7 +418,7 @@
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                        3.6k
+                        3.7k
                     </div>
                     
 
@@ -963,6 +963,23 @@ f<span class="token punctuation">.</span><span class="token function">add</span>
     <span class="token punctuation">}</span>
 
 <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">// 目标位置文件选择器</span>
+JFileChooser jcs1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">JFileChooser</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+jcs1<span class="token punctuation">.</span><span class="token function">setFileSelectionMode</span><span class="token punctuation">(</span>JFileChooser<span class="token punctuation">.</span>DIRECTORIES_ONLY<span class="token punctuation">)</span><span class="token punctuation">;</span>
+JButton jbChoose1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">JButton</span><span class="token punctuation">(</span><span class="token string">"选择位置"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+jbChoose1<span class="token punctuation">.</span><span class="token function">addActionListener</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ActionListener</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">actionPerformed</span><span class="token punctuation">(</span>ActionEvent e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// TODO Auto-generated method stub</span>
+        <span class="token keyword">int</span> result <span class="token operator">=</span> jcs1<span class="token punctuation">.</span><span class="token function">showOpenDialog</span><span class="token punctuation">(</span>null<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>result <span class="token operator">==</span> JFileChooser<span class="token punctuation">.</span>APPROVE_OPTION<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            destPath <span class="token operator">=</span> jcs1<span class="token punctuation">.</span><span class="token function">getSelectedFile</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getAbsolutePath</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>destPath <span class="token operator">!=</span> null<span class="token punctuation">)</span>
+                jf2<span class="token punctuation">.</span><span class="token function">setText</span><span class="token punctuation">(</span>destStr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="面板"><a href="#面板" class="headerlink" title="面板"></a>面板</h3><h4 id="基本面板"><a href="#基本面板" class="headerlink" title="基本面板"></a>基本面板</h4><p>JPanel即为基本面板<br>面板和JFrame一样都是容器，不过面板一般用来充当中间容器，把组件放在面板上，然后再把面板放在窗体上。<br>一旦移动一个面板，其上面的组件，就会全部统一跟着移动，采用这种方式，便于进行整体界面的设计</p>
 <h4 id="ContentPane"><a href="#ContentPane" class="headerlink" title="ContentPane"></a>ContentPane</h4><p>JFrame上有一层面板，叫做ContentPane<br>平时通过f.add()向JFrame增加组件，其实是向JFrame上的 ContentPane加东西</p>
 <pre class="line-numbers language-java"><code class="language-java">f<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -1500,7 +1517,7 @@ f<span class="token punctuation">.</span><span class="token function">setContent
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">29.8k</span>
+                <span class="white-color">51.9k</span>
             
 
             
