@@ -190,7 +190,7 @@
         
         <li><div class="divider"></div></li>
         <li>
-            <a href="https://github.com/silenceButKeep" class="waves-effect waves-light" target="_blank">
+            <a href="https://github.com/RyouLmusic" class="waves-effect waves-light" target="_blank">
                 <i class="fa fa-github-square fa-fw"></i>Fork Me
             </a>
         </li>
@@ -246,7 +246,7 @@
     }
 </style>
 
-<a href="https://github.com/silenceButKeep" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+<a href="https://github.com/RyouLmusic" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
    data-tooltip="Fork Me" data-position="left" data-delay="50">
     <svg viewBox="0 0 250 250" aria-hidden="true">
         <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
@@ -417,14 +417,14 @@
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                        3.8k
+                        5.1k
                     </div>
                     
 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                        13 分
+                        18 分
                     </div>
                     
                 
@@ -738,6 +738,194 @@
 <h4 id="vim编辑器有用的参数"><a href="#vim编辑器有用的参数" class="headerlink" title="vim编辑器有用的参数"></a>vim编辑器有用的参数</h4><blockquote>
 <p>vim -o file1  file2;将同时打开两个文件，上下显示，使用ctrl+w切换文件。<br>vim -O file1  file2；将同时打开两个文件，左右显示，使用ctrl+ww切换文件。</p>
 </blockquote>
+<h4 id="搜索和替换"><a href="#搜索和替换" class="headerlink" title="搜索和替换"></a>搜索和替换</h4><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>/string</td>
+<td>向前搜索指定字符串搜索时忽略大小写：set ic搜索指定字符串的下一个出现位置</td>
+</tr>
+<tr>
+<td>：%s/old/new/g（有g会提示是否替换）</td>
+<td>全文替换指定字符串</td>
+</tr>
+<tr>
+<td>：n1，n2s/old/new/g（有g会提示是否替换）</td>
+<td>在一定范围内替换指定字符串</td>
+</tr>
+</tbody></table>
+<h4 id="cat命令"><a href="#cat命令" class="headerlink" title="cat命令"></a>cat命令</h4><ul>
+<li>cat 显示出文件的全部内容</li>
+<li>-n给输出的所有行加上编号</li>
+<li>cat 1 2 &gt; 3 合并文件，将文件1和2合并到3如cat123..&gt;n</li>
+</ul>
+<p>示例：``cat 文件名或目录</p>
+<h4 id="Wc统计文件中的单次数量字节数行数"><a href="#Wc统计文件中的单次数量字节数行数" class="headerlink" title="Wc统计文件中的单次数量字节数行数"></a>Wc统计文件中的单次数量字节数行数</h4><ul>
+<li>wc统计文件中的单次数量字节数行数</li>
+<li>-1统计行数</li>
+<li>-w统计单词数</li>
+<li>-c统计字符数</li>
+<li>wc sdxh.txt 会出现 2 4 26 ，2是行数4是单词数26是字符数</li>
+<li>history 查看历史命令</li>
+</ul>
+<h4 id="归档和压缩命令-gzip-bzip2"><a href="#归档和压缩命令-gzip-bzip2" class="headerlink" title="归档和压缩命令 gzip bzip2"></a>归档和压缩命令 gzip bzip2</h4><p>只针对单个文件压缩或</p>
+<ul>
+<li>-g显示高压缩比</li>
+<li>-d释放压缩文件</li>
+<li>gzip文件名压缩文件格式为后缀有.gz</li>
+<li>bzip2文件名压缩成的文件名格式为文件</li>
+<li>名.bz2它相对与gzip压缩率更高</li>
+</ul>
+<p>示例：<code>dzip -d 文件名</code> <code>gzip [-g] 文件名 压缩文件名.gz</code></p>
+<h4 id="tar"><a href="#tar" class="headerlink" title="tar"></a>tar</h4><p>tar 归档命令 释放归档文件 没有压缩功能<br>格式 tar 选项 归档文件名 源文件或目录</p>
+<ul>
+<li>-c 创建归档文件扩展名为.tar</li>
+<li>-v输出详细信息</li>
+<li>-f表示使用归档文件如</li>
+<li>-cvf创建归档文件</li>
+<li>tar -cvf 4.tar 1 2 3 将文件 1 2 3 打包归档为 4.tar</li>
+<li>tar-xvf 4.tar 解包归档文件 4.tar-xvf 解包归档文件</li>
+<li>-x解开归档文件</li>
+<li>-t列表查看包内的文件（不释放解包）</li>
+</ul>
+<h4 id="修改文件的权限-rwx-421"><a href="#修改文件的权限-rwx-421" class="headerlink" title="修改文件的权限(rwx-421)"></a>修改文件的权限(rwx-421)</h4><p>示例：chmod 777   代表给所有权限</p>
+<h4 id="安装、升级、卸载RPM软件包"><a href="#安装、升级、卸载RPM软件包" class="headerlink" title="安装、升级、卸载RPM软件包"></a>安装、升级、卸载RPM软件包</h4><p>安装或升级RPM软件<br>格式：rpm[选项]RM包文件用法：不同选项适用于不同情况</p>
+<ul>
+<li>i：安装一个新的rpm软件包</li>
+<li>U：升级某个rpm软件，若原本未装，则进行安装</li>
+<li>F：更新某个rpm软件，若原本未装，则放弃安装</li>
+<li>卸载指定的RPM软件格式：rpm-e软件名</li>
+</ul>
+<blockquote>
+<p>安装：rpm -ivh 文件名<br>指定目录： rpm -ivh /media/Packages/文件名<br>卸载RPM软件包：rpm -e man(文件)<br>查看已安装软件：rpm -qa [man—man是否安装]<br>查看详细的安装信息：rpm -qi man(文件)<br>查看安装目录：rpm -ql man(文件)</p>
+</blockquote>
+<p>安装firefox<br>vi /etc/yum.repos.d/rhel-source.repos</p>
+<h5 id="apt-get-，dpkg"><a href="#apt-get-，dpkg" class="headerlink" title="apt-get ，dpkg"></a>apt-get ，dpkg</h5><ul>
+<li>apt-get instal xxx:直接联网下载</li>
+<li>dpkg -i xxx</li>
+<li>dpkg -l </li>
+<li>dpkg -r xxx</li>
+</ul>
+<h4 id="添加用户账号"><a href="#添加用户账号" class="headerlink" title="添加用户账号"></a>添加用户账号</h4><p>useradd命令</p>
+<blockquote>
+<p>格式：useradd[选项].用户名</p>
+</blockquote>
+<p>常用命令选项</p>
+<ul>
+<li>-u：指定UID标记号</li>
+<li>-d：指定宿主目录，缺省为/home用户名</li>
+<li>-e：指定帐号失效时间</li>
+<li>-g：指定用户的基本组名（或UID号）</li>
+<li>-G：指定用户的附加组名（或GID号）</li>
+<li>-M：不为用户建立并初始化宿主目录</li>
+<li>-s：指定用户的登录Shel1</li>
+</ul>
+<blockquote>
+<p>添加用户 ：useradd Ryou(username)<br>查看用户 ：ls /home<br>切换用户 ：su - Ryou(注意空格)<br>设置密码 ：passwd Ryou<br>删除用户 ：userdel [-r–可以更深入删除] Ryou</p>
+</blockquote>
+<h3 id="linux-网络"><a href="#linux-网络" class="headerlink" title="linux 网络"></a>linux 网络</h3><h4 id="网卡类型"><a href="#网卡类型" class="headerlink" title="网卡类型"></a>网卡类型</h4><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>eth0</td>
+<td>以太网</td>
+</tr>
+<tr>
+<td>lo</td>
+<td>(虚拟)回环设备</td>
+</tr>
+<tr>
+<td>ppp0</td>
+<td>使用ppp协议的串口设备(通常指调制调节器)</td>
+</tr>
+<tr>
+<td>tr0</td>
+<td>令牌环(Token Ring)</td>
+</tr>
+<tr>
+<td>fddi0</td>
+<td>光纤</td>
+</tr>
+</tbody></table>
+<h4 id="查看网络连接情况——netstat"><a href="#查看网络连接情况——netstat" class="headerlink" title="查看网络连接情况——netstat"></a>查看网络连接情况——netstat</h4><p>netstat命令<br>查看系统的网络连接状态、路由表、接口统计等信息</p>
+<blockquote>
+<p>格式：netstat[选项]</p>
+</blockquote>
+<p>常用选项：</p>
+<blockquote>
+<ul>
+<li>-a：显示所有活动连接 </li>
+<li>-n：以数字形式显示</li>
+<li>-p：显示进程信息</li>
+<li>-t：查看TCP协议相关信息</li>
+<li>-u：查看UDP协议相关信息</li>
+<li>-r：显示路由表信息</li>
+</ul>
+</blockquote>
+<h4 id="设置路由记录——route"><a href="#设置路由记录——route" class="headerlink" title="设置路由记录——route"></a>设置路由记录——route</h4><p>删除路由表中的默认网关记录</p>
+<blockquote>
+<p>格式：route del default gw IP地址</p>
+</blockquote>
+<p>向路由表中添加默认网关记录</p>
+<blockquote>
+<p>格式：route add default gwP地址</p>
+</blockquote>
+<p>添加到指定网段的路由记录</p>
+<blockquote>
+<p>格式：route add-net网段地址/24gwIP地址</p>
+</blockquote>
+<p>删除到指定网段的路由记录</p>
+<blockquote>
+<p>格式：route del-net 网段地址</p>
+</blockquote>
+<h4 id="网络接口配置文件"><a href="#网络接口配置文件" class="headerlink" title="网络接口配置文件"></a>网络接口配置文件</h4><p> /etc/sysconfig/network-scripts/目录下的<br>ifcfg-eth0：第1块以太网卡的配置文件<br>ifcfg-eth1：第2块以太网卡的配置文件<br>示例：</p>
+<blockquote>
+<p>vi /etc/sysconfig/network-scripts/ifcfg-eth0</p>
+</blockquote>
+<h4 id="启用、禁用网络接囗配置"><a href="#启用、禁用网络接囗配置" class="headerlink" title="启用、禁用网络接囗配置"></a>启用、禁用网络接囗配置</h4><p>重启network网络服务。</p>
+<blockquote>
+<p>service network restart</p>
+</blockquote>
+<p>禁用、启用网络接口</p>
+<blockquote>
+<p>[root@localhost”]#ifdown etho<br>[root@localhost ~]#ifup etho</p>
+</blockquote>
+<h4 id="域名解析配置文件"><a href="#域名解析配置文件" class="headerlink" title="域名解析配置文件"></a>域名解析配置文件</h4><p>/etc/resolv.conf文件<br>用途：保存本机需要使用的DNS服务器的IP地址</p>
+<blockquote>
+<p>[root@localhost ~]#vi/etc/resolv.conf </p>
+</blockquote>
+<h3 id="linux-下配置网站"><a href="#linux-下配置网站" class="headerlink" title="linux 下配置网站"></a>linux 下配置网站</h3><p>安装相关软件</p>
+<blockquote>
+<p>yum -y install httpd php mysql mysql-server php-server</p>
+</blockquote>
+<p>启动阿帕奇服务器</p>
+<blockquote>
+<p>service httpd start</p>
+</blockquote>
+<p>启动mysql</p>
+<blockquote>
+<p>service mysqld start</p>
+</blockquote>
+<p>修改MySQL密码</p>
+<blockquote>
+<p>mysqladmin -uroot password (密码)</p>
+</blockquote>
+<p>清空防火墙</p>
+<blockquote>
+<p>iptables -F</p>
+</blockquote>
+<p>递归修改apache对www文件的管理权限</p>
+<blockquote>
+<p>在var目录下<br>chown -R apache www</p>
+</blockquote>
 
             </div>
             <hr/>
@@ -936,9 +1124,9 @@
     let gitalk = new Gitalk({
         clientID: '0832266fa5f4e404f663',
         clientSecret: '8472ad3803edc301eeeb98767910e11bb2d201da',
-        repo: 'silenceButKeep.github.io',
-        owner: 'silenceButKeep',
-        admin: "silenceButKeep",
+        repo: 'RyouLmusic.github.io',
+        owner: 'RyouLmusic',
+        admin: "RyouLmusic",
         id: '2019-09-05T16-08-14',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
@@ -1175,7 +1363,7 @@
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">65.3k</span>
+                <span class="white-color">78.2k</span>
             
 
             
@@ -1196,7 +1384,7 @@
             
         </div>
         <div class="col s12 m4 l4 social-link social-statis">
-    <a href="https://github.com/silenceButKeep" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+    <a href="https://github.com/RyouLmusic" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
         <i class="fa fa-github"></i>
     </a>
 
