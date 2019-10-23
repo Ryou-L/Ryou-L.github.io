@@ -5,9 +5,9 @@
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
     <meta name="keywords" content="再遇JSP, 何必酷">
-    <meta name="description" content="JSPJSP概述第一次请求一个JSP页面时，Servlet/JSP容器要做两件事情：
+    <meta name="description" content="JSPJSP第一次请求一个JSP页面时，Servlet/JSP容器要做两件事情：
 
-将JSP页面转换成一个JSP页面实现类，这是一个实现javax.servlet.jsp.JspPage接口或其子接口javax.servlet.jsp.">
+将JSP页面转换成一个JSP页面实现类，这是一个实现javax.servlet.jsp.JspPage接口或其子接口javax.servlet.jsp.Ht">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -410,14 +410,14 @@
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                        473
+                        8.5k
                     </div>
                     
 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                        1 分
+                        32 分
                     </div>
                     
                 
@@ -433,7 +433,7 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="JSP"><a href="#JSP" class="headerlink" title="JSP"></a>JSP</h1><h3 id="JSP概述"><a href="#JSP概述" class="headerlink" title="JSP概述"></a>JSP概述</h3><p>第一次请求一个JSP页面时，Servlet/JSP容器要做两件事情：</p>
+                <h1 id="JSP"><a href="#JSP" class="headerlink" title="JSP"></a>JSP</h1><h3 id="JSP-1"><a href="#JSP-1" class="headerlink" title="JSP"></a>JSP</h3><p>第一次请求一个JSP页面时，Servlet/JSP容器要做两件事情：</p>
 <ol>
 <li>将JSP页面转换成一个JSP页面实现类，这是一个实现javax.servlet.jsp.JspPage接口或其子接口javax.servlet.jsp.HttpjspPage的Java类。JspPage是javax.servlet.Servlet的子接口，这样会<strong>使每个JSP页面都成为一个Servlet</strong>。所生成Servlet的类名取决于Servlet/<br>JSP容器。这一点不必操心，因为不需要你直接处理。如果有转换错误，错误消息将会发送到客户端。</li>
 <li>如果转换成功，<strong>Servlet/JSP容器将会编译 Servlet类。之后，容器加载和实例化Java字节码，并执行它通常对Servlet所做的生命周期操作。</strong></li>
@@ -452,6 +452,471 @@
 <li>javax.servletijsp.el：提供ServleJSP容器必须支持的类，以便支持ISP中的Expression Language。</li>
 </ul>
 </blockquote>
+<blockquote>
+<p>在Tomcat中，第一次调用完welicomejsp页面之后，它被转换成一个welcome isp Servlet。你可以在Tomcat的work目录的子目录下看到所生成的Servlet文件。JSP页面的主体被转换成一个jspService方法。这个方法在HtpJspPage中定义，并且通过HtpJspBase的service方法实现调用。</p>
+</blockquote>
+<p><strong>有两件事情需要注意:</strong></p>
+<blockquote>
+<p>第一，Java代码要用&lt;%和%&gt;包起来，并且可以放在JSP页面中的任何位置；<br>第二，为了导入一个JSP页面中要用到的Java类型，可以利用page指令的import属性。如果没有导入类型，那么在代码中必须编写Java类型的全类名。</p>
+</blockquote>
+<h3 id="隐式对象"><a href="#隐式对象" class="headerlink" title="隐式对象"></a>隐式对象</h3><blockquote>
+<p>Servlet容器将几个对象传给它所运行的Servlet。例如，在Servlet的service方法中获得HttpServletRequest和HttpServletResponse，并在init方法中获得ServletConfig。此外，还可以通过在HtpServletRequest 对象中调用getSession获得一个HtpSession。在JSP中，可以通过使用隐式对象来获取那些对象。</p>
+</blockquote>
+<p>PageContext提供的另一些重要的方法是那些存取属性，如getAttribute和 setAttribute方法。属性可以保存在以下4种范围中：page、request、session 及application。page范围最窄，保存在这里的属性只能在同一个JSP页面中使用。request范围是指当前的ServletRequest，session 范围是指当前的HtpSession，application 范围是指ServletContext。<br>PageContext中的setAttribute方法具有以下签名：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">void</span> <span class="token function">setAttribute</span><span class="token punctuation">(</span>java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>String name<span class="token punctuation">,</span> java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>Object value，<span class="token keyword">int</span> scope<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<blockquote>
+<p>scope值可以是以下任意一个PageContext中的static final int值：<br>PAGE_SCOPE、REQUEST_SCOPE、SESSION_SCOPE 及 APPLICATION_SCOPE。</p>
+</blockquote>
+<p>另外，属性也可以保存在page范围中，可以利用下面这个setAtribute方法重载：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">void</span> <span class="token function">setAttribute</span><span class="token punctuation">(</span>java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>String name<span class="token punctuation">,</span> java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>Object value<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>例如，下面这个Scriptlet在ServletRequest中保存了一个属性。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token operator">&lt;</span><span class="token operator">%</span>
+product is a Java object pageContext<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">"product"</span><span class="token punctuation">,</span> product<span class="token punctuation">,</span> Pagecontext<span class="token punctuation">.</span>REQUEST_SCOPE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token operator">%</span><span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>上述代码与下面这行代码的效果是一样的：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token operator">&lt;</span><span class="token operator">%</span>
+request<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">"product"</span><span class="token punctuation">,</span>product<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token operator">%</span><span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="指令"><a href="#指令" class="headerlink" title="指令"></a>指令</h3><h4 id="page指令"><a href="#page指令" class="headerlink" title="page指令"></a>page指令</h4><p><strong>利用page指令可以就当前JSP页面的某些方面对JSP转换器提出指示。</strong></p>
+<blockquote>
+<p>page指令的语法如下：<br>&lt;se page attributel=”value1”attribute2=”value2”…%&gt;</p>
+</blockquote>
+<p>@和page之间的空格是可选的，atributel、attribute2等都是page指令的属性。下面是page指令的属性列表：</p>
+<ul>
+<li>import。指定要导入的一种或多种Java类型，供本页的Java代码所用。例如，import=”java.util.List”导入List接口。利用通配符* 还可以导入整个包，如import=”java.util * ”。导入多种类型时，两种类型之间要用一个逗号隔开</li>
+<li>session。值为true时，表示这个页面参与Session管理；值为false时，表示不参与Session管理。默认值为true，意味着如果之前还没有javax.servlet.http.HttpSession实例，那么调用JSP页面将始终会创建一个。</li>
+<li>buffer。指定隐式对象out的缓冲区大小，以千字节为单位。强制以kb作为后缀。缓冲区的默认容量大于或等于8KB，具体取决于JSP容器。这个属性值还可以为none，表示不使用缓存，但这样会导致输出的内容直接被写入相应的PrintWriter。</li>
+<li>autoFlush。默认值为true，表示当缓冲区满时，被缓存的输出应该自动刷新。值为false时，表示只有在调用隐式对象response的flush方法时，才进行刷新缓冲区。因此，当缓冲区溢出时会抛出一个异常。</li>
+<li>info。指定所生成Servlet的getServletlnfo方法返回值。</li>
+<li>errorPage。表示负责处理该页面可能出现的错误的页面。</li>
+<li>isErrorPage。表明这个页面是否负责处理错误。</li>
+<li>contentType。指定该页面隐式对象response的内容类型，其默认值为text/html。</li>
+<li>pageEncoding。指定该页面的字符编码，其默认值为ISO-8859-1。</li>
+<li>isEIgnored。表明是否忽略EL表达式。EL是Expression Language的缩写</li>
+<li>language。指定该页面使用的脚本语言，其默认值为java，这是JSP2.2中唯一有效的值。</li>
+<li>extends。指定这个JSP页面的实现类必须扩展的超类。该属性很少使用，使用时应该特别小心。</li>
+<li>deferredSyntaxAllowedAsLiteral。指明是否允许用字符序列#{作为该页面和编译单元的String字面值，其默认值为false。#{很重要，因为它在Expression Language中是一个特殊的字符序列</li>
+<li>trimDirectiveWhitespaces。表明是否从输出内容中删除只包含空格的模板文本，其默认值为false，也就是说，不删除空格。</li>
+</ul>
+<blockquote>
+<p>page 指令可以出现在页面中的任何位置。只是当它包含contentType 或者pageEncoding属性时，<strong>它就必须放在所有的模板数据之前</strong>，并且是在利用Java代码发送任何内容之前。这是因为，必须在发送任何内容之前设置内容类型和字符编码。 <strong>page指令也可以多次出现。但是，在多个page指令中多次出现的同一个属性，它的值必须一致，只有import属性例外</strong>。放在多个page指令中的import属性，其效果可以累积。</p>
+</blockquote>
+<h4 id="include指令"><a href="#include指令" class="headerlink" title="include指令"></a>include指令</h4><blockquote>
+<p>利用include指令可以将另一个文件的内容放到当前的JSP页面中。在一个JSP页面中可以使用多个include指令。如果某部分特殊的内容需要被其他页面所用，或者被处于不同位置的某个页面所用，那么将这部分内容做成一个include文件是很有帮助的。</p>
+</blockquote>
+<blockquote>
+<p>include指令的语法如下：<br>&lt;%0include file=”url”%&gt;</p>
+</blockquote>
+<p>此处@和include之间的空格是可选的，<strong>并且url是表示一个include文件的相对路径。</strong><br><strong>如果url以一个正斜线（/）开头，那么其在服务器中就会被解读成是一条绝对路径。如果不是以正斜线开头，则被解读为是相对于当前JSP页面的路径。</strong></p>
+<blockquote>
+<p>按照规范include文件的扩展名应该为jspf</p>
+</blockquote>
+<h3 id="脚本元素"><a href="#脚本元素" class="headerlink" title="脚本元素"></a>脚本元素</h3><p>脚本元素将Java代码合并成一个JSP页面。脚本元素有3种类型：Scriptlet、声明及表达式</p>
+<h4 id="Scriptlet"><a href="#Scriptlet" class="headerlink" title="Scriptlet"></a>Scriptlet</h4><blockquote>
+<p>Scriptlet是一个Java代码块，它以&lt;%开头，以%&gt;结束。</p>
+</blockquote>
+<p><strong><em>注意，在一个Scriptlet中定义的变量，对于它后面的其他Scriptlet是可见的。</em></strong></p>
+<h4 id="表达式"><a href="#表达式" class="headerlink" title="表达式"></a>表达式</h4><blockquote>
+<p>表达式（Expression）的运算结果会被填入隐式对象out的print方法中。表达式以&lt;%开头，并以%&gt;结束。</p>
+</blockquote>
+<p>以下粗体部分就是一个表达式：</p>
+<blockquote>
+<p>Today is &lt;%=<strong>java.util.Calendar.getInstance().getTime()</strong>%&gt;</p>
+</blockquote>
+<p><strong>注意，表达式的后面不需要用分号。而Scriptlet需要</strong></p>
+<blockquote>
+<p>对于这个表达式，JSP容器会先运算java.util.Calendar.getlnstance（）.getTime（），然后将结果传给out.print（）。</p>
+</blockquote>
+<p>它与下面这个Scriptlet的结果是一样的：</p>
+<blockquote>
+<p>Today is out.print（java.util.Calendar.getInstance（）.getTime（））；</p>
+</blockquote>
+<h4 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h4><p>声明就要用&lt;%!和%&gt;包起来<br>示例：</p>
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>%!</span>
+<span class="token attr-name">public</span> <span class="token attr-name">String</span> <span class="token attr-name">getTodaysDate(){</span>
+    <span class="token attr-name">return</span> <span class="token attr-name">new</span> <span class="token attr-name">java.</span> <span class="token attr-name">util.</span> <span class="token attr-name">Date();</span>
+<span class="token attr-name">}</span>
+<span class="token attr-name">%</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>Declarations<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+Today is &lt;%=getTodaysDate()%>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>声明可以放在JSP页面中的任何位置，并且同一个页面中可以有多个声明。</p>
+</blockquote>
+<p>我们可以利用声明覆盖实现类中的init和destroy方法。覆盖init，要声明一个jsplnit方法；覆盖destroy，要声明一个jspDestroy方法。</p>
+<h4 id="关闭脚本元素"><a href="#关闭脚本元素" class="headerlink" title="关闭脚本元素"></a>关闭脚本元素</h4><p>随着JSP2.0中Expression Language的发展，建议做法是利用EL来访问服务器端的对象，而不是在JSP页面中编写Java代码。为此，原本开启的JSP2.0脚本元素，可以通过在部署描述符的<jsp-property-group>中定义一个scripting-invalid元素，将它关闭，如下所示：</jsp-property-group></p>
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>jsp-property-group</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>url-pattern</span><span class="token punctuation">></span></span>*.jsp<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>url-pattern</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>scripting-invalid</span><span class="token punctuation">></span></span>true<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>scripting-invalid</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>jsp-property-group</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="动作"><a href="#动作" class="headerlink" title="动作"></a>动作</h3><p>第三种句法元素是动作（Action），它们被编译成执行某个操作的Java代码，例如访问某个Java对象，或者调用某个方法。本节讨论必须能被所有JSP容器支持的标准动作。除标准动作之外，还可以创建定制的标签，用来执行某些操作。</p>
+<h4 id="useBean"><a href="#useBean" class="headerlink" title="useBean"></a>useBean</h4><p>这个动作将创建一个与某个Java对象相关的脚本变量。它是将表现逻辑与业务逻辑分隔开来的最容易的方法之一。但是有了像定制标签和Expression Language这类技术之后，现在已经很少使用useBean了。<br>举个例子。代码清单3-9中的useBean Test.jsp页面创建了一个java.util.Date实例，并将它与脚本变量today关联起来，之后将它用在一个表达式中。</p>
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>useBean<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+&lt;jsp:useBean id="today"class="java.util.Date"/>
+&lt;%=today%>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>运行这个页面之后，将会在浏览器中输出当前的日期和时间。</p>
+<h4 id="setProperty-和getProperty"><a href="#setProperty-和getProperty" class="headerlink" title="setProperty 和getProperty"></a>setProperty 和getProperty</h4><p>setProperty动作是在一个Java对象中保存一个属性，getProperty则是获取一个Java对象的属性。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">package</span> app03a<span class="token punctuation">;</span> <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Employee</span><span class="token punctuation">{</span>
+<span class="token keyword">private</span> String id<span class="token punctuation">;</span> 
+<span class="token keyword">private</span> String firstName<span class="token punctuation">;</span> 
+<span class="token keyword">private</span> String lastName<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>getProperty and setProperty<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+&lt;jsp:useBean id="employee"class="app03a.Employee"/>
+&lt;jsp:setProperty name="employee"property="firstName" value="Abigail"/>
+First Name:&lt;jsp:getProperty name="employee"property="firstName"/>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="include"><a href="#include" class="headerlink" title="include"></a>include</h4><p><strong>include动作用于动态地包含另一个资源，它可以包含另一个JSP页面、一个Servlet或者一个静态的HTML页面。</strong><br>下面就是利用include动作来包含menu.jsp页面的。</p>
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>Include action<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">jsp:</span>include</span> <span class="token attr-name">page</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>jspf/menu.jsp<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    &lt;jsp:param name="text"value="How are you?"/>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">jsp:</span>include</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>理解include 指令和include动作之间的区别是很重要的。使用include指令时，这种包含是发生在页面转换的时候，例如JSP容器将页面转换成一个生成的Servlet的时候。使用include动作时，这种包含则是发生在请求的时候。因此，可以利用include动作传递参数，而不是利用include指令。</p>
+</blockquote>
+<blockquote>
+<p>第二个区别在于，使用include指令时，被包含资源的文件扩展名并不重要。而使用include动作时，文件扩展名则必须为jsp，以便它能够作为一个JSP页面进行处理。例如，在include 动作中用jspf作为扩展名时，将会使得这个JSP segment被当作静态文件进行处理。</p>
+</blockquote>
+<h4 id="forward"><a href="#forward" class="headerlink" title="forward"></a>forward</h4><p><strong>forward 动作是将当前页面跳转到另一个不同的资源。</strong><br>例如，下面的forward动作就是将当前页面跳转到login.jsp页面。</p>
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">jsp:</span>forward</span> <span class="token attr-name">page</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>jspf/login.jsp<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    &lt;jsp:param name="text"value="Please 1ogin"/>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">jsp:</span>forward</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="EL"><a href="#EL" class="headerlink" title="EL"></a>EL</h3><p>EL被设计成能够轻松地编写无脚本或不句含Java代码的JSP页面，即不使用JSP声明、表达式或者Scriptlet的页面。</p>
+<h4 id="EL语法"><a href="#EL语法" class="headerlink" title="EL语法"></a>EL语法</h4><p>EL表达式是以${开头，以}结束。一个EL表达式的构造如下：<br><strong>${expression）</strong><br>例如，编写表达式x+y时，要使用下面的结构：<br><strong>${x+y）</strong></p>
+<blockquote>
+<p>两个表达式相连接，这种也很常见。表达式的运算顺序是从左到右，结果的类型强制为String，然后连在一起。例如，如果a+b等于8，c+d等于10，那么下面这两个表达式的结果将是810：<br>${a+b）${c+d）<br>如${a+b}andS{c+d}的结果将是8and10。</p>
+</blockquote>
+<p>如果EL表达式用在某个定制标签的属性值中，那么将会运算这个表达式，并强制结果字符串为该属性想要的类型：<br><strong>&lt;my:tag someAttribute=”${expression]”/&gt;</strong></p>
+<h4 id="保留字"><a href="#保留字" class="headerlink" title="保留字"></a>保留字</h4><p>下面是一些保留字，不能用作标识符：</p>
+<blockquote>
+<p>and eq gt true instanceof or ne le false empty not It ge null div mod</p>
+</blockquote>
+<h4 id="和-运算符"><a href="#和-运算符" class="headerlink" title="[]和. 运算符"></a>[]和. 运算符</h4><blockquote>
+<p>EL表达式可以返回任何类型。如果某个EL表达式的结果对象中有一个属性，那么你就可以利用[]或者.运算符来访问该属性。[]和.运算符的功能相似；</p>
+</blockquote>
+<p>要访问某个对象的属性，可以使用以下任意一种形式：</p>
+<blockquote>
+<p>${object[“propertyName”]}<br>${object.propertyName}</p>
+</blockquote>
+<p><strong>但是，如果propertyName不是有效的Java变量名称，则只能使用[]运算符。</strong><br>例如，下面这两个EL表达式可以用来访问隐式对象标头中的HTTP标头host：</p>
+<blockquote>
+<p>${header[“host”]}<br>${header.host}</p>
+</blockquote>
+<h4 id="访问JavaBean"><a href="#访问JavaBean" class="headerlink" title="访问JavaBean"></a>访问JavaBean</h4><p><strong>我们可以利用.或[]运算符来访问一个Bean的属性，其构造如下：</strong></p>
+<blockquote>
+<p>${beanName[“propertyName”]}<br>${beanName.propertyName}</p>
+</blockquote>
+<p>例如，<strong>要访问myBean中的secret属性</strong>，要使用下面这个表达式：</p>
+<blockquote>
+<p>${myBean.secret}</p>
+</blockquote>
+<h3 id="EL隐式对象"><a href="#EL隐式对象" class="headerlink" title="EL隐式对象"></a>EL隐式对象</h3><p>EL通过提供一组它自己的隐式对象，可以帮助你访问各种对象</p>
+<h4 id="pageContext"><a href="#pageContext" class="headerlink" title="pageContext"></a>pageContext</h4><blockquote>
+<p>pageContext对象表示当前JSP页面的javax.servlet.jsp.PageContext。它包含所有其他的JSP隐式对象</p>
+</blockquote>
+<p>例如，可以利用以下任意一个表达式获得当前的ServletRequest：</p>
+<blockquote>
+<p>${pageContext.request}<br>${pageContext[“request”]</p>
+</blockquote>
+<p>请求方法则可以利用以下任意一个表达式获得：</p>
+<blockquote>
+<p>${pageContext[“request”][“method”]}<br>${pageContext[“request”].method}<br>${pageContext.request[“method”]}<br>${pageContext.request.method}</p>
+</blockquote>
+<h4 id="initParam"><a href="#initParam" class="headerlink" title="initParam"></a>initParam</h4><p>隐式对象initParam用于获取一个context参数值。<br>例如，要想获得context参数password，需使用下面的表达式：</p>
+<blockquote>
+<p>${initParam.password）<br>或者<br>${init Param[“password”]</p>
+</blockquote>
+<h4 id="param"><a href="#param" class="headerlink" title="param"></a>param</h4><p>隐式对象param用于获取一个请求参数。这个对象表示一个包含所有请求参数的Map。<br>例如，为了获取参数userName，需使用下面任意一个表达式：</p>
+<blockquote>
+<p>${param.userName}<br>${param[“userName”]}</p>
+</blockquote>
+<h4 id="paramValues"><a href="#paramValues" class="headerlink" title="paramValues"></a>paramValues</h4><p>利用隐式对象paramValues可以获取一个请求参数的多个值。这个对象表示一个包含所有请求参数并以参数名称作为键的Map。每个键的值都是一个字符串数组，其中包含指定参数名称的所有值。如果该参数只有一个值，也仍然返回只有一个元素的一个数组。<br>例如，要获得 selectedOptions参数的第一个和第二个值，可以使用如下表达式：</p>
+<blockquote>
+<p>${paramValues.selectedoptions[0]}<br>${paramValues.selectedoptions[1]}</p>
+</blockquote>
+<h4 id="header"><a href="#header" class="headerlink" title="header"></a>header</h4><p>隐式对象header表示一个包含所有请求标头的Map。要获取一个标头值，需用该标头名称作为键。<br>例如，要获取accept-language标头的值，需用下面的表达式：</p>
+<blockquote>
+<p>${header[“accept-language”]}</p>
+</blockquote>
+<p>如果该标头名称是一个有效的Java变量名，如connection，那么也可以使用，运算符：</p>
+<blockquote>
+<p>${header.connection}</p>
+</blockquote>
+<h4 id="headerValues"><a href="#headerValues" class="headerlink" title="headerValues"></a>headerValues</h4><p>隐式对象headerValues表示一个包含所有请求标头并以标头名称作为键的Map。但与header不同的是，隐式对象headerValues返回的Map返回一个字符串数组。<br>例如，要获得accept-language标头的第一个值，需使用下面这个表达式：</p>
+<blockquote>
+<p>${headerValues[“accept-language”][0]}</p>
+</blockquote>
+<h4 id="cookie"><a href="#cookie" class="headerlink" title="cookie"></a>cookie</h4><p>利用隐式对象cookie可以获取一个cookie。这个对象表示包含当前HtpServletRequest中所有cookie的Map。<br>例如，要获取一个名为jsessionid的 cookie值，需使用下面这个表达式：</p>
+<blockquote>
+<p>${cookie.jsessionid.value}</p>
+</blockquote>
+<p>要获得jsessionid cookie的路径值，则使用这个表达式：</p>
+<blockquote>
+<p>${cookie.jsessionid.path}</p>
+</blockquote>
+<h4 id="applicationScope、sessionScope、requestScope-及-pageScope"><a href="#applicationScope、sessionScope、requestScope-及-pageScope" class="headerlink" title="applicationScope、sessionScope、requestScope 及 pageScope"></a>applicationScope、sessionScope、requestScope 及 pageScope</h4><p>利用隐式对象applicationscope获得一个application范围的变量值。<br>例如，如果你有一个application 范围的变量myVar，就可以利用下面这个表达式来访问该属性：</p>
+<blockquote>
+<p>${applicationscope.myVar}</p>
+</blockquote>
+<blockquote>
+<p>注意，在Servlet/JSP编程中，有作用范围的对象是指放在以下这些对象中作为属性的对象：Pagecontext、SerletRequest、HtpSession 或者SerletContext。隐式对象sessionScope、requestScope 及 pageScope 与applicationScope相似。但是其范围分别是session、request及page。</p>
+</blockquote>
+<h4 id="实现无脚本的JSP页面"><a href="#实现无脚本的JSP页面" class="headerlink" title="实现无脚本的JSP页面"></a>实现无脚本的JSP页面</h4><p>要关闭JSP页面中的脚本元素，必须利用带有两个子元素（url-pattern和scriptinginvalid）的jsp-property-group元素。url-pattern元素定义要关闭脚本的URL模式。下面示范如何在应用程序中关闭所有JSP页面的脚本：</p>
+<pre class="line-numbers language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>jsp-config</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>jsp-property-group</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>url-pattern</span><span class="token punctuation">></span></span>*.jsp<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>url-pattern</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>scripting-invalid</span><span class="token punctuation">></span></span>true<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>scripting-invalid</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>jsp-property-group</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>jsp-config</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="JSTL"><a href="#JSTL" class="headerlink" title="JSTL"></a>JSTL</h3><p>JavaServer Pages Standard Tag Library（JSTL）是一个定制标签类库的集合，用于解决一些常见的问题，例如迭代一个映射或者集合、条件测试、XML处理，甚至数据库访问和数据操作等。</p>
+<h4 id="下载JSTL"><a href="#下载JSTL" class="headerlink" title="下载JSTL"></a>下载JSTL</h4><p><a href="http://jstl.java.net" target="_blank" rel="noopener">下载地址</a><br>需要下载两套软件：<strong>JSTL API和JSTL实现。</strong>JSTLAPI中包含javax.servlet.jsp.jstl包，由JSTL规范中定义的类型组成。JSTL实现则包含了相关的实现类。必须将两个jar文件都复制到使用了JSTL的每个应用程序的<strong>WEB-INF/ib目录下</strong>。</p>
+<h4 id="JSTL类库"><a href="#JSTL类库" class="headerlink" title="JSTL类库"></a>JSTL类库</h4><p><img src="https://s2.ax1x.com/2019/09/23/uCIJJJ.png" alt></p>
+<p><img src="https://s2.ax1x.com/2019/09/23/uCIDoD.png" alt></p>
+<p>为了在JSP页面中使用JSTL类库，必须以下列格式使用taglib指令：</p>
+<blockquote>
+<p>&lt;%@ taglib uri=”uri”prefix=”prefix”%&gt;</p>
+</blockquote>
+<p>例如，为了使用Core类库，必须在JSP页面开头处这样声明：</p>
+<blockquote>
+<p>&lt;%@ taglib uri=”<a href="http://java.sun.com/jsp/jst1/core&quot;" target="_blank" rel="noopener">http://java.sun.com/jsp/jst1/core&quot;</a> prefix=”c”%&gt;</p>
+</blockquote>
+<h3 id="通用动作指令"><a href="#通用动作指令" class="headerlink" title="通用动作指令"></a>通用动作指令</h3><p>Core 类库中用来操作限域变量的3个通用动作指令：out、set和remove。</p>
+<h4 id="out标签"><a href="#out标签" class="headerlink" title="out标签"></a>out标签</h4><p>out标签对表达式进行运算，并将结果输出到当前的JspWriter。<br>out的语法有两种形式，即有主体内容和没有主体内容：</p>
+<blockquote>
+<p>&lt;c:out value=”value”[escapeXml=”{true_ | false}”][default=”defaultValue”]/&gt;</p>
+</blockquote>
+<blockquote>
+<p>&lt;c:out value=”value”[escapeXml=”{true_|false}”]&gt;default value </p>
+</blockquote>
+<p><strong><em>提示在标签的语法中，[]表示是可选的属性。加了下划线的那个值，则表示那是默认值。</em></strong> </p>
+<blockquote>
+<p>out中的default属性可以设置一个默认值，当赋予其value属性的EL表达式返回null时，就会显示该默认值。default属性可被赋予动态值。如果这个动态值返回nul，out标签就会显示一个空字符串。</p>
+</blockquote>
+<h4 id="set标签"><a href="#set标签" class="headerlink" title="set标签"></a>set标签</h4><p>利用set标签可以完成以下工作：<br>1.创建一个字符串和引用该字符串的一个限域变量。<br>2.创建一个限域变量，并引用已经存在的某一个限域变量。<br>3.设置限域对象的属性。</p>
+<blockquote>
+<p>如果利用set创建限域变量，那么处于该标签之后的整个JSP页面将都可以使用该变量。</p>
+</blockquote>
+<p>set标签的语法有4种形式。</p>
+<p>第一种形式用来创建一个限域变量，在该变量的value属性中可以指定要创建的字符串，或者现有的限域对象。</p>
+<blockquote>
+<p>&lt;c:set value=”value”var=”varName”[scope=”{page | requestIsession | application）”]/&gt;</p>
+</blockquote>
+<p>第二种形式与第一种相似，只不过要创建的字符串或者要引用的限域对象是作为主体内容进行传递的：</p>
+<pre class="line-numbers language-html"><code class="language-html">&lt;c:set var="varName"[scope="{pagelrequestlsessionlapplication]"]>
+    body content
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">c:</span>set</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>第二种形式允许在主体内容中有JSP代码。</p>
+<p>第三种形式是设置限域对象的属性值。target属性指定限域对象，property属性指定限域对象的属性。要赋给该属性的值通过value属性进行设置：</p>
+<blockquote>
+<p>&lt;c:set target=”target”property=”propertyName”value=”value”/&gt;<br><strong>注意，必须在target属性中用一个EL表达式来引用限域对象。</strong></p>
+</blockquote>
+<p>第四种形式与第三种相似，但它的值是作为主体内容传递的：</p>
+<pre class="line-numbers language-html"><code class="language-html">&lt;c:set target="target"property="propertyName">
+    body content
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">c:</span>set</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><img src="https://s2.ax1x.com/2019/09/23/uC7L6A.md.png" alt></p>
+<h4 id="remove标签"><a href="#remove标签" class="headerlink" title="remove标签"></a>remove标签</h4><p>利用remove 标签删除限域变量，其语法如下：<br>&lt;c:remove var=l”varName”[scope=”{page | requestIsession | application}”]/&gt;</p>
+<p><strong>注意，限域变量引用的对象并没有被删除。因此，如果另一个限域对象也在引用这个对象，那么仍然可以通过另外这个限域对象来访问该对象。</strong></p>
+<h3 id="条件式动作指令"><a href="#条件式动作指令" class="headerlink" title="条件式动作指令"></a>条件式动作指令</h3><p>在JSTL中有4个标签可以执行条件式动作指令：if、choose、when和otherwise。</p>
+<h4 id="if标签"><a href="#if标签" class="headerlink" title="if标签"></a>if标签</h4><blockquote>
+<p>if标签先对某个条件进行测试，如果该条件运算结果为true，则处理它的主体内容。测试结果保存在一个Boolean对象中，并创建一个限域变量来引用Boolean对象。可以利用var属性设置限域变量名，利用scope属性来指定其作用范围。</p>
+</blockquote>
+<p>if的语法有两种形式，第一种形式没有主体内容：</p>
+<blockquote>
+<p>&lt;c:if test=”testCondition”var=”varName”[scope=”{page | request | session | application}”]/&gt;</p>
+</blockquote>
+<p>在这种情况下，var指定的限域变量一般由同一个JSP页面中更后面的另一个标签的测试所决定。</p>
+<p>第二种形式有主体内容：</p>
+<pre class="line-numbers language-html"><code class="language-html">&lt;c:if test="testCondition[var="varName"][scope="(page | request | session | application}"]>
+    body content
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">c:</span>if</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>主体内容为JSP，如果测试条件结果为true，它就会得到处理</p>
+<h4 id="choose、when和otherwise。"><a href="#choose、when和otherwise。" class="headerlink" title="choose、when和otherwise。"></a>choose、when和otherwise。</h4><blockquote>
+<p>choose和when标签的作用与Java中的switch和case关键子相似，也就定呢，它们为互相排斥的条件式执行提供相关内容。choose标签内部必须嵌有一个或多个when标签，每个when标签代表可以进行运算和处理的一种情况。otherwise标签用于默认的条件代码块，如果所有when标签的测试条件运算结果都不为true，就会执行该代码块。如果有otherwise标签，它必须放在最后一个when标签之后。</p>
+</blockquote>
+<p>choose和otherwise标签没有属性。when标签则必须用test属性设定一个条件，用于确定是否处理主体内容。</p>
+<pre class="line-numbers language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">c:</span></span> <span class="token attr-name">choose</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">c:</span></span> <span class="token attr-name">when</span> <span class="token attr-name">test</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>${ param. status<span class="token punctuation">=</span><span class="token punctuation">=</span><span class="token punctuation">'</span> full<span class="token punctuation">'</span>}<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        You are a full member
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">c:</span></span> <span class="token attr-name">when</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">c:</span></span> <span class="token attr-name">when</span> <span class="token attr-name">test</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>${ param, status<span class="token punctuation">=</span><span class="token punctuation">=</span><span class="token punctuation">'</span> student<span class="token punctuation">'</span>}<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        You are a student member
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">c:</span></span> <span class="token attr-name">when</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">c:</span></span> <span class="token attr-name">otherwise</span><span class="token punctuation">></span></span>
+        Please register
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">c:</span></span> <span class="token attr-name">otherwise</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">c:</span></span> <span class="token attr-name">choose</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="iterator动作指令"><a href="#iterator动作指令" class="headerlink" title="iterator动作指令"></a>iterator动作指令</h3><p>当需要迭代多次，或者需要迭代一个对象集合时，iterator动作指令就非常好用。JSTL中提供了两个可以执行iterator动作指令的标签：forEach和forTokens。</p>
+<h4 id="forEach标签"><a href="#forEach标签" class="headerlink" title="forEach标签"></a>forEach标签</h4><blockquote>
+<p>forEach是将一个主体内容迭代多次，或者迭代一个对象集合。可以迭代的对象包括所有的java.util.Collection和java.util.Map接口的实现，以及对象或者基本类型的数组。它还可以迭代java.util.lterator和java.util.Enumeration，但不能在多个动作指令中使用Iterator或者Enumeration，因为lterator或Enumeration都不能重置（reset）。</p>
+</blockquote>
+<p>forEach的语法有两种形式。第一种是将body内容重复一定的次数：</p>
+<pre class="line-numbers language-html"><code class="language-html">&lt;c:forEach[var="varName"]begin="begin"end="end"step="step">
+    body content
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">c:</span>forEach</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>第二种形式用于迭代一个对象集合：</p>
+<pre class="line-numbers language-html"><code class="language-html">&lt;c:forEach items="collection"[var="varName"][varStatus="varStatusName"][begin="begin"][end="end"][step="step"]>
+    body content
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">c:</span>forEach</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>主体内容为JSP</p>
+<p><img src="https://s2.ax1x.com/2019/09/23/uCLEnA.md.png" alt></p>
+<h4 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h4><p>除了定制动作指令之外，JSTL1.1和1.2中还定义了一组标准函数，可以用在EL表达式中。这些函数分组放在函数标签类库中。<br>当使用这些函数时，必须在JSP上使用taglib指令：</p>
+<blockquote>
+<p>&lt;%@taglib uri=”<a href="http://java.sun.com/jsp/jst1/functions&quot;" target="_blank" rel="noopener">http://java.sun.com/jsp/jst1/functions&quot;</a> prefix=”fn”%&gt;<br>调用函数时，要以下面这种格式来使用EL：</p>
+</blockquote>
+<blockquote>
+<p>${fn:functionName}<br>这里的functionName是函数名称。</p>
+</blockquote>
+<h3 id="监听器"><a href="#监听器" class="headerlink" title="监听器"></a>监听器</h3><h4 id="监听器接口"><a href="#监听器接口" class="headerlink" title="监听器接口"></a>监听器接口</h4><blockquote>
+<p>创建监听器的监听器接口属于javax.servlet和javax.servlet.http包的一部分，详情如下：</p>
+</blockquote>
+<ul>
+<li>javax.servlet.ServletContextListener。这是对Servlet Context生命周期事件做出响应的监听器。创建好Servlet Context时马上会调用它的其中一个方法，并在关闭Servlet Context之前调用它的另一个方法。</li>
+<li>javax.servlet.ServletContextAttributeListener。这是在添加、删除或替换某个Servlet Context属性时采取相应动作的监听器。</li>
+<li>javax.servlet.http.HttpSessionAttributeListener。这是在创建、移除或替换Servlet上下文属性时响应的监听器。</li>
+<li>javax.servlet.htp.HttpSessionAttributeListener。这是在添加、删除或替换某个session 属性时被调用的监听器。</li>
+<li>javax.servlet.httpSessionActivationListener。这是在打开和关闭某个HtpSession时被调用的监听器。</li>
+<li>javax.servlet.http.HttpSessionBindingListener。这是一个类，其实例将被保存为可以实现这个接口的HttpSession属性。当它在HttpSession中被添加或者删除时，实现HttpSessionBindingListener的类实例会收到通知。</li>
+<li>javax.servlet.ServletRequestListener。这是对ServletRequest的创建和删除做出响应的监听器。</li>
+<li>javax.servlet.ServletRequestAttributeListener。当ServletRequest中添加、删除或替换掉某个属性时，会调用该监听器的方法。</li>
+<li>javax.servlet.AsyncListener。用于异步操作的监听器，详情请查看第14章的相关内容。</li>
+</ul>
+<p>创建监听器时，只要创建一个实现相关接口的Java类即可。在Servlet3.0中，注册监听器有两种方法，以便Servlet容器能够认出来。<br>第一种方法是像下面这样使用WebListener注解：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@WebListener</span> 
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ListenerClass</span> <span class="token keyword">implements</span> <span class="token class-name">ListenerInterface</span><span class="token punctuation">{</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>注册监听器的第二种方法是在部署描述符中使用一个listener元素：</p>
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>listener</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>listener-class</span><span class="token punctuation">></span></span>fully-qualified listener class<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>listener-class</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>listener</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>在应用程序中可以想要多少个监听器就可以有多少个监听器。注意，对监听器方法的调用是同步进行的。</p>
+</blockquote>
+<h4 id="Servlet-Context监听器"><a href="#Servlet-Context监听器" class="headerlink" title="Servlet Context监听器"></a>Servlet Context监听器</h4><p>有两个监听器接口：ServletContextListener和ServletContextAttributeListener</p>
+<h5 id="ServletContextListener"><a href="#ServletContextListener" class="headerlink" title="ServletContextListener"></a>ServletContextListener</h5><blockquote>
+<p>ServletContextListener会对ServletContext的初始化和解构做出响应。ServletContext被初始化时，Servlet容器会在所有已注册的ServletContextListener 中调用contextlnitialized方法，其方法签名如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">void</span> <span class="token function">contextInitialized</span><span class="token punctuation">(</span>ServletContextEvent event<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>当ServletContext要被解构和销毁时，Servlet容器会在所有已注册的ServletContext-Listener 中调用contextDestroyed方法，以下是contextDestroyed的方法签名：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">void</span> <span class="token function">contextDestroyed</span><span class="token punctuation">(</span>ServletContextEvent event<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</blockquote>
+<p>contextlnitialized和contextDestroyed都会收到一个来自Servlet容器的ServletContextEvent。java.util.EventObject类的一个派生类：javax.servlet.ServletContextEvent，定义了一个返回<strong>ServletContext的getServletContext方法</strong>：<br>ServletContext getServletContext()</p>
+<p><strong>这个方法很重要，因为这是访问ServletContext的唯一简便方法。它有许多ServletContextListener，可以将属性保存在ServletContext中。</strong></p>
+<h5 id="ServletContextAttributeListener"><a href="#ServletContextAttributeListener" class="headerlink" title="ServletContextAttributeListener"></a>ServletContextAttributeListener</h5><p>每当ServletContext中添加、删除或替换了某个属性时，ServletContextAttributeListener的实现都会收到通知。以下就是在这个监听器接口中定义的三个方法</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">void</span> <span class="token function">attributeAdded</span><span class="token punctuation">(</span>ServletContextAttributeEvent event<span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">attributeRemoved</span><span class="token punctuation">(</span>ServletContextAttributeEvent event<span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">attributeReplaced</span><span class="token punctuation">(</span>ServletContextAttributeEvent event<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>每当ServletContext中添加了某个属性时，Servlet容器就会调用attributeAdded方法。<br>每当ServletContext中删除了某个属性时，则是调用attributeRemoved方法。<br>每当ServletContext被新的代替时，则是调用attributeReplaced方法。<br>所有的监听器方法都会从你获取属性名称和属性值的方法中收到一个ServletContextAttributeEvent实例。</p>
+<h4 id="session监听器"><a href="#session监听器" class="headerlink" title="session监听器"></a>session监听器</h4><blockquote>
+<p>与HtpSession有关的监听器接口有4个：HttpSessionListener、HttpSessionActivationListener、HttpSessionAttributeListener和HttpSessionBindingListener。这些接口都是javax.servlet.http包的成员</p>
+</blockquote>
+<h5 id="HttpSessionListener"><a href="#HttpSessionListener" class="headerlink" title="HttpSessionListener"></a>HttpSessionListener</h5><p>当有HttpSession被创建或者销毁时，Servlet容器就会调用所有已注册的HttpSessionListener。HttpSessionListener中定义的两个方法是sessionCreated和 sessionDestroyed：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">void</span> <span class="token function">sessionCreated</span><span class="token punctuation">(</span>HttpSessionEvent event<span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">sessionDestroyed</span><span class="token punctuation">(</span>HttpSessionEvent event<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>这两个方法都收到一个HttpSessionEvent实例，它是java.util.Event的派生类。我们可以在HttpSessionEvent中调用getSession方法以获得所创建或销毁的HttpSession。<br>getSession方法签名如下：</p>
+<pre class="line-numbers language-java"><code class="language-java">HttpSession <span class="token function">getSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h5 id="HttpSessionAttributeListener"><a href="#HttpSessionAttributeListener" class="headerlink" title="HttpSessionAttributeListener"></a>HttpSessionAttributeListener</h5><p>HtpSessionAtributeListener就像ServletContextAttributeListener一样，只不过当HttpSession中有添加、删除或者替换属性的时候它才会被调用。<br>下面是HtpSessionAttributeListener接口中定义的方法。</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">void</span> <span class="token function">attributeAdded</span><span class="token punctuation">(</span>HttpSessionBindingEvent event<span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">attributeRemoved</span><span class="token punctuation">(</span>HttpSessionBindingEvent event<span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">attributeReplaced</span><span class="token punctuation">(</span>HttpSessionBindingEvent event<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>由于HttpSessionBindingEvent是HttpSessionEvent的一个子类，因此还可以在HttpSessionAttributeListener类中查到受影响的HttpSession。</p>
+</blockquote>
+<h5 id="HttpSessionActivationListener"><a href="#HttpSessionActivationListener" class="headerlink" title="HttpSessionActivationListener"></a>HttpSessionActivationListener</h5><blockquote>
+<p>在分布式环境中，多个Servlet容器会配置成可伸缩的，为了节省内存，Servlet容器可以对session属性进行迁移或者序列化。一般来说，当内存比较低时，相对较少访问的对象可以序列化到备用存储设备中，这样，Servlet容器就能够注意到哪些session属性的类实现了HttpSessionActivationListener接口。</p>
+</blockquote>
+<h5 id="HttpSessionBindingListener"><a href="#HttpSessionBindingListener" class="headerlink" title="HttpSessionBindingListener"></a>HttpSessionBindingListener</h5><blockquote>
+<p>当HttpSessionBindingListener绑定到HttpSession，或者取消绑定时，都会收到通知。如果一个类想要知道什么时候绑定或取消绑定到HttpSession上，那么这个类要实现HttpSessionBindingListener接口，然后将它的实例保存为session属性。例如，有个对象的类实现了这个接口，当它保存为HttpSession属性时，它就可以自动更新。再比如，一旦HttpSessionBindingListener 与HttpSession取消绑定，它的实现就可以释放占用的资源。</p>
+</blockquote>
+<h4 id="ServletRequest监听器"><a href="#ServletRequest监听器" class="headerlink" title="ServletRequest监听器"></a>ServletRequest监听器</h4><p>在ServletRequest级别上有3个监听器接口：SerletRequestListener、ServletRequestAttributeListener和AsyncListener。</p>
+<h5 id="ServletRequestListener"><a href="#ServletRequestListener" class="headerlink" title="ServletRequestListener"></a>ServletRequestListener</h5><blockquote>
+<p>ServletRequestListener对ServletRequest的创建和销毁做出响应。在Servlet容器中是通过池来重用ServletRequest的，创建ServletRequest花费的时间相当于从池中获取它的时间，ServletRequest销毁时间则相当于它返回到池中的时间。</p>
+</blockquote>
+<p>ServletRequestListener 接口定义了两个方法：requestlnitialized和requestDestroyed，它们的方法签名如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">void</span> <span class="token function">requestInitialized</span><span class="token punctuation">(</span>ServletRequestEvent event<span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">requestDestroyed</span><span class="token punctuation">(</span>ServletRequestEvent event<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>创建（或从池中取出）ServletRequest 时会调用requestinitialized方法，ServletRequest被销毁（或者返回池中）时会调用requestDestroyed方法。这两个方法都会收到一个ServletRequestEvent，通过调用getServletRequest方法，可以从中获取到相应的ServletRequest实例。</p>
+<pre class="line-numbers language-java"><code class="language-java">ServletRequest <span class="token function">getServletRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>此外，ServletRequestEvent接口还定义了返回ServletContext的 getServletContext方法，其方法签名如下：</p>
+<pre class="line-numbers language-java"><code class="language-java">ServletContext <span class="token function">getServletContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h5 id="ServletRequestAttributeListener"><a href="#ServletRequestAttributeListener" class="headerlink" title="ServletRequestAttributeListener"></a>ServletRequestAttributeListener</h5><blockquote>
+<p>当在ServletRequest中添加、删除或者替换某个属性时，会调用ServletRequestAtributeListener。</p>
+</blockquote>
+<p>ServletRequestAttributelListener 接口中定义了3个方法：atrbuteAdded、attributeReplaced和atributeRemoved，这些方法的签名如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">void</span> <span class="token function">attributeadded</span><span class="token punctuation">(</span>ServletRequestAttributeEvent event<span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">attributeRemoved</span><span class="token punctuation">(</span>ServletRequestAttributeEvent event<span class="token punctuation">)</span>
+<span class="token keyword">void</span> <span class="token function">attributeReplaced</span><span class="token punctuation">(</span>ServletRequestAttributeEvent event<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>所有方法都会收到一个ServletRequestAtributeEvent（这是ServletRequestEvent的一个子类）实例。ServletRequestAtributeEvent类通过getName和getValue方法暴露有管属性</p>
+<pre class="line-numbers language-java"><code class="language-java">java<span class="token punctuation">.</span> lang<span class="token punctuation">.</span> String <span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+java<span class="token punctuation">.</span> lang<span class="token punctuation">.</span> Object <span class="token function">getValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h3><blockquote>
+<p>过滤器（filter）是指拦截请求，并对传给被请求资源的ServletRequest或ServletResponse进行处理的一个对象。过滤器可以用于登录、加密和解密、会话检查、图片转换，等等。过滤器可以配置为拦截一个或多个资源。</p>
+</blockquote>
+<h4 id="Filter-API"><a href="#Filter-API" class="headerlink" title="Filter API"></a>Filter API</h4><p>接口：Filter，FilterConfig和FilterChain，过滤器必须实现javax.servlet.Filter接口,该接口暴露了3个生命周期方法：init，doFilter和destroy</p>
+<p>init：当过滤器启动服务时，如应用程序启动时，Servlet容器就会调用该方法，该方法只调用一次，并且应该包含该过滤器的初始化代码。init方法的签名如下</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">void</span> <span class="token function">init</span> <span class="token punctuation">(</span>FilterConfig filterConfig<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><strong>Servlet容器给init方法传递了一个FilterConfig</strong></p>
+<p>每次调用与过滤器相关的资源时，Servlet容器都会调用Filter实例的doFilter方法。该方法会收到一个ServletRequest、ServletResponse 和FilterChain。<br>下面是doFilter方法的签名：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">void</span> <span class="token function">doFilter</span><span class="token punctuation">(</span>ServletRequest request<span class="token punctuation">,</span>ServletResponse response<span class="token punctuation">,</span> FilterChain filterChain<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<blockquote>
+<p>doFilter的实现可以访问ServletRequest和ServletResponse。因此，可以在ServletRequest中添加属性，或者在ServletResponse中添加一个标头。甚至可以对ServletRequest或者ServletResponse进行修饰，改变它们的行为</p>
+</blockquote>
+<p>doFilter方法实现中的最后一行代码应该是调用FilterChain（作为doFilter方法的第三<br>个参数）中的doChain方法：</p>
+<pre class="line-numbers language-java"><code class="language-java">filterChain<span class="token punctuation">.</span><span class="token function">doFilter</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span>response<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>一个资源可以与多个过滤器（更专业地说，是一条过滤器链）关联，FilterChain.<br>doFilter（）通常会引发调用链中的下一个过滤器被调用。在链中的最后一个过滤器中调用FilterChain.doFilter（）会引发资源本身被调用。</p>
+<blockquote>
+<p>你没有在Filter.doFilter（）方法实现代码的最后调用FilterChain.doFilter（）方法，那么程序的处理将会在这个地方停止，并且不会调用请求。</p>
+</blockquote>
+<p>Filter中的最后一个生命周期方法是destroy，其方法签名如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">void</span> <span class="token function">destroy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这个方法在过滤器即将终止服务之前，由Servlet容器调用，一般发生在应用程序停止的时候</p>
+<h4 id="过滤器配置"><a href="#过滤器配置" class="headerlink" title="过滤器配置"></a>过滤器配置</h4><p>配置过滤器有两种方法：一种是利用WebFilter注解类型，一种是署描述符中注册它，来配置过滤器。</p>
+<p>例如，以下@WebFilter 注解指定过滤器的名称为DataCompressionFilter，它适用于所有资源</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@WebFilter</span><span class="token punctuation">(</span>filterName<span class="token operator">=</span><span class="token string">"DataCompressionFilter"</span><span class="token punctuation">,</span>urlpatterns<span class="token operator">=</span><span class="token punctuation">{</span><span class="token string">"/*"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>它相当于在部署描述符中声明这些filter和filter-mapping元素。</p>
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>filter</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>filter-name</span><span class="token punctuation">></span></span>DataCompressionFilter<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>filter-name</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>filter-class</span><span class="token punctuation">></span></span>
+        the fully-qualified name of the filter class
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>filter-class</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>filter</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>filter-mapping</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>filter-name</span><span class="token punctuation">></span></span>DataCompresionFilter<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>filter-name</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>url-pattern</span><span class="token punctuation">></span></span>/*<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>url-pattern</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>filter-mapping</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong><em>按照规范，过滤器类的名称必须以Filter结束。</em></strong></p>
+<h4 id="过滤器的顺序"><a href="#过滤器的顺序" class="headerlink" title="过滤器的顺序"></a>过滤器的顺序</h4><p>如果多个过滤器应用于同一个资源，那么调用顺序就很重要，必须用部署描述符管理应该先调用哪一个过滤器。假如Filter1必须在Filter2之前调用，那么在部署描述符中，Filter1的声明就要放在Filter2的声明之前。</p>
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>filter</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>filter-name</span><span class="token punctuation">></span></span>Filterl<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>filter-name</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>filter-class</span><span class="token punctuation">></span></span>
+        the fully-qualified name of the filter class
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>filter-class</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>filter</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>filter</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>filter-name</span><span class="token punctuation">></span></span>Filter2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>filter-name</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>filter-class</span><span class="token punctuation">></span></span>
+        the fully-qualified name of the filter class
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>filter-class</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>filter</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>如果没有部署描述符，是不可能管理过滤器调用顺序的。</strong></p>
+<h4 id="程序设计"><a href="#程序设计" class="headerlink" title="程序设计"></a>程序设计</h4><p>防止直接从浏览器访问JSP页面：</p>
+<ul>
+<li>将页面放在WEB-INF目录下。在WEB-INF下或WEB-INF子目录下的所有内容都是受到保护的</li>
+<li>使用一个Servlet过滤器，过滤JSP页面的请求。</li>
+<li>在部署描述符中使用安全限制。这比使用过滤器要容易许多，因为不需要编写过滤器类。</li>
+</ul>
 
             </div>
             <hr/>
@@ -674,47 +1139,49 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
-            </div>
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2019/09/22/zai-yu-jsp/">
+                <a href="/2019/09/25/shen-tou-xue-xi/">
                     <div class="card-image">
                         
-                        <img src="https://cdn.pixabay.com/photo/2015/03/27/13/16/cat-694730_960_720.jpg" class="responsive-img" alt="再遇JSP">
+                        <img src="https://cdn.pixabay.com/photo/2018/01/17/20/22/analytics-3088958_960_720.jpg" class="responsive-img" alt="渗透入门">
                         
-                        <span class="card-title">再遇JSP</span>
+                        <span class="card-title">渗透入门</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            《Servlet和JSP学习指南》笔记
+                            web安全
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-09-22
-                            </span>
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-09-25
+                        </span>
                         <span class="publish-author">
                             
-                            <i class="fa fa-user fa-fw"></i>
-                            何必酷
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/web安全/" class="post-category" target="_blank">
+                                    web安全
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/JSP/" target="_blank">
-                        <span class="chip bg-color">JSP</span>
+                    <a href="/tags/web安全/" target="_blank">
+                        <span class="chip bg-color">web安全</span>
                     </a>
                     
-                    <a href="/tags/javaWeb/" target="_blank">
-                        <span class="chip bg-color">javaWeb</span>
+                    <a href="/tags/基础/" target="_blank">
+                        <span class="chip bg-color">基础</span>
                     </a>
                     
                 </div>
@@ -883,7 +1350,7 @@
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">78.2k</span>
+                <span class="white-color">94.2k</span>
             
 
             

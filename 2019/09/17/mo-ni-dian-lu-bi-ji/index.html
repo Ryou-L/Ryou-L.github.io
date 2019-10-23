@@ -412,14 +412,14 @@
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                        1.2k
+                        4.3k
                     </div>
                     
 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                        4 分
+                        14 分
                     </div>
                     
                 
@@ -444,7 +444,7 @@
 <li>其它模拟电路多以放大电路为基础。</li>
 </ul>
 <h4 id="电子信息系统的组成"><a href="#电子信息系统的组成" class="headerlink" title="电子信息系统的组成"></a>电子信息系统的组成</h4><p><img src="https://s2.ax1x.com/2019/09/17/nIPBMF.png" alt></p>
-<h3 id="半导体二极管和三极管"><a href="#半导体二极管和三极管" class="headerlink" title="半导体二极管和三极管"></a>半导体二极管和三极管</h3><h4 id="半导体基础知识"><a href="#半导体基础知识" class="headerlink" title="半导体基础知识"></a>半导体基础知识</h4><h5 id="半导体和本征半导体"><a href="#半导体和本征半导体" class="headerlink" title="半导体和本征半导体"></a>半导体和本征半导体</h5><p><strong>导体：</strong> 导电性介于导体与绝缘体之间的物质<br><strong>半导体：</strong> 硅（Si）、锗（Ge），均为四价元素，它们原子的最外层电子受原子核的束缚力介于导体与绝缘体之间</p>
+<h3 id="半导体二极管"><a href="#半导体二极管" class="headerlink" title="半导体二极管"></a>半导体二极管</h3><h4 id="半导体基础知识"><a href="#半导体基础知识" class="headerlink" title="半导体基础知识"></a>半导体基础知识</h4><h5 id="半导体和本征半导体"><a href="#半导体和本征半导体" class="headerlink" title="半导体和本征半导体"></a>半导体和本征半导体</h5><p><strong>导体：</strong> 导电性介于导体与绝缘体之间的物质<br><strong>半导体：</strong> 硅（Si）、锗（Ge），均为四价元素，它们原子的最外层电子受原子核的束缚力介于导体与绝缘体之间</p>
 <blockquote>
 <p>本征半导体是纯净(无杂质)的晶体结构(稳定的结构)的半导体。</p>
 </blockquote>
@@ -502,7 +502,7 @@
 <h5 id="PN结的电流方程"><a href="#PN结的电流方程" class="headerlink" title="PN结的电流方程"></a>PN结的电流方程</h5><p>PN 结正、反向特性，可用理想的指数函数来描述：<br><img src="https://s2.ax1x.com/2019/09/17/nIlPRe.png" alt></p>
 <h5 id="PN-结的伏安特性及击穿特性"><a href="#PN-结的伏安特性及击穿特性" class="headerlink" title="PN 结的伏安特性及击穿特性"></a>PN 结的伏安特性及击穿特性</h5><p><img src="https://s2.ax1x.com/2019/09/17/nI17jJ.md.png" alt></p>
 <h5 id="PN-结的电容效应"><a href="#PN-结的电容效应" class="headerlink" title="PN 结的电容效应"></a>PN 结的电容效应</h5><p><strong>1. 势垒电容（反偏）</strong><br>势垒区内空间电荷量随外加电压变化产生的电容效应，其等效电容称为势垒电容Cb。<br><strong>扩散电容（正偏）</strong><br>阻挡层外(P 区和 N 区)贮存的非平衡电荷量,随外加电压变化产生的电容效应，其等效电容称为扩散电容Cd</p>
-<h4 id="半导体二极管"><a href="#半导体二极管" class="headerlink" title="半导体二极管"></a>半导体二极管</h4><blockquote>
+<h4 id="半导体二极管-1"><a href="#半导体二极管-1" class="headerlink" title="半导体二极管"></a>半导体二极管</h4><blockquote>
 <p>将PN结封装，引出两个电极，就构成了二极管</p>
 </blockquote>
 <h5 id="二极管的结构"><a href="#二极管的结构" class="headerlink" title="二极管的结构"></a>二极管的结构</h5><table>
@@ -526,6 +526,241 @@
 </tr>
 </tbody></table>
 <h5 id="二极管的伏安特性"><a href="#二极管的伏安特性" class="headerlink" title="二极管的伏安特性"></a>二极管的伏安特性</h5><p><img src="https://s2.ax1x.com/2019/09/17/nIGu0s.md.png" alt></p>
+<h5 id="简化电路模型"><a href="#简化电路模型" class="headerlink" title="简化电路模型"></a>简化电路模型</h5><p><img src="https://s2.ax1x.com/2019/09/23/uif9N4.png" alt></p>
+<ul>
+<li>折线等效：在主要利用二极管单向导电性的电路中，实际二极管的伏安特性。</li>
+<li>理想状态：与外电路相比，Vo（on）和Rn均可忽略时，二极管的伏安特性和电路符号。</li>
+<li>开关状态：与外电路相比，Rp可忽略时的伏安特性。</li>
+<li>简化电路模型：折线等效时，二极管的简化电路模型。</li>
+</ul>
+<h5 id="小信号电路模型"><a href="#小信号电路模型" class="headerlink" title="小信号电路模型"></a>小信号电路模型</h5><blockquote>
+<p>当二极管在静态基础上有一动态信号作用时，则可将二极管等效为一个电阻，称为动态电阻</p>
+</blockquote>
+<p><img src="https://s2.ax1x.com/2019/09/23/uif2aF.md.png" alt></p>
+<h4 id="晶体二极管电路分析方法"><a href="#晶体二极管电路分析方法" class="headerlink" title="晶体二极管电路分析方法"></a>晶体二极管电路分析方法</h4><p>分析二极管电路主要采用：<strong>图解法、简化分析法、小信号等效电路法</strong>。（重点掌握简化分析法）</p>
+<h5 id="图像法"><a href="#图像法" class="headerlink" title="图像法"></a>图像法</h5><blockquote>
+<p>利用二极管曲线模型和管外电路所确定的负载线，通过作图的方法进行求解。<br><strong><em>要求：已知二极管伏安特性曲线和外围电路元件值。</em></strong></p>
+</blockquote>
+<p>分析步骤：</p>
+<ul>
+<li>写出管外电路直流负载线方程</li>
+<li>作直流负载线</li>
+<li>分析直流工作点</li>
+</ul>
+<p><img src="https://s2.ax1x.com/2019/09/23/uihNsx.md.png" alt></p>
+<h5 id="简化分析法"><a href="#简化分析法" class="headerlink" title="简化分析法"></a>简化分析法</h5><blockquote>
+<p>即将电路中二极管用简化电路模型代替，利用所得到的简化电路进行分析、求解。<br>（1）估算法</p>
+</blockquote>
+<p>假设电路中二极管全部开路，分析其两端的电位。(判断出二极管是导通还是截止)</p>
+<ul>
+<li>理想二极管：若V&gt;0，则管子导通；反之截止。</li>
+<li>实际二极管：若V&gt;Vo（on），管子导通；反之截止。</li>
+</ul>
+<p>当电路中存在多个二极管时，正偏电压最大的管子优先导通。其余管子需重新分析其工作状态。<br><strong>将截止的二极管开路，导通的二极管用直流简化电路模型替代，然后分析求解。</strong></p>
+<p>(2)画输出信号波形方法<br>根据输入信号大小—》判断二极管的导通与截止—》找出 vo 与 vi 关系—》画输出信号波形。</p>
+<h3 id="晶体三极管"><a href="#晶体三极管" class="headerlink" title="晶体三极管"></a>晶体三极管</h3><h4 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h4><p>晶体管有三个极、三个区、两个PN结(NPN型)(PNP型)</p>
+<h5 id="三极管内部结构特点"><a href="#三极管内部结构特点" class="headerlink" title="三极管内部结构特点"></a>三极管内部结构特点</h5><ul>
+<li>发射区高掺杂（相对于基区）</li>
+<li>基区很薄</li>
+<li>集电结面积大</li>
+</ul>
+<h5 id="三极管三种工作模式"><a href="#三极管三种工作模式" class="headerlink" title="三极管三种工作模式"></a>三极管三种工作模式</h5><ul>
+<li>放大模式：发射结正偏，集电结反偏</li>
+<li>饱和模式：发射结正偏，集电结正偏</li>
+<li>截止模式：发射结反偏，集电结反偏</li>
+</ul>
+<blockquote>
+<p>注意：三极管具有正向受控作用，除了满足内部结构特点外，还必须满足放大模式的外部工作条件</p>
+</blockquote>
+<h4 id="放大模式下三极管工作原理"><a href="#放大模式下三极管工作原理" class="headerlink" title="放大模式下三极管工作原理"></a>放大模式下三极管工作原理</h4><h5 id="三极管特性——具有正向受控作用"><a href="#三极管特性——具有正向受控作用" class="headerlink" title="三极管特性——具有正向受控作用"></a>三极管特性——具有正向受控作用</h5><blockquote>
+<p>即三极管输出的集电极电流 IC ，主要受正向发射结电压 VBE 的控制，而与反向集电结电压 VCE 近似无关</p>
+</blockquote>
+<p><strong>注意：NPN 型管与 PNP 型管工作原理相似，但由于它们形成电流的载流子性质不同，结果导致各极电流方向相反，加在各极上的电压极性相反</strong></p>
+<h5 id="电流传输方程"><a href="#电流传输方程" class="headerlink" title="电流传输方程"></a>电流传输方程</h5><p>三极管的三种连接方式——三种组态<br><img src="https://s2.ax1x.com/2019/09/23/uiHdc4.png" alt></p>
+<h5 id="放大模式下三极管的模型"><a href="#放大模式下三极管的模型" class="headerlink" title="放大模式下三极管的模型"></a>放大模式下三极管的模型</h5><p>数学模型(指数模型)<br>三极管的正向受控作用，服从指数函数关系式：<br><img src="https://s2.ax1x.com/2019/09/23/uib3xe.png" alt></p>
+<blockquote>
+<p>IS 指发射结反向饱和电流 IEBS 转化到集电极上的电流值，它不同于二极管的反向饱和电流 IS</p>
+</blockquote>
+<h5 id="放大模式直流简化电路模型"><a href="#放大模式直流简化电路模型" class="headerlink" title="放大模式直流简化电路模型"></a>放大模式直流简化电路模型</h5><p><img src="https://s2.ax1x.com/2019/09/23/uibNVI.md.png" alt></p>
+<h3 id="晶体三极管的其他工作模式"><a href="#晶体三极管的其他工作模式" class="headerlink" title="晶体三极管的其他工作模式"></a>晶体三极管的其他工作模式</h3><h4 id="饱和模式-E-结正偏，C-结正偏"><a href="#饱和模式-E-结正偏，C-结正偏" class="headerlink" title="饱和模式(E 结正偏，C 结正偏)"></a>饱和模式(E 结正偏，C 结正偏)</h4><blockquote>
+<p>三极管失去正向受控作用。</p>
+</blockquote>
+<h5 id="饱和模式直流简化电路模型"><a href="#饱和模式直流简化电路模型" class="headerlink" title="饱和模式直流简化电路模型"></a>饱和模式直流简化电路模型</h5><p><img src="https://s2.ax1x.com/2019/09/23/uiO6qH.md.png" alt></p>
+<h4 id="截止模式-E-结反偏，C-结反偏"><a href="#截止模式-E-结反偏，C-结反偏" class="headerlink" title="截止模式(E 结反偏，C 结反偏)"></a>截止模式(E 结反偏，C 结反偏)</h4><blockquote>
+<p>若忽略反向饱和电流，三极管 IB约等于0，IC约等于0，即三极管工作于截止模式时，相当于开关断开</p>
+</blockquote>
+<h5 id="截止模式直流简化电路模型"><a href="#截止模式直流简化电路模型" class="headerlink" title="截止模式直流简化电路模型"></a>截止模式直流简化电路模型</h5><p><img src="https://s2.ax1x.com/2019/09/23/uiXsf0.md.png" alt></p>
+<h3 id="晶体三极管伏安特性曲线"><a href="#晶体三极管伏安特性曲线" class="headerlink" title="晶体三极管伏安特性曲线"></a>晶体三极管伏安特性曲线</h3><blockquote>
+<p>伏安特性曲线是三极管通用的曲线模型，它适用于任何工作模式。<br><img src="https://s2.ax1x.com/2019/09/23/uijBuD.md.png" alt></p>
+</blockquote>
+<h4 id="输入特性曲线"><a href="#输入特性曲线" class="headerlink" title="输入特性曲线"></a>输入特性曲线</h4><ul>
+<li>VCE 一定：类似二极管伏安特性</li>
+<li>VCE 增加：正向特性曲线略右移</li>
+</ul>
+<p><img src="https://s2.ax1x.com/2019/09/23/uFSnZF.png" alt></p>
+<p><img src="https://s2.ax1x.com/2019/09/23/uFShJs.md.png" alt></p>
+<blockquote>
+<p>注：VCE &gt; 0.3 V 后，曲线移动可忽略不计</p>
+</blockquote>
+<h4 id="输出特性曲线"><a href="#输出特性曲线" class="headerlink" title="输出特性曲线"></a>输出特性曲线</h4><blockquote>
+<p>输出特性曲线可划分为四个区域：饱和区、放大区、截止区、击穿区。<br><img src="https://s2.ax1x.com/2019/09/23/uFp9OK.png" alt></p>
+</blockquote>
+<h5 id="饱和区-VBE大于等于0-7-V-VCE小于0-3-V"><a href="#饱和区-VBE大于等于0-7-V-VCE小于0-3-V" class="headerlink" title="饱和区(VBE大于等于0.7 V,VCE小于0.3 V)"></a>饱和区(VBE大于等于0.7 V,VCE小于0.3 V)</h5><p>条件：发射结正偏，集电结正偏<br>特点：IC 不受 IB 控制，而受 VCE 影响，VCE 略增，IC 显著增加</p>
+<h5 id="放大区-VBE大于等于0-7-V，-VCE大于0-3-V"><a href="#放大区-VBE大于等于0-7-V，-VCE大于0-3-V" class="headerlink" title="放大区(VBE大于等于0.7 V， VCE大于0.3 V)"></a>放大区(VBE大于等于0.7 V， VCE大于0.3 V)</h5><p><img src="https://s2.ax1x.com/2019/09/23/uF999s.md.png" alt></p>
+<h5 id="截止区-VBE小于等于0-5-V，-VCE大于等于0-3-V"><a href="#截止区-VBE小于等于0-5-V，-VCE大于等于0-3-V" class="headerlink" title="截止区(VBE小于等于0.5 V， VCE大于等于0.3 V)"></a>截止区(VBE小于等于0.5 V， VCE大于等于0.3 V)</h5><p><img src="https://s2.ax1x.com/2019/09/23/uF9DDf.md.png" alt></p>
+<h5 id="击穿区"><a href="#击穿区" class="headerlink" title="击穿区"></a>击穿区</h5><blockquote>
+<p>特点：VCE 增大到一定值时，集电结反向击穿，IC 急剧增大,注意：集电结反向击穿电压，随 IB 的增大而减小<br><img src="https://s2.ax1x.com/2019/09/25/uZffsJ.md.png" alt></p>
+</blockquote>
+<h5 id="三极管安全工作区"><a href="#三极管安全工作区" class="headerlink" title="三极管安全工作区"></a>三极管安全工作区</h5><p><img src="https://s2.ax1x.com/2019/09/25/uZhPW8.md.png" alt></p>
+<h4 id="晶体三极管小信号电路模型"><a href="#晶体三极管小信号电路模型" class="headerlink" title="晶体三极管小信号电路模型"></a>晶体三极管小信号电路模型</h4><p><img src="https://s2.ax1x.com/2019/09/25/uZhKYV.png" alt></p>
+<h5 id="小信号电路参数"><a href="#小信号电路参数" class="headerlink" title="小信号电路参数"></a>小信号电路参数</h5><p><img src="https://s2.ax1x.com/2019/09/25/uZhaY6.md.png" alt></p>
+<p><img src="https://s2.ax1x.com/2019/09/25/uZhjpT.md.png" alt></p>
+<blockquote>
+<p>注意：小信号电路模型只能用来分析叠加在 Q 点上各交流量之间的相互关系，不能分析直流参量</p>
+</blockquote>
+<h3 id="晶体三极管电路分析方法"><a href="#晶体三极管电路分析方法" class="headerlink" title="晶体三极管电路分析方法"></a>晶体三极管电路分析方法</h3><blockquote>
+<p>由于交流信号均叠加在静态工作点上，且交流信号幅度很小，因此对工作在放大模式下的电路进行分析时，应先进行直流分析，后进行交流分析</p>
+</blockquote>
+<ul>
+<li><p>直流分析法</p>
+<ul>
+<li>分析指标：IBQ、ICQ、VCEQ</li>
+<li>分析方法：图解法、估算法 </li>
+</ul>
+</li>
+<li><p>交流分析法</p>
+<ul>
+<li>分析指标：Av 、Ri 、Ro</li>
+<li>分析方法：图解法、微变等效电路法</li>
+</ul>
+</li>
+</ul>
+<h4 id="直流分析法"><a href="#直流分析法" class="headerlink" title="直流分析法"></a>直流分析法</h4><h5 id="图解法"><a href="#图解法" class="headerlink" title="图解法"></a>图解法</h5><blockquote>
+<p>要求：已知三极管特性曲线和管外电路元件参数</p>
+</blockquote>
+<p>图解法分析步骤：</p>
+<ul>
+<li><p>由电路输入特性确定 IBQ </p>
+<ul>
+<li>写出管外输入回路直流负载线方程 (VBE - IB)</li>
+<li>在输入特性曲线上作直流负载线</li>
+<li>找出对应交点，得 IBQ 与 VBEQ</li>
+</ul>
+</li>
+<li><p>由电路输出特性确定  ICQ 与 VCEQ </p>
+<ul>
+<li>写出管外输出回路直流负载线方程(VCE - IC)</li>
+<li>在输出特性曲线上作直流负载线</li>
+<li>找出负载线与特性曲线中 IB = IBQ 曲线的交点，即 Q 点，得到 ICQ 与 VCEQ</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://s2.ax1x.com/2019/09/25/uZ4B40.md.png" alt></p>
+<h5 id="工程近似法–估算法"><a href="#工程近似法–估算法" class="headerlink" title="工程近似法–估算法"></a>工程近似法–估算法</h5><p><img src="https://s2.ax1x.com/2019/09/25/uZ4fER.md.png" alt></p>
+<p>一个例子<br><img src="https://s2.ax1x.com/2019/09/25/uZTVIA.md.png" alt></p>
+<h4 id="交流分析法"><a href="#交流分析法" class="headerlink" title="交流分析法"></a>交流分析法</h4><blockquote>
+<p>分析电路加交流输入信号后，叠加在 Q 点上的电压与电流变化量之间的关系。</p>
+</blockquote>
+<h5 id="小信号等效电路法-微变等效电路法"><a href="#小信号等效电路法-微变等效电路法" class="headerlink" title="小信号等效电路法(微变等效电路法)"></a>小信号等效电路法(微变等效电路法)</h5><p>在交流通路基础上，将三极管用小信号电路模型代替得到的线性等效电路即小信号等效电路。利用该等效电路分析 Av 、Ri 、Ro 的方法即小信号等效电路法。</p>
+<blockquote>
+<p>交流通路：即交流信号流通的路径。它是将直流电源短路、耦合、旁路电容短路时对应的电路</p>
+</blockquote>
+<p>小信号等效电路法分析步骤：</p>
+<ul>
+<li>画交流通路(直流电源短路，耦合、旁路电容短路)</li>
+<li>用小信号电路模型代替三极管，得小信号等效电路</li>
+<li>计算微变参数 gm、rbe</li>
+<li>利用小信号等效电路分析交流指标</li>
+</ul>
+<p><strong>注意：小信号等效电路只能用来分析交流量的变化规律及动态性能指标，不能分析静态工作点</strong></p>
+<h5 id="输入正弦信号时，画各极电压与电流的波形"><a href="#输入正弦信号时，画各极电压与电流的波形" class="headerlink" title="输入正弦信号时，画各极电压与电流的波形"></a>输入正弦信号时，画各极电压与电流的波形</h5><p><img src="https://s2.ax1x.com/2019/09/25/uZ736K.md.png" alt></p>
+<h5 id="Q-点位置与波形失真："><a href="#Q-点位置与波形失真：" class="headerlink" title="Q 点位置与波形失真："></a>Q 点位置与波形失真：</h5><p><img src="https://s2.ax1x.com/2019/09/25/uZ7tTH.png" alt></p>
+<h3 id="晶体三极管应用原理"><a href="#晶体三极管应用原理" class="headerlink" title="晶体三极管应用原理"></a>晶体三极管应用原理</h3><h4 id="电流源"><a href="#电流源" class="headerlink" title="电流源"></a>电流源</h4><blockquote>
+<p>利用三极管放大区 iB 恒定时 iC 接近恒流的特性，可构成集成电路中广泛采用的一种单元电路——电流源</p>
+</blockquote>
+<p><img src="https://s2.ax1x.com/2019/09/25/uZ7ynS.png" alt></p>
+<p>该电流源不是普通意义上的电流源，因它本身不提供能量。电流源电路的输出电流 I０，由外电路中的直流电源提供。<br>I０ 只受 IB 控制，与外电路在电流源两端呈现的电压大小几乎无关。就这个意义而言，将其看作为电流源</p>
+<h4 id="放大器"><a href="#放大器" class="headerlink" title="放大器"></a>放大器</h4><p>放大器的作用就是将输入信号进行不失真的放大</p>
+<h5 id="放大原理"><a href="#放大原理" class="headerlink" title="放大原理"></a>放大原理</h5><p><img src="https://s2.ax1x.com/2019/09/25/uZ7qAJ.png" alt><br>电源提供的功率 PD 除了转换成负载上有用的输出功率 PL  外，其余均消耗在晶体三极管上( PC )</p>
+<blockquote>
+<p>放大器放大信号的实质：是利用三极管的正向受控作用，将电源 VCC 提供的直流功率，部分地转换为输出功率。</p>
+</blockquote>
+<p><strong>电源 VCC 不仅要为三极管提供偏置，保证管子工作在放大区，同时还是整个电路的能源</strong><br><strong><em>三极管仅是一个换能器</em></strong></p>
+<h3 id="放大器基础"><a href="#放大器基础" class="headerlink" title="放大器基础"></a>放大器基础</h3><p>放大器是应用最广泛的一类电子线路。它的主要功能是将输入信号进行高效，不失真的放大</p>
+<p>放大器组成框图<br><img src="https://s2.ax1x.com/2019/09/30/uYgAPS.png" alt></p>
+<h3 id="偏置电路和耦合方式"><a href="#偏置电路和耦合方式" class="headerlink" title="偏置电路和耦合方式"></a>偏置电路和耦合方式</h3><h4 id="偏置电路"><a href="#偏置电路" class="headerlink" title="偏置电路"></a>偏置电路</h4><blockquote>
+<p>设置静态工作点的电路称放大器的偏置电路(保证半导体器件工作在放大模式)</p>
+</blockquote>
+<h5 id="对偏置电路的要求"><a href="#对偏置电路的要求" class="headerlink" title="对偏置电路的要求"></a>对偏置电路的要求</h5><ul>
+<li>提供合适的 Q 点，保证器件工作在放大模式(偏置电路须保证三极管 E 结正偏、C 结反偏  Vc&gt;Vb&gt;Ve)</li>
+<li>当环境温度等因素变化时，能稳定电路的 Q 点</li>
+</ul>
+<p>Q 点波动对输出波形的影响：</p>
+<ul>
+<li>Q 点在中点，动态范围最大，输出波形不易失真</li>
+<li>Q 点升高，不失真动态范围减小，输出易饱和失真</li>
+<li>Q 点降低，不失真动态范围减小，输出易截止失真</li>
+</ul>
+<h5 id="固定偏流电路"><a href="#固定偏流电路" class="headerlink" title="固定偏流电路"></a>固定偏流电路</h5><p><img src="https://s2.ax1x.com/2019/09/30/uYIsKS.png" alt><br><img src="https://s2.ax1x.com/2019/09/30/uYITrF.md.png" alt></p>
+<h5 id="分压偏置电路"><a href="#分压偏置电路" class="headerlink" title="分压偏置电路"></a>分压偏置电路</h5><p><img src="https://s2.ax1x.com/2019/09/30/uY77qS.png" alt><br><img src="https://s2.ax1x.com/2019/09/30/uY7v2q.md.png" alt><br><img src="https://s2.ax1x.com/2019/09/30/uYqa5Q.md.png" alt></p>
+<h5 id="耦合方式"><a href="#耦合方式" class="headerlink" title="耦合方式"></a>耦合方式</h5><p>放大器与信号源、放大器与负载以及放大器级与级之间的连接方式称为耦合方式</p>
+<p>为保证交流信号正常传输、不失真放大，耦合方式必须保证:</p>
+<ul>
+<li>交流信号正常传输</li>
+<li>尽量减小有用信号在传输过程中的损失</li>
+</ul>
+<h5 id="电容耦合"><a href="#电容耦合" class="headerlink" title="电容耦合"></a>电容耦合</h5><p><img src="https://s2.ax1x.com/2019/09/30/uYzqX9.png" alt></p>
+<blockquote>
+<p>直流工作时：由于Cb,Cc具有隔直流作用，因此信号源不影响放大器,因此信号源不影响放大器 Q 点正常设置，且各级 Q 点相互独立</p>
+</blockquote>
+<blockquote>
+<p>交流工作时：由于 Cb较大，在信号频率上近似看作短路。因此,Cb的接入不会影响信号的正常传输</p>
+</blockquote>
+<p>电路缺点：体积大，不易集成</p>
+<h5 id="直接耦合"><a href="#直接耦合" class="headerlink" title="直接耦合"></a>直接耦合</h5><p><img src="https://s2.ax1x.com/2019/09/30/ut99Ld.md.png" alt></p>
+<p>直接耦合方式：各级之间不经过任何元件直接相连<br>电路优点：频率特性好，便于集成</p>
+<ul>
+<li>存在问题：<ul>
+<li>级间直流电平配置问题</li>
+<li>零点漂移问题</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><img src="https://s2.ax1x.com/2019/09/30/utCZA1.md.png" alt><br><img src="https://s2.ax1x.com/2019/09/30/utCH4x.png" alt></p>
+</blockquote>
+<p>采用 PNP 管的电平位移电路：<br><img src="https://s2.ax1x.com/2019/09/30/utPC5t.png" alt></p>
+<p>放大模式 NPN 管 VCQ1&gt;VBQ1<br>放大模式 PNP 管 VCQ2&lt;VBQ2 = VCQ1</p>
+<blockquote>
+<p>利用 NPN 管与 PNP 管电位极性相反的特点，将直流电平下移，扩大后级的输出动态范围</p>
+</blockquote>
+<h4 id="放大器的性能指标"><a href="#放大器的性能指标" class="headerlink" title="放大器的性能指标"></a>放大器的性能指标</h4><p>就信号而言，各种小信号放大器均可统一表示为有源线性四端网络：<br><img src="https://s2.ax1x.com/2019/10/11/uq2pp8.png" alt><br>反映放大器性能的主要指标有：输入电阻 Ri 、输出电阻 R0、增益 A。</p>
+<h4 id="输入电阻、输出电阻、增益"><a href="#输入电阻、输出电阻、增益" class="headerlink" title="输入电阻、输出电阻、增益"></a>输入电阻、输出电阻、增益</h4><h5 id="输入电阻"><a href="#输入电阻" class="headerlink" title="输入电阻"></a>输入电阻</h5><blockquote>
+<p>对输入信号源而言，放大器相当于它的一个负载，而这个等效负载电阻就是放大器输入电阻 Ri ,我们希望该电阻可以尽量大，以分到更多的电压<br><img src="https://s2.ax1x.com/2019/10/11/uqWpLQ.png" alt></p>
+</blockquote>
+<p><img src="https://s2.ax1x.com/2019/10/11/uqWAJ0.png" alt></p>
+<p>上式中，Ri 表示本级电路对输入信号源的影响程度</p>
+<h5 id="输出电阻"><a href="#输出电阻" class="headerlink" title="输出电阻"></a>输出电阻</h5><blockquote>
+<p>对输出负载而言(根据戴维宁定理和诺顿定理)，任何放大器均可看作它的信号源，该信号源内阻即放大器输出电阻 Ro<br><img src="https://s2.ax1x.com/2019/10/11/uqWaeH.png" alt></p>
+</blockquote>
+<blockquote>
+<p>vot ：负载开路时 vi 或 ii  在电路输出端产生的开路电压<br>ion ：负载短路时 vi 或 ii  在电路输出端产生的短路电流</p>
+</blockquote>
+<p>输出电阻 Ro 计算：<br><img src="https://s2.ax1x.com/2019/10/11/uqfpp6.md.png" alt></p>
+<h5 id="小信号放大器四种电路模型"><a href="#小信号放大器四种电路模型" class="headerlink" title="小信号放大器四种电路模型"></a>小信号放大器四种电路模型</h5><p><img src="https://s2.ax1x.com/2019/10/11/uqfk0H.png" alt></p>
+<h5 id="增益-放大倍数"><a href="#增益-放大倍数" class="headerlink" title="增益(放大倍数)"></a>增益(放大倍数)</h5><p><img src="https://s2.ax1x.com/2019/10/11/uqfRgK.png" alt="放大器的增益"></p>
+<blockquote>
+<p>即放大器输出信号变化量与输入信号变化量的比值。</p>
+</blockquote>
+<h5 id="电压放大器"><a href="#电压放大器" class="headerlink" title="电压放大器"></a>电压放大器</h5><p><img src="https://s2.ax1x.com/2019/10/11/uqf74I.md.png" alt></p>
+<h5 id="电流放大器"><a href="#电流放大器" class="headerlink" title="电流放大器"></a>电流放大器</h5><p><img src="https://s2.ax1x.com/2019/10/11/uq4AJI.md.png" alt></p>
+<h5 id="互导放大器"><a href="#互导放大器" class="headerlink" title="互导放大器"></a>互导放大器</h5><p><img src="https://s2.ax1x.com/2019/10/11/uq4MwQ.png" alt="互导增益"></p>
+<h5 id="互阻放大器"><a href="#互阻放大器" class="headerlink" title="互阻放大器"></a>互阻放大器</h5><p><img src="https://s2.ax1x.com/2019/10/11/uq41Fs.png" alt="互阻增益"></p>
+<h5 id="理想放大器性能特点"><a href="#理想放大器性能特点" class="headerlink" title="理想放大器性能特点"></a>理想放大器性能特点</h5><p><img src="https://s2.ax1x.com/2019/10/11/uq4YlV.png" alt></p>
+<h5 id="多级放大器"><a href="#多级放大器" class="headerlink" title="多级放大器"></a>多级放大器</h5><p><img src="https://s2.ax1x.com/2019/10/11/uq4Bk9.png" alt></p>
+<h4 id="放大器的失真"><a href="#放大器的失真" class="headerlink" title="放大器的失真"></a>放大器的失真</h4><blockquote>
+<p>放大器的失真是指输出信号不能重现输入信号波形的一种物理现象</p>
+</blockquote>
 
             </div>
             <hr/>
@@ -959,7 +1194,7 @@
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">78.2k</span>
+                <span class="white-color">94.2k</span>
             
 
             
