@@ -385,12 +385,12 @@ public class MyWebApplicationInitializer implements WebApplicationInitializer {
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/spring/" target="_blank">
-                                <span class="chip bg-color">spring</span>
-                            </a>
-                        
                             <a href="/tags/框架/" target="_blank">
                                 <span class="chip bg-color">框架</span>
+                            </a>
+                        
+                            <a href="/tags/spring/" target="_blank">
+                                <span class="chip bg-color">spring</span>
                             </a>
                         
                     </div>
@@ -401,8 +401,8 @@ public class MyWebApplicationInitializer implements WebApplicationInitializer {
                     <div class="post-cate">
                         <i class="fa fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/spring/" class="post-category" target="_blank">
-                                spring
+                            <a href="/categories/Spring/" class="post-category" target="_blank">
+                                Spring
                             </a>
                         
                     </div>
@@ -420,14 +420,14 @@ public class MyWebApplicationInitializer implements WebApplicationInitializer {
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                        2k
+                        2.2k
                     </div>
                     
 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                        10 分
+                        11 分
                     </div>
                     
                 
@@ -881,6 +881,26 @@ factoryBean<span class="token punctuation">.</span><span class="token function">
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@override</span> <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">configureDefaultServletHandling</span><span class="token punctuation">(</span>DefaultServletHandlerConfigurer configurer<span class="token punctuation">)</span><span class="token punctuation">{</span>
     configurer<span class="token punctuation">.</span><span class="token function">enable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="ServletContext、HttpSession、HttpServletRequest"><a href="#ServletContext、HttpSession、HttpServletRequest" class="headerlink" title="ServletContext、HttpSession、HttpServletRequest"></a>ServletContext、HttpSession、HttpServletRequest</h3><blockquote>
+<p>三者域属性空间范围、使用原则对比<br>Servlet用到的三个存放域属性的空间范围对象，这三个对象中所存储的域属性作用范围、使用原则不同</p>
+</blockquote>
+<blockquote>
+<p>1、ServletContext、HttpSession、HttpServletRequest存储的域属性作用范围从大到下<br>ServletContext——&gt;HttpSession——&gt;HttpServletRequest</p>
+</blockquote>
+<p><strong>2、关于“会话”概念(因为下面用会话)</strong><br><strong>一个会话:浏览器开启——&gt;关闭</strong></p>
+<blockquote>
+<p>3、ServletContext<br>即application，置入其中的域属性，是整个应用范围的，可以完成跨会话共享数据</p>
+</blockquote>
+<blockquote>
+<p>4、HttpSession<br>置入其中的域属性是会话范围的，可以完成跨请求共享数据</p>
+</blockquote>
+<blockquote>
+<p>5、HttpServletRequest<br>置入其中的域属性是请求范围的，可以跨Servlet共享数据，但这些Servlet必须在同一个请求中<br>例如需要请求转发 request.getRequestDispatcher(“/other”).forward(request, response);</p>
+</blockquote>
+<h3 id="轉發與重定向"><a href="#轉發與重定向" class="headerlink" title="轉發與重定向"></a>轉發與重定向</h3><p>轉發：<br><img src="https://s2.ax1x.com/2019/12/23/lSOG8I.png" alt><br>重定向：<br><img src="https://s2.ax1x.com/2019/12/23/lSOrPs.png" alt></p>
+<blockquote>
+<p>winpty vue.cmd create hello-world</p>
+</blockquote>
 
             </div>
             <hr/>
@@ -1103,53 +1123,36 @@ factoryBean<span class="token punctuation">.</span><span class="token function">
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
-            </div>
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2019/12/02/geng-shen-ru-springmvc/">
+                <a href="/2020/02/16/linux/">
                     <div class="card-image">
                         
-                        <img src="https://cdn.pixabay.com/photo/2019/10/29/07/26/flamingo-4586276_960_720.jpg" class="responsive-img" alt="更深入springmvc">
                         
-                        <span class="card-title">更深入springmvc</span>
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="">
+                        
+                        <span class="card-title"></span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            spring框架
+                            
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-12-02
-                            </span>
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2020-02-16
+                        </span>
                         <span class="publish-author">
                             
-                            <i class="fa fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/spring/" class="post-category" target="_blank">
-                                    spring
-                                </a>
-                            
+                            <i class="fa fa-user fa-fw"></i>
+                            何必酷
                             
                         </span>
                     </div>
-                </div>
-
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/spring/" target="_blank">
-                        <span class="chip bg-color">spring</span>
-                    </a>
-                    
-                    <a href="/tags/框架/" target="_blank">
-                        <span class="chip bg-color">框架</span>
-                    </a>
-                    
                 </div>
                 
             </div>
@@ -1183,8 +1186,8 @@ factoryBean<span class="token punctuation">.</span><span class="token function">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/sping/" class="post-category" target="_blank">
-                                    sping
+                            <a href="/categories/Sping/" class="post-category" target="_blank">
+                                    Sping
                                 </a>
                             
                             
@@ -1198,8 +1201,8 @@ factoryBean<span class="token punctuation">.</span><span class="token function">
                         <span class="chip bg-color">框架</span>
                     </a>
                     
-                    <a href="/tags/spring-SpringMVC/" target="_blank">
-                        <span class="chip bg-color">spring+SpringMVC</span>
+                    <a href="/tags/Spring/" target="_blank">
+                        <span class="chip bg-color">Spring</span>
                     </a>
                     
                 </div>
@@ -1320,7 +1323,7 @@ factoryBean<span class="token punctuation">.</span><span class="token function">
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">102k</span>
+                <span class="white-color">102.3k</span>
             
 
             
