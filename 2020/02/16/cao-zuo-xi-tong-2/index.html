@@ -5,7 +5,13 @@
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
     <meta name="keywords" content="Operating System(2), 何必酷">
-    <meta name="description" content="操作系统–进程与调度（Processes and Scheduling）">
+    <meta name="description" content="操作系统–进程管理–进程描述与控制程序的执行顺序
+程序顺序执行
+程序顺序执行时的特征：顺序性(一句一句按照顺序往下执行)、封闭性、可再现性(如果多次的输入情况一样的话，输出应该也是一致的，可以再现之前的结果)
+
+
+程序并发执行
+程序并发执行">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -413,14 +419,14 @@
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                        12
+                        5.4k
                     </div>
                     
 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                        1 分
+                        21 分
                     </div>
                     
                 
@@ -436,7 +442,463 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="操作系统–进程与调度（Processes-and-Scheduling）"><a href="#操作系统–进程与调度（Processes-and-Scheduling）" class="headerlink" title="操作系统–进程与调度（Processes and Scheduling）"></a>操作系统–进程与调度（Processes and Scheduling）</h1>
+                <h1 id="操作系统–进程管理–进程描述与控制"><a href="#操作系统–进程管理–进程描述与控制" class="headerlink" title="操作系统–进程管理–进程描述与控制"></a>操作系统–进程管理–进程描述与控制</h1><h4 id="程序的执行顺序"><a href="#程序的执行顺序" class="headerlink" title="程序的执行顺序"></a>程序的执行顺序</h4><ul>
+<li>程序顺序执行<ul>
+<li>程序顺序执行时的特征：顺序性(一句一句按照顺序往下执行)、封闭性、可再现性(如果多次的输入情况一样的话，输出应该也是一致的，可以再现之前的结果)</li>
+</ul>
+</li>
+<li>程序并发执行<ul>
+<li>程序并发执行时的特征：间断性、非封闭性、不可再现性</li>
+</ul>
+</li>
+<li>程序并发执行条件(Bernstein条件)<ul>
+<li>两个进程之间的读写不能存在交集（一个进程占了读之后，写也要完成之后才能将资源让给其他进程）</li>
+</ul>
+</li>
+</ul>
+<h4 id="进程的概念和进程的并发（进程之间交替进行）执行"><a href="#进程的概念和进程的并发（进程之间交替进行）执行" class="headerlink" title="进程的概念和进程的并发（进程之间交替进行）执行"></a>进程的概念和进程的并发（进程之间交替进行）执行</h4><p><strong>Process</strong>（进程，下面为解释）:</p>
+<ul>
+<li>Also called a task（任务）</li>
+<li>Execution of an individual program（程序的执行过程）</li>
+<li>进程是程序在一个数据集合上的运行过程，是系统进行资源分配和调度的一个独立单位</li>
+<li>Can be traced（进程可以被跟踪）<ul>
+<li>list the sequence of instruetions that execute（用他的执行指令的系列来跟踪）</li>
+</ul>
+</li>
+</ul>
+<p><strong>Characteristics of Process（进程的特点）</strong></p>
+<ul>
+<li>Dynamic(动态性：进程是创建了才有，一会儿在执行，一会儿没有执行)</li>
+<li>Concurrency（并发性：多进程是在交替执行的）</li>
+<li>Independent（独立性：之间是独立存在）</li>
+<li>Asynchronous（异步性：进程不是一定要同步执行）</li>
+</ul>
+<p><strong>Process Structure（进程结构）</strong></p>
+<ul>
+<li>Programs（程序：代码的集合）</li>
+<li>Datas（数据）</li>
+<li>PCB（Process Control Block：控制程序的执行）</li>
+</ul>
+<p><strong>Process States（进程的状态）</strong></p>
+<ul>
+<li>进程的并发执行</li>
+<li>进程的2状态</li>
+<li>进程的5状态</li>
+<li>进程的状态转换图</li>
+</ul>
+<blockquote>
+<p>每次中断（时钟中断/I/O中断）之后要执行调度程序（系统进程：所以有两种模式进行，模式切换）</p>
+</blockquote>
+<h4 id="进程的两状态和五状态"><a href="#进程的两状态和五状态" class="headerlink" title="进程的两状态和五状态"></a>进程的两状态和五状态</h4><p><strong>Two-State Process Model（两种状态）</strong></p>
+<ul>
+<li>Process may be in one of two states（进程在这两种状态中的一种）<ul>
+<li>Running（执行）</li>
+<li>Not-running（非执行）</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>注：</p>
+<ul>
+<li>并非所有进程只要Not-running就处于<strong><em>ready（就绪）</em></strong>，有的需要<strong><em>blocked（阻塞）</em></strong>等待I/0完成</li>
+<li>Not-running又可分为<strong><em>ready</em></strong>和<strong><em>blocked</em></strong>两种状态</li>
+</ul>
+</blockquote>
+<p><strong>AFive-State Model(五状态)</strong></p>
+<ul>
+<li>Running（执行）:占用处理机（单处理机环境中，某一时刻仅一个进程占用处理机）</li>
+<li>Ready（就绪）:准备执行</li>
+<li>Blocked（阻塞）:等待某事件发生才能执行，如等待I/O完成等，但是并非被死锁</li>
+<li>New（新状态）：进程已经创建，但未被OS接纳为可执行进程</li>
+<li>Exit（退出）：因停止或取消，被OS从执行状态释放，有的称为”僵死状态”</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/03/16/8YL2jO.png" alt="Five-State Process Model,状态转换图"></p>
+<p><strong>状态转换</strong></p>
+<ul>
+<li>Null → New：新创建进程首先处于新状态</li>
+<li>New → Ready:OS接纳新状态进程为就绪进程</li>
+<li>Ready → Running:OS只能从就绪进程中选一个进程执行</li>
+<li>Running → Exit：执行状态的进程执行完毕，或被取消，则转换为退出状态</li>
+<li>Running → Ready：分时系统中，时间片用完，或优先级高的进程到来，将终止优先级低的进程的执行</li>
+<li>Running → Blocked：执行进程需要等待某事件发生。通常因进程需要的系统调用不能立即完成，而阻塞</li>
+<li>Blocked → Ready：当阻塞进程等待的事件发生，就转换为就绪状态</li>
+<li>Ready → Exit：某些系统允许父进程在任何情况下终止其子进程。若一个父进程终止，其子孙进程都必须终止。</li>
+<li>Blocked → Exit：同前</li>
+</ul>
+<blockquote>
+<p>注：进入阻塞队列（一种事件产生会一个队列，多个事件产生多个队列，就是按照不同的事件分不同的队列）</p>
+</blockquote>
+<h4 id="交换技术-内外存之间交换程序或者数据，挂起状态的产生"><a href="#交换技术-内外存之间交换程序或者数据，挂起状态的产生" class="headerlink" title="交换技术(内外存之间交换程序或者数据，挂起状态的产生)"></a>交换技术(内外存之间交换程序或者数据，挂起状态的产生)</h4><blockquote>
+<p>将内存中暂时不能运行的进程，或暂时不用的数据和程序，<strong>Swapping-ou</strong>t到外存，以腾出足够的内存空间，把已具备运行条件的进程，或进程所需要的数据和程序，<strong>Swapping-in</strong>内存。两种情况：1.进程换出去，状态会变化。2.交换少量的数据和程序，虚拟存储</p>
+</blockquote>
+<h5 id="进程的挂起状态（将内存中暂时不能运行的程序交换到外存而产生的状态）"><a href="#进程的挂起状态（将内存中暂时不能运行的程序交换到外存而产生的状态）" class="headerlink" title="进程的挂起状态（将内存中暂时不能运行的程序交换到外存而产生的状态）"></a>进程的挂起状态（将内存中暂时不能运行的程序交换到外存而产生的状态）</h5><p><strong>Suspended Processes</strong></p>
+<ul>
+<li>Processor is faster than I/O so all processes could be waiting for I/0（所有的进程都在等待I/O）</li>
+<li>Swap these processes to disk to free up more memory（交换这些进程到磁盘上面来释放出内存的空间）</li>
+<li>Blocked state becomes suspend state when swapped to disk（当交换的时候，阻塞态就会变成挂起态）</li>
+</ul>
+<p><strong>被挂起进程的特征</strong></p>
+<ul>
+<li>不能立即执行</li>
+<li>可能是等待某事件发生。若是，则阻塞条件独立于挂起条件，即使阻塞事件发生，该进程也不能执行（阻塞和挂起是两件独立的事，互不影响）</li>
+<li>使之挂起的进程为：自身、其父进程、0S</li>
+<li>只有挂起它的进程才能使之由挂起状态转换为其他状态</li>
+</ul>
+<p><strong>Suspend vs Blocked</strong></p>
+<ul>
+<li>并不是只能挂起阻塞进程，但是优先挂起阻塞进程</li>
+<li>激活挂起进程需要一次I/O过程，将进程从外存拿回内存</li>
+</ul>
+<p><strong>区分</strong></p>
+<ul>
+<li>进程是否等待事件，<strong><em>阻塞与否</em></strong></li>
+<li>进程是否被换出内存，<strong><em>挂起与否</em></strong></li>
+</ul>
+<p><strong>4种状态组合：</strong></p>
+<ul>
+<li>Ready：进程在内存，准备执行</li>
+<li>Bloclked：进程在内存，等待事件</li>
+<li>Ready，Suspend：进程在外存，只要调入内存即可执行</li>
+<li>Blocked，Suspend：进程在外存，等待事件</li>
+</ul>
+<blockquote>
+<p>注：处理机可调度执行的进程有两种：</p>
+<ul>
+<li>新创建的进程</li>
+<li>或换入一个以前挂起的进程</li>
+</ul>
+<p>通常为避免增加系统负载，系统会换入一个以前挂起的进程执行。</p>
+</blockquote>
+<h5 id="具有挂起状态的进程状态转换（七状态）"><a href="#具有挂起状态的进程状态转换（七状态）" class="headerlink" title="具有挂起状态的进程状态转换（七状态）"></a>具有挂起状态的进程状态转换（七状态）</h5><p><img src="https://s1.ax1x.com/2020/03/17/8tXxR1.png" alt="增加了挂起态之后的进程状态转换图"></p>
+<blockquote>
+<p>注：在挂起态仍然能够读取磁盘信息和I/O操作（被挂起的是用户的数据，系统的数据不会被放到外存）</p>
+</blockquote>
+<p><strong>具有挂起状态的进程转换</strong></p>
+<ul>
+<li>Blocked → Blocked，Suspend:OS通常将阻塞进程换出，以腾出内存空间</li>
+<li>Blocked，Suspend → Ready，Suspend：当Blocked，Suspend进程等待的事件发生时，可以将其转换为Ready，Suspend </li>
+<li>Ready，Suspend → Ready:OS需要调入一个进程执行时</li>
+<li>Ready → Ready，Suspend：一般，OS挂起阻塞进程。但有时也会挂起就绪进程，释放足够的内存空间</li>
+<li>New→Ready，Suspend（New Ready）：新进程创建后，可以插入到<strong><em>Ready队列</em></strong>或<strong><em>Ready，Suspend队列</em></strong>。若无足够的内存分配给新进程，则需要New Ready，Suspend</li>
+<li>Blocked，Suspend → Blocked：当Blocked，Suspend队列中有一个进程的阻塞事件可能会很快发生，则可将一个Blocked，Suspend进程换入内存，变为Blocked </li>
+<li>Running → Ready，Suspend：当执行进程的时间片用完时，会转换为Ready。或，一个高优先级的Blocked，Suspend进程正好变为非阻塞状态，OS可以将执行进程转换为Ready，Suspend状态</li>
+<li>All → Exit：通常，Rumning → Exit.但某些OS中，父进程可以终止其子进程，使任何状态的进程都可转换为退出状态</li>
+</ul>
+<h4 id="操作系统如何管理进程所用的资源"><a href="#操作系统如何管理进程所用的资源" class="headerlink" title="操作系统如何管理进程所用的资源"></a>操作系统如何管理进程所用的资源</h4><p><strong>Operating System Control Structures（操作系统控制结构）</strong></p>
+<ul>
+<li>Information about the current status of each process and resource</li>
+<li>Tables are constructed for each entity the operating system manages<ul>
+<li><strong>Memory Tables（里面所记载的信息）</strong><ul>
+<li>Allocation of main memory to processes（将主存分配给进程，记载内存的分配情况，那些内存已经被占用，那些还是空闲）</li>
+<li>Allocation of secondary memory to processes.（记录进程在外存的存储位置和情况）</li>
+<li>Protection attributes for access to shared memory regions（访问共享内存区域的保护属性，进程对共享区的操作权限）</li>
+<li>Information needed to manage virtual memory（管理虚拟存储寻妖的信息）.</li>
+</ul>
+</li>
+<li><strong>I/O Tables</strong><ul>
+<li>I/O device is available or assigned.（I/O设备是否可用，是否已经被分配）</li>
+<li>Status of I/O operation.（I/O操作的状态）</li>
+<li>Location in main memory being used as the source or destination of the I/O transfer.（记录在主存中用作I/O传输的源或目标的位置。）</li>
+</ul>
+</li>
+<li><strong>File Tables</strong><ul>
+<li>Existence of files.（已经存在的文件）</li>
+<li>Location on secondary memory.（文件在外存的位置）</li>
+<li>Current Status.（是否上锁等等）</li>
+<li>Attributes.（属性，谁创建了，什么时候创建的，文件名等等）</li>
+<li>Sometimes this information is maintained by a file-management system.（这些信息都是放在文件管理系统来做）</li>
+</ul>
+</li>
+<li><strong>Process Table</strong><ul>
+<li>Where process is located（进程的位置：程序的位置，数据的位置，pcb的位置）</li>
+<li>Attributes necessary for its management.（管理所需的属性）<ul>
+<li>Process ID（进程ID）</li>
+<li>Process state（进程状态）</li>
+<li>Location in memory（在内存的位置）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>Process Location</strong></p>
+<ul>
+<li>Process includes set of programs to be esecuted.<ul>
+<li>Data locations for local and global variables.</li>
+<li>Any defined constants.</li>
+<li>Stack.</li>
+</ul>
+</li>
+<li>Process control block（PCB）.<ul>
+<li>Collection of attributes.</li>
+</ul>
+</li>
+<li>Process image（进程映像）<ul>
+<li>Collection of program，data，stack，and attributes.    </li>
+</ul>
+</li>
+</ul>
+<p><strong>Process image</strong></p>
+<ul>
+<li>User Data</li>
+<li>User Program</li>
+<li>System Stack：存放系统及过程调用地址、参数</li>
+<li>Process Control Block（PCB）：OS感知进程、控制进程的数据结构</li>
+</ul>
+<blockquote>
+<p>操作系统要对进程所需要的资源，状态，进行记录成表，并且进行分配这些资源，处理来自进程的请求</p>
+</blockquote>
+<h4 id="进程控制块（PCB）"><a href="#进程控制块（PCB）" class="headerlink" title="进程控制块（PCB）"></a>进程控制块（PCB）</h4><p><strong>Process Control Block</strong></p>
+<ul>
+<li><strong><em>简称PCB：</em></strong>是OS控制和管理进程时所用的基本数据结构（系统是通过PCB来感知进程的存在的，所以挂起态的进程的PCB部分不能被放在外存中）</li>
+<li><strong><em>作用：</em></strong>PCB是相关进程存在于系统中的唯一标志；系统根据PCB而感知相关进程的存在。</li>
+<li><strong><em>内容：</em></strong>通常情况下PCB包括<strong><em>IDENTIFY</em></strong>（进程的标识），状态，控制，指针等的信息</li>
+</ul>
+<p><strong>Process Control Block（PCB）</strong></p>
+<ul>
+<li>Process identification<ul>
+<li>Identifiers<ul>
+<li>Identifier of this process（进程ID）</li>
+<li>Identifier of the process that created this process（parent process）（父进程ID）</li>
+<li>User identifier（用户ID）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Processor State Information<ul>
+<li>User-Visible Registers（用户可见寄存器）<ul>
+<li>A user-visible register is one that may bereferenced by means of the machine language that the processor executes.</li>
+<li>Typically，there are from 8 to 32 of these registers，although some RISCC implementations have over 100.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Processor State Information<ul>
+<li>Control and Status Registers <ul>
+<li>There are a variety of processor registers that are employed to control the operation of the processor. These include</li>
+<li><strong>Program counter</strong>: Contains the address of the nest instruction to be fetched.</li>
+<li><strong>Condition codes</strong>: Result of the most recent arithmetic or logical operation(e.g, sign, zero, carry, equal, overflow)</li>
+<li><strong>Staus information</strong>: Includes interrupt enabled/disabled flags, execution mode.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Processor State Information<ul>
+<li>Stack Pointers<ul>
+<li>Each process has one or more last-in-first-out(LIFO)system stacks associated with it.A stack is used to store parameters and calling addresses for procedure and system calls.</li>
+<li>The stack pointer points to the top of the stack.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Process Control Information<ul>
+<li>Scheduling and State Information<ul>
+<li>Process state: defines the readiness of the process to be scheduled for execution(e.g., running, ready, waiting, halted).</li>
+<li>Priority: One or more fields may be used to describe the scheduling priority of the process.</li>
+<li>Scheduling-related information: This will depend on the scheduling algorithm used.</li>
+<li>Event: Identity of event the process is awaiting before it can be resumed</li>
+</ul>
+</li>
+<li>Data Structuring<ul>
+<li>A process may be linked to other process in a queue, ring, or some other structure.</li>
+<li>A process may eshibit a parent-child(creator-created) relationship with another process.</li>
+<li>The process control block may contain pointersto other processes to support these structures.</li>
+</ul>
+</li>
+<li>Interprocess Communication<ul>
+<li>Various flags, signals, and messages may be associated with communication between two independent processes.</li>
+</ul>
+</li>
+<li>Process Privileges<ul>
+<li>Processes are granted privileges in terms of the memory that may be accessed and the types of instructions that may be executed.</li>
+</ul>
+</li>
+<li>Memory Management<ul>
+<li>This section may include pointers to segment and/or page tables that describe the virtual memory assigned to this process.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="操作系统内核功能："><a href="#操作系统内核功能：" class="headerlink" title="操作系统内核功能："></a>操作系统内核功能：</h4><ol>
+<li>Typical Function of an OS Kernel(资源管理功能)<ul>
+<li>Process Management：进程创建和终止、调度、状态转换、同步和通信、管理PCB</li>
+<li>Memory Management：为进程分配地址空间、对换、段/页管理</li>
+<li>I/O Management：缓存管理、为进程分配I/0通道和设备</li>
+</ul>
+</li>
+<li>Typical Function of an OS Kernel（支撑功能）  <ul>
+<li>Interrupt handling（中断处理）</li>
+<li>Timing（时钟管理）</li>
+<li>Primitive（原语）：Atomic Operation（原子性，该操作不能被中断）</li>
+<li>Accounting（统计）</li>
+<li>Monitoring（监测）</li>
+</ul>
+</li>
+</ol>
+<p><strong>Process Control Primitives（原语）</strong></p>
+<ul>
+<li>Process Switch，进程切换</li>
+<li>Create and Terminate，创建与终止</li>
+<li>Block and Wakeup，阻塞与唤醒</li>
+<li>Suspend and Activate，挂起与激活</li>
+</ul>
+<h4 id="原语：进程的切换"><a href="#原语：进程的切换" class="headerlink" title="原语：进程的切换"></a>原语：进程的切换</h4><p><strong>When to Switch a Process（什么时候产生进程的切换）</strong></p>
+<ul>
+<li>Clock interrupt（时钟中断）<ul>
+<li>process has executed for the maximum allowable time slice（时间片）</li>
+</ul>
+</li>
+<li>I/O interrupt</li>
+<li>Memory fault（存储访问失效：主要在虚拟存储里面）<ul>
+<li>memory address is in virtual memory so it must be brought into main memory (当访问的数据不在内存的时候，就中断此进程，等数据进内存之后变就绪状态之后才可以执行)  </li>
+</ul>
+</li>
+<li>Trap（陷阱）<ul>
+<li>error occurred</li>
+<li>may cause process to be moved to Exit state</li>
+</ul>
+</li>
+<li>Supervisor call（管理程序调入）<ul>
+<li>such as file open（前一个进程被中断，进行切换进程）</li>
+</ul>
+</li>
+</ul>
+<p><strong>Change of Process State</strong></p>
+<ul>
+<li><strong>Save context</strong> of processor including program counter and other registers（保存到堆栈里面—堆栈在PCB里面，所以要更新PCB的内容）</li>
+<li>Update the PCB of the process that is currently running</li>
+<li>Move PCB to appropriate queue-ready, blocked （将这个进程的PCB移到合适的队列，就绪队列和阻塞队列）</li>
+<li>Select another process for execution（启动调度程序：开始调度进程，调度新的进程来执行）</li>
+<li>Update the PCB of the process seelected(这个选中的进程的PCB的内容也要更新，比如进程的状态就要从就绪变成Running)</li>
+<li>Update memory-management data structure(内存管理的数据结构也要进行修改，进程的改变，会需要不同的内存空间和资源，变量等等)</li>
+<li><strong>Restore context</strong> of the selected process(恢复被选中进程的执行现场，将其PCB里面相应的数据读到相应的寄存器里面)</li>
+</ul>
+<h5 id="进程切换和模式切换的比较"><a href="#进程切换和模式切换的比较" class="headerlink" title="进程切换和模式切换的比较"></a>进程切换和模式切换的比较</h5><p><strong>Process Switching vs Mode Switching</strong></p>
+<ul>
+<li><strong><em>Process Switch</em></strong>，是作用于进程之间的一种操作。当分派程序收回当前进程的CPU并准备把它分派给某个就绪进程时，该操作将被引用。</li>
+<li><strong><em>Mode Switch</em></strong>，是进程内部所引用的一种操作。当进程映像所包含的程序引用核心子系统所提供的系统调用时，该操作将被引用。(从用户态转到系统态，再转回用户态，就是在用户态下遇到要进行系统调用，这时就会执行上面的步骤)</li>
+</ul>
+<blockquote>
+<p>软中断：在用户态下运行，遇到系统调用时，需要从用户态切换到系统态，切换到系统态为了保护系统的数据不受非法的修改，在此时会做一个你进入系统的目的，访问什么数据，是否有相应的权限的审核，这个审核过程就称作软中断，如果审核通过，执行就从用户态转到系统态下面去执行，执行完毕，就会返回用户态，这个就叫做模式切换（用户态 → 系统态 → 用户态）</p>
+</blockquote>
+<blockquote>
+<p>进程切换一定要用到模式切换，因为进程切换的时候一定要执行调度程序，而调度程序是系统的，要进入到系统态下面去执行，另外你进行进程切换的时候一定有中断，中断也是在系统态下面执行的，所以<strong><em>进程切换的时候一定有模式切换</em></strong>但是<strong><em>模式切换不一定有进程切换</em></strong></p>
+</blockquote>
+<p>操作系统的内核是怎么来操作那些表的，操作系统有自己的相关进程？？？？？？？</p>
+<h4 id="原语：进程的创建与终止"><a href="#原语：进程的创建与终止" class="headerlink" title="原语：进程的创建与终止"></a>原语：进程的创建与终止</h4><p><strong>Process Creation</strong></p>
+<ul>
+<li>Submission of a batch job（提交批处理作业）</li>
+<li>User logs on（用户注册）</li>
+<li>Created to provide a service such as printing（为提供服务(如打印)而创建的）</li>
+<li>Process creates another process（进程创建另一个进程，如父进程创建其子进程）</li>
+</ul>
+<p><strong>Process Creation（creat()原语，步骤）</strong></p>
+<ol>
+<li><strong><em>为进程分配一个唯一标识号ID</em></strong>：主进程表中增加一个新的表项</li>
+<li><strong><em>为进程分配空间</em></strong>：用户地址空间、用户栈空间、PCB空间。若共享已有空间，则应建立相应的链接。</li>
+<li><strong><em>初始化PCB</em></strong>：进程标识、处理机状态信息、进程状态</li>
+<li><strong><em>建立链接</em></strong>：若调度队列是链表，则将新进程插入到就绪或（就绪，挂起）链表</li>
+<li><strong>*建立或扩展其他数据结构 *</strong></li>
+</ol>
+<p><strong>Process Termination（终止）</strong></p>
+<ul>
+<li>Batch job issues Halt instruction</li>
+<li>User logs off</li>
+<li>Quit（退出）an application</li>
+<li>Error and fault conditions</li>
+</ul>
+<p><strong>Reasons for Process Termination(终止的原因)</strong></p>
+<ul>
+<li>Normal completion，正常结束</li>
+<li>Time limit exceeded，超时终止，执行时间超过预计时间</li>
+<li>Memory unavailable，内存不足，无法为进程分配所需的内存空间</li>
+<li>Bounds violation，越界访问</li>
+<li>Protection error，企图使用未允许用的数据，或操作方式错</li>
+<li>Arithmetic error，计算错，如除零，或企图存储硬件允许的最大数</li>
+<li>I/O failure，如找不到文件或多次重试仍无法读写文件，或无效操作</li>
+<li>Invalid instruction，企图执行不存在的指令</li>
+<li>Privileged instruction，企图执行特权指令</li>
+<li>Data misuse，数据类型不符，或未初始化</li>
+<li>Operating system intervention，操作员或OS干预，如发生死锁的时候</li>
+<li>Parent terminates so child processes terminate（父进程终止，所以子进程也终止）</li>
+<li>Parent request（父进程要求）</li>
+</ul>
+<p><strong>Process Termination（destroy0原语，步骤）</strong></p>
+<ol>
+<li>根据被终止进程的标识符ID，找到其PCB，读出该进程的状态；</li>
+<li>若该进程为执行状态，则终止其执行，调度新进程执行；</li>
+<li>若该进程有子孙进程，则立即终止其所有子孙进程</li>
+<li>将该进程的全部资源，或归还给其父进程，或归还给系统</li>
+<li>将被终止进程（的PCB）从所在的队列中移出，等待其它程序来搜集信息</li>
+</ol>
+<h4 id="线程概述"><a href="#线程概述" class="headerlink" title="线程概述"></a>线程概述</h4><p><strong>Thread（线程）</strong></p>
+<ul>
+<li>An execution state(running, ready, etc.)（程序执行的过程）</li>
+<li>Saved thread context when not running.（线程被中断的时候也会被保存其上下文）</li>
+<li>Has an execution stack.（有自己的执行堆栈）</li>
+<li>Some per-thread static storage for local variables.（线程也有少量的关于局部变量的存储空间，是其私有的资源，较少）</li>
+<li>Access to the memory and resources of its process.（线程是访问他进程的存储空间和资源的）<ul>
+<li>all threads of a process share this.（，一个进程创建若干线程，一个进程的所有线程都共享这些资源）</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>线程和进程都是程序的执行过程，但是有不同之处，<br>区别：<strong><em>进程是资源分配单位，线程是调度单位</em></strong>线程不再拥有大量的资源，线程共享了进程的资源</p>
+</blockquote>
+<p><strong>Benefits of Threads（线程的好处）</strong></p>
+<ul>
+<li>Takes less time to create a new thread than a process.(创建一个线程比创建一个进程所用的时间更少)</li>
+<li>Less time to terminate a thread than a process.（终止一个线程比终止一个进程所用的时间更少）</li>
+<li>Less time to switch between two threads within the same process.（在同一个进程里面线程的切换更加省时间,但是还是会有不同进程之间的线程的切换）</li>
+<li>Since threads within the same process share memory and files, they can communicate with each other without invoking the kernel.(由于同一进程中的线程共享内存和文件，因此它们可以在不调用内核的情况下彼此通信，<strong>激发内核就是有进行模式切换</strong>)</li>
+</ul>
+<p><strong>Thread</strong></p>
+<ul>
+<li>Suspending a process involves suspending all threads of the process,挂起进程会挂起他的所有线程（因为挂起进程会将其程序数据保存到外存，所以共享了其数据的线程也会被挂起）<ul>
+<li>since all threads share the same address space.(因为所有的线程共享了相同地址空间)</li>
+</ul>
+</li>
+<li>Termination of a process, terminates all threads within the process.（进程的终止，终止进程内的所有线程）</li>
+</ul>
+<h4 id="操作系统对多线程的支持"><a href="#操作系统对多线程的支持" class="headerlink" title="操作系统对多线程的支持"></a>操作系统对多线程的支持</h4><p>Unix系统:多用户多进程（多线程）<br>Windows和Linux：多用户多任务（这个任务指的是线程）是单进程多线程的，只有一个初始进程（init）</p>
+<h4 id="线程状态和线程分类"><a href="#线程状态和线程分类" class="headerlink" title="线程状态和线程分类"></a>线程状态和线程分类</h4><h5 id="Thread-States（PCB与TCB）"><a href="#Thread-States（PCB与TCB）" class="headerlink" title="Thread States（PCB与TCB）"></a>Thread States（PCB与TCB）</h5><ul>
+<li>Key states for a thread: <strong><em>Running</em></strong>, <strong><em>Ready</em></strong>, <strong><em>Blocked</em></strong></li>
+<li>Operations associated with a change in thread state.<ul>
+<li>Spawn（派生,即创建），Spawn another thread</li>
+<li>Block</li>
+<li>Unblock（消除阻塞）</li>
+<li>Finish（完成状态）</li>
+</ul>
+</li>
+</ul>
+<p><strong>User-Level Threads（用户级的线程，Java 虚拟机里面创建的线程）</strong></p>
+<ul>
+<li>All thread management is done by the application.（在应用程序里面完成线程的管理）</li>
+<li>The kernel is not aware of the existence of threads.（内核不知道这些线程的存在，这种用户级的线程，只有用户看得见，内核不知道，内核里面不一定有TCB）</li>
+<li>描述此类线程的数据结构以及控制此类线程的原语在核外子系统中实现。（核外子系统就是用户态，在用户应用程序的模式下运行，用户模式下运行）</li>
+</ul>
+<p><strong>Kernel-Level Threads（内核级的线程，Linux和Windows，而且是单进程的）</strong></p>
+<ul>
+<li>W2K，Linux，and OS/2 are of this approach（方式）.</li>
+<li>Kernel maintains context information for the process and the threads.（内核维护进程和线程的上下文信息）</li>
+<li>Scheduling is done on a thread basis.（调度是基于线程本身的）</li>
+<li>描述此类线程的数据结构以及控制此类线程的原语在<strong><em>核心子系统</em></strong>中实现。（在核心子系统中创建这些线程TCB）</li>
+</ul>
+<p><strong>Combined Approaches（组合方式）</strong></p>
+<ul>
+<li>Example is Solaris</li>
+<li>Thread creation done in the user space.</li>
+<li>Bulk（大批）of scheduling and synchronization of threads done in the user space.</li>
+</ul>
+<blockquote>
+<p>注：多线程的出现就是为了提供多任务并发，又能保证系统的开销要小</p>
+</blockquote>
+<h4 id="系统实例分析"><a href="#系统实例分析" class="headerlink" title="系统实例分析"></a>系统实例分析</h4><h5 id="UNIX的进程管理（多进程多线程）"><a href="#UNIX的进程管理（多进程多线程）" class="headerlink" title="UNIX的进程管理（多进程多线程）"></a>UNIX的进程管理（多进程多线程）</h5><p>省略</p>
+<h5 id="Linux的进程管理（单进程多线程）"><a href="#Linux的进程管理（单进程多线程）" class="headerlink" title="Linux的进程管理（单进程多线程）"></a>Linux的进程管理（单进程多线程）</h5><p>省略</p>
+<h4 id="专业术语"><a href="#专业术语" class="headerlink" title="专业术语"></a>专业术语</h4><p>【1】schedule（调度程序）/dispatch（分派程序）两者的角度不同<br>【2】swapping（对换技术，交换技术）<br>【3】Suspend（暂停，即挂起）<br>【4】Activate（激活）<br>【5】Blocked（阻塞态）<br>【6】Release（释放）<br>【7】Admin（管理）<br>【8】processor（处理器）<br>【9】process image（进程映像）<br>【10】virtual memory（虚拟存储）<br>【11】secondary memory（外存，磁盘，单memory一般指内存）<br>【12】Attributes（属性）<br>【13】registers（寄存器）<br>【14】executed（执行）<br>【15】local variables（局部变量）<br>【16】Access（访问）<br>【17】Termination（终止）<br>【18】Multithreading（多线程）</p>
+
             </div>
             <hr/>
 
@@ -869,7 +1331,7 @@
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">106.5k</span>
+                <span class="white-color">111.9k</span>
             
 
             
