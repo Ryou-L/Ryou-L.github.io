@@ -1,0 +1,1340 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="Operating System(3), 何必酷">
+    <meta name="description" content="操作系统–进程管理–进程调度进程调度的概述Process Scheduling
+
+Types of scheduling（调度方式）
+Scheduling Criteria（准则）
+Scheduling Algorithms（调度算法）
+R">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Operating System(3) | 何必酷</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+        code[class*="language-"], pre[class*="language-"] {
+            white-space: pre !important;
+        }
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">何必酷</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">何必酷</div>
+        <div class="logo-desc">
+            
+            make a friend
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/RyouLmusic" class="waves-effect waves-light" target="_blank">
+                <i class="fa fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/RyouLmusic" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.pixabay.com/photo/2020/03/08/07/51/stairs-4911677_960_720.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        Operating System(3)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/OS/" target="_blank">
+                                <span class="chip bg-color">OS</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Operating-System/" class="post-category" target="_blank">
+                                Operating System
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-03-19
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        5.2k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        19 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="操作系统–进程管理–进程调度"><a href="#操作系统–进程管理–进程调度" class="headerlink" title="操作系统–进程管理–进程调度"></a>操作系统–进程管理–进程调度</h1><h4 id="进程调度的概述"><a href="#进程调度的概述" class="headerlink" title="进程调度的概述"></a>进程调度的概述</h4><p><strong>Process Scheduling</strong></p>
+<ul>
+<li>Types of scheduling（调度方式）</li>
+<li>Scheduling Criteria（准则）</li>
+<li>Scheduling Algorithms（调度算法）</li>
+<li>Real-Time Scheduling（实时调度）</li>
+</ul>
+<h5 id="learn-objective（学习目标）"><a href="#learn-objective（学习目标）" class="headerlink" title="learn objective（学习目标）"></a>learn objective（学习目标）</h5><ul>
+<li>Explain what’s Response Time（响应时间：分时系统里面），Turnaround time（周转时间：批处理系统，提交到完成的时间，包括在队列里面等待的时间），Deadlines（截止时间：实时系统），Throughput（吞吐量：批处理系统）</li>
+<li>理解进程调度的目标、类型、原则</li>
+<li>理解Decision Mode:Nonpreemptive（非剥夺：强制剥夺的是CPU的资源）&amp;Preemptinve（剥夺）</li>
+<li>研究经典进程调度算法：FCFS.Round Robin（轮转），Shortest Process Next（进程最短的优先），Shortest Remaining Time（剩余时间最短优先），Highest Response Ratio Next（响应比高的优先），Feedback（反馈调度法）</li>
+<li>理解Real-Time Systems及类型</li>
+<li>理解掌握：Real-Time Scheduling，Deadline Scheduling，Rate Monotonic Scheduling（速度单调）</li>
+</ul>
+<h4 id="调度的类型"><a href="#调度的类型" class="headerlink" title="调度的类型"></a>调度的类型</h4><p><strong>Aim of Scheduling（调度的目标）</strong></p>
+<ul>
+<li>Response time（响应时间，时间要短）</li>
+<li>Throughput（系统吞吐量：吞吐量要大）</li>
+<li>处理机的效率要高</li>
+<li>调度的公平性要好，防止产生进程饥饿</li>
+</ul>
+<blockquote>
+<p>进程饥饿：进程长时间得不到调度，没有得到服务</p>
+</blockquote>
+<blockquote>
+<p>在磁盘外存里面的是<strong>作业，任务</strong>的概念，到了内存里面才是<strong>进程</strong></p>
+</blockquote>
+<h5 id="Types-of-Scheduling（调度类型）"><a href="#Types-of-Scheduling（调度类型）" class="headerlink" title="Types of Scheduling（调度类型）"></a>Types of Scheduling（调度类型）</h5><ul>
+<li><strong>按0S的类型划分：</strong><ul>
+<li>批处理调度、分时调度、实时调度、多处理机调度</li>
+</ul>
+</li>
+<li><strong>按调度的层次划分：</strong><ul>
+<li>Long-term scheduling（长程调度）</li>
+<li>Medium-term scheduling（中程调度）</li>
+<li>Short-term scheduling（短程调度）</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/03/19/8sBhUx.md.png" alt></p>
+<blockquote>
+<p>短程调度在内存里面完成，中程调度在内外存之间，长程调度是基于作业的，将外存的作业调度到内存里面，创建一个新的线程</p>
+</blockquote>
+<blockquote>
+<p>通常的阻塞队列回到就绪队列不需要通过调度，磁盘调度例外</p>
+</blockquote>
+<h4 id="进程调度的类型：长、中、短程调度"><a href="#进程调度的类型：长、中、短程调度" class="headerlink" title="进程调度的类型：长、中、短程调度"></a>进程调度的类型：长、中、短程调度</h4><h5 id="Long-term-scheduling"><a href="#Long-term-scheduling" class="headerlink" title="Long-term scheduling"></a>Long-term scheduling</h5><ul>
+<li>又称为<strong>高级潮度、作业调度</strong>，它为被调度作业或用户程序创建进程、分配必要的系统资源，并将新创建的进程插入<strong>就绪队列</strong>，等待Short-term scheduling</li>
+<li>Determines <strong>which</strong> programs are admitted to the system for processing(确定系统允许哪些程序进行处理)<ul>
+<li>这取决于调度算法，如FCFS、短作业优先、基于优先权、响应比高者优先等调度算法</li>
+</ul>
+</li>
+<li><strong>How many</strong> programs are admitted to the system?(允许多少个进程进入系统)<ul>
+<li>Controls the degree of multiprogramming （由系统的性能来决定的，要控制多道程序的度）</li>
+</ul>
+</li>
+<li><strong>When</strong> does the scheduler be invoked?（什么时候会启动作业调度）<ul>
+<li>Each time a job terminates（有作业终止，可以装新的进来）</li>
+<li>Processor is idle exceeds a certain threshold（处理器空闲超过某个阈值）</li>
+</ul>
+</li>
+</ul>
+<h5 id="Medium-term-scheduling（pc机，Windows-Linux不支持这种调度）"><a href="#Medium-term-scheduling（pc机，Windows-Linux不支持这种调度）" class="headerlink" title="Medium-term scheduling（pc机，Windows,Linux不支持这种调度）"></a>Medium-term scheduling（pc机，Windows,Linux不支持这种调度）</h5><ul>
+<li>又称为<strong>中级调度</strong>，它调度换出到磁盘的进程进入内存，准备执行</li>
+<li><strong>中程调度</strong>配合<strong>对换技术</strong>使用。</li>
+<li>其目的是为了提高内存的利用率和系统吞吐量。</li>
+<li>在多道程序度允许的情况下，从外存选择一个挂起状态的进程调度到内存（换入）</li>
+</ul>
+<h5 id="Short-term-scheduling"><a href="#Short-term-scheduling" class="headerlink" title="Short-term scheduling"></a>Short-term scheduling</h5><ul>
+<li>又称为<strong>进程调度，低级调度</strong>，调度内存中的就绪进程执行。</li>
+<li>Known as the dispatcher：决定就绪队列<strong><em>Which</em></strong>进程将获得处理机</li>
+<li>Executes most frequently(执行次数最频繁)</li>
+<li>Invoked when an event occurs<ul>
+<li>Clock interrupts（时钟中断）</li>
+<li>I/O interrupts（I/O中断）</li>
+<li>Operating system calls</li>
+<li>Signals（信号，信号发生的时候会有新进程）</li>
+</ul>
+</li>
+</ul>
+<h4 id="进程调度（短程调度）"><a href="#进程调度（短程调度）" class="headerlink" title="进程调度（短程调度）"></a>进程调度（短程调度）</h4><h5 id="User-oriented（面向用户）"><a href="#User-oriented（面向用户）" class="headerlink" title="User-oriented（面向用户）"></a>User-oriented（面向用户）</h5><ul>
+<li><strong>Response Time（响应时间）</strong><ul>
+<li>Elapsed time between the submission of a request until there is output.（请求提交到输出之间的运行时间）</li>
+<li>常用于评价分时系统的性能。</li>
+</ul>
+</li>
+<li><strong>Turnaround time（周转时间）：很多都是在队列里面等待所花的时间</strong><ul>
+<li>是指从作业提交给系统开始，到作业完成为止的这段时间间隔（也称为作业周转时间）</li>
+<li>常用于评价批处理系统的性能。</li>
+</ul>
+</li>
+<li><strong>Deadlines（截止时间）：不一定能保证控制成功</strong><ul>
+<li>是指某任务必复始益查的最迟时间（Starting deadline），或必复完成的最迟时间（Completion deadline）</li>
+<li>常用于评价实时系统的性能。</li>
+</ul>
+</li>
+</ul>
+<h5 id="System-oriented（面向系统）"><a href="#System-oriented（面向系统）" class="headerlink" title="System-oriented（面向系统）"></a>System-oriented（面向系统）</h5><ul>
+<li><strong>Throughput（吞吐量）</strong><ul>
+<li>单位时间内系统所完成的作业数（尽量提高其吞吐量）</li>
+<li>用于评价批处理系统的性能</li>
+</ul>
+</li>
+<li><strong>处理机利用率</strong><ul>
+<li>This is the percentage of time that the processor is busy.（这是处理器繁忙的时间百分比）</li>
+<li>Effective and efficient utilization of the processor.（对处理器的有效利用）</li>
+</ul>
+</li>
+<li><strong>Balancing Resource（资源平衡</strong>：作业调度可以现在偏于I/O或偏于计算的，可以做到资源平衡使用，进程调度无法考虑这个问题）<ul>
+<li>Keep the resources of the system busy.（）</li>
+<li>适用于长程调度和中程调度</li>
+</ul>
+</li>
+<li>Fairness（公平性）<ul>
+<li>Process should be treated the same，and no process should suffer starvation.（没有进程处于饥饿状态）</li>
+</ul>
+</li>
+</ul>
+<h5 id="Priorities"><a href="#Priorities" class="headerlink" title="Priorities"></a>Priorities</h5><ul>
+<li>Scheduler will always choose a process of higher priority over one of lower priority.（选择优先级高的进程先进行运行）</li>
+<li>Have multiple Ready queues to represent each level of priority.（根据不同的优先级来设置不同的就绪队列）</li>
+<li>Lower-priority may suffer starvation.（这样处理就有可能使优先级低的进程进入饥饿状态）<ul>
+<li>allow a process to change its priority based on its age（生存期）or execution history.（通过允许进程通过他自身存在的生存时间来改变其优先级）</li>
+</ul>
+</li>
+</ul>
+<h4 id="处理机和CPU区别"><a href="#处理机和CPU区别" class="headerlink" title="处理机和CPU区别"></a>处理机和CPU区别</h4><blockquote>
+<p><strong>处理机</strong><br>处理机是计算机系统中存储程序和数据，并按照程序规定的步骤执行指令的部件。程序是描述处理机完成某项任务的指令序列。指令则是处理机能直接解释、执行的信息单位。<strong><em>处理机包括中央处理器（cpu），主存储器,输入-输出接口。</em></strong>处理机加接外围设备就构成完整的计算机系统</p>
+</blockquote>
+<blockquote>
+<p><strong>CPU</strong><br>中央处理器（CPU，Central Processing Unit）是一块超大规模的集成电路，是一台计算机的运算核心（Core）和控制核心（ Control Unit）。它的功能主要是解释计算机指令以及处理计算机软件中的数据。</p>
+</blockquote>
+<h4 id="先来先服务算法"><a href="#先来先服务算法" class="headerlink" title="先来先服务算法"></a>先来先服务算法</h4><h5 id="Decision-Mode（决策模式）"><a href="#Decision-Mode（决策模式）" class="headerlink" title="Decision Mode（决策模式）"></a>Decision Mode（决策模式）</h5><ul>
+<li><strong>Nonpreemptive（非剥夺方式）</strong><ul>
+<li>Once a process is in the running state，it will continue until it terminates or blocks itself for I/O.（一旦一个进程进入Running状态，除非是自己执行完毕或者自身要进行I/O阻塞，否则不会被中断）</li>
+<li>主要用于批处理系统。（减少了中断次数，减少运行周期的时间）</li>
+</ul>
+</li>
+<li><strong>Preemptive（剥夺方式）</strong><ul>
+<li>Currently running process may be interrupted and moved to the Ready state by the operating system（正在运行的进程可能被系统强制中断，进入到就绪状态）</li>
+<li>Allows for better service since any one process cannot monopolize the processor for very long.（允许更好的服务，因为任何一个进程都不可能长时间独占处理器，可以及时响应优先级高的进程）</li>
+<li>主要用于实时性要求较高的实时系统及性能要求较高的批处理系统和分时系统。</li>
+</ul>
+</li>
+</ul>
+<h5 id="First-Come-First-Served（FCFS）"><a href="#First-Come-First-Served（FCFS）" class="headerlink" title="First-Come-First-Served（FCFS）"></a>First-Come-First-Served（FCFS）</h5><ul>
+<li>A short process may have to wait a very long time before it can execute.</li>
+<li>Favors（有利于） CPU-bound（CPU型，即计算型的，需要用到大量的CPU资源） processes.<ul>
+<li>I/O processes have to wait until CPU-bound process completes.</li>
+</ul>
+</li>
+<li>不需要估计服务时间</li>
+</ul>
+<p><strong>FCFS算法的实际应用</strong></p>
+<ul>
+<li>一般，FCFS与其他调度算法混合使用。</li>
+<li>系统可以按照不同的优先级维护多个就绪队列，每个队列内部按照FCFS算法调度。</li>
+</ul>
+<h4 id="其他调度算法"><a href="#其他调度算法" class="headerlink" title="其他调度算法"></a>其他调度算法</h4><h5 id="Round-Robin（Virtual-round-robin）轮转调度法"><a href="#Round-Robin（Virtual-round-robin）轮转调度法" class="headerlink" title="Round Robin（Virtual round robin）轮转调度法"></a>Round Robin（Virtual round robin）轮转调度法</h5><ul>
+<li>轮转调度法：轮转调度就是希望能够兼顾各个进程都能得到一些服务，给所有的进程都是一个固定长的时间片，计时时间片开始，那么进程开始执行，时间片一到，就中止执行，然后调度下一个进程</li>
+<li>虚拟轮转调度：希望改进I/O型的进程不要在排队花太长时间，多设置一个就绪队列，是经过一个完整的时间片（Time out）的进程返回到原来的就绪队列排队，而经过I/O过程之后的进程进入到优先级较高的队列进行排队，</li>
+<li>不需要估计服务时间</li>
+</ul>
+<h5 id="Shortest-Process-Next（短进程优先）"><a href="#Shortest-Process-Next（短进程优先）" class="headerlink" title="Shortest Process Next（短进程优先）"></a>Shortest Process Next（短进程优先）</h5><ul>
+<li>短进程优先进行</li>
+<li>这样短进程过多的时候，就会使长进程等待的时间过多</li>
+<li>需要估计服务时间</li>
+</ul>
+<h5 id="响应比高者优先（理想化，算这个响应比太过耗资源）"><a href="#响应比高者优先（理想化，算这个响应比太过耗资源）" class="headerlink" title="响应比高者优先（理想化，算这个响应比太过耗资源）"></a>响应比高者优先（理想化，算这个响应比太过耗资源）</h5><ul>
+<li>响应比 = （进程服务时间 + 等待时间）/ 进程服务时间</li>
+<li>等待时间长的先执行</li>
+<li>需要估计服务时间</li>
+</ul>
+<h5 id="Feedback（反馈调度法）"><a href="#Feedback（反馈调度法）" class="headerlink" title="Feedback（反馈调度法）"></a>Feedback（反馈调度法）</h5><ul>
+<li>反馈调度法：准备多个就绪队列，每个队列的每个时钟的时间片逐渐升高，刚进来的进程都在第一个队列排队，在经过一个时间片的执行之后，如果该进程没有执行完毕，就会进入下一个队列排队，再经过一个时间片的执行，还没有完成，就会再进入更下一个的队列排队，其优先级越来越低，第一个队列的优先级最高</li>
+</ul>
+<h4 id="实时系统与实时任务"><a href="#实时系统与实时任务" class="headerlink" title="实时系统与实时任务"></a>实时系统与实时任务</h4><p>Real-Time Scheduling（实时调度）</p>
+<h5 id="Real-Time-Systems"><a href="#Real-Time-Systems" class="headerlink" title="Real-Time Systems"></a>Real-Time Systems</h5><ul>
+<li>Correctness of the system depends not only on the logical result of the computation but also on the time at which the results are produced.（系统的正确性不仅取决于计算的逻辑结果，而且取决于产生结果的时间。）</li>
+<li><strong>Tasks or processes</strong> attempt to control or react to events that take place in the outside world.（在这个系统里面，任务和进程没有区分）</li>
+<li>These events occur in “real time”and process must be able to keep up with them.（事件是实时发生的，进程能够跟得上）</li>
+</ul>
+<p><strong>使用的实例</strong></p>
+<ul>
+<li>Control of laboratory experiments(实验室实验控制)</li>
+<li>Process control plants</li>
+<li>Robotics</li>
+<li>Air traffic control</li>
+<li>Telecommunications</li>
+<li>Military command and control systems</li>
+</ul>
+<blockquote>
+<p>实时系统：指能及时响应外部事件的请求，在规定的时间内完成对该事件的处理，并控制所有实时任务协调一致地运行的计算机系统。</p>
+</blockquote>
+<blockquote>
+<ul>
+<li><strong>实时控制系统</strong>，指要求进行实时控制的系统。用于生产过程的控制，实时采集现场数据，并对所采集的数据进行及时处理。如飞机的自动驾驶系统，以及导弹的制导系统等。</li>
+<li><strong>实时信息处理系统</strong>，指能对信息进行实时处理的系统。典型的实时信息处理系统有：飞机订票系统、情报检索系统等。</li>
+</ul>
+</blockquote>
+<h5 id="Real-time-Task-实时任务"><a href="#Real-time-Task-实时任务" class="headerlink" title="Real-time Task(实时任务)"></a>Real-time Task(实时任务)</h5><ul>
+<li><strong>按任务执行时是否呈现周期性来划分</strong><ul>
+<li>periodic（周期性）实时任务</li>
+<li>aperiodic（非周期性）实时任务，必须联系着一个deadline</li>
+</ul>
+</li>
+<li><strong>根据对截止时间的要求来划分</strong><ul>
+<li>hard real-time task（硬实时任务），系统必须满足任务对截止时间的要求，否则可能出现难以预测的结果。</li>
+<li>soft real-time task（软实时任务）</li>
+</ul>
+</li>
+</ul>
+<h5 id="Characteristics-of-Real-Time-Operating-Systems（实时操作系统的特征）"><a href="#Characteristics-of-Real-Time-Operating-Systems（实时操作系统的特征）" class="headerlink" title="Characteristics of Real-Time Operating Systems（实时操作系统的特征）"></a>Characteristics of Real-Time Operating Systems（实时操作系统的特征）</h5><ul>
+<li>Deterministic（确定性）<ul>
+<li>Operations are performed at fixed，predetermined times or within predetermined time intervals.(操作是在固定的、预定的时间或预定的时间间隔内执行的)</li>
+<li>Concerned with how long the operating system delays before acknowledging an interrupt.（获取一个中断之后，要多久才去响应）</li>
+</ul>
+</li>
+<li>Responsiveness(响应性)<ul>
+<li>How long, after acknowledgment, it takes the operating system to service the interrupt.</li>
+<li>Includes amount of time to begin execution of the interrupt.（包括开始执行中断所需的时间）</li>
+<li>Includes the amount of time to perform the interrupt.（包括执行中断的时间。）</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>中断处理过程：系统收到中断以后会进行个判优，获取中断号，然后根据中断号获取中断向量表地址，（中间的查询方式有向量方式和非向量方式）得到地址之后就会跳转到中断处理程序，这个期间要进行一个中断引指令（作用：保存断点，转向中断程序）中断要保存现场，处理完毕之后要恢复现场，开中断，然后返回中断断点</p>
+</blockquote>
+<blockquote>
+<p>系统必须要预设好系统自身能处理哪些中断例程</p>
+</blockquote>
+<h5 id="Features-of-Real-Time-Operating-Systems"><a href="#Features-of-Real-Time-Operating-Systems" class="headerlink" title="Features of Real-Time Operating Systems"></a>Features of Real-Time Operating Systems</h5><ul>
+<li>Fast context switch</li>
+<li>Small size </li>
+<li>Ability to respond to external interrupts quickly.</li>
+<li>Multitasking with interprocess communicationtools such as semaphores，signals and events.（使用进程间通信工具(如信号量、信号和事件)进行多任务处理。）</li>
+<li>Files that accumulate（存储）data at a fast rate.</li>
+<li>Use of special sequential files that can accumulate data at a fast rate.（按照某种顺序来存储文件，尽量提高速度）</li>
+<li>Preemptive scheduling base on priority.(基于优先级的抢占式调度)</li>
+<li>Minimization of intervals during which interrupts are disabled.(最小化禁用中断的间隔。)</li>
+<li>Delay tasks for fixed amount of time.(不可能一直等待反馈信息，一段时间没有接收到，就会进行相应的处理)</li>
+<li>Special alarms and timeouts（报警和超时处理）.</li>
+</ul>
+<h4 id="实时系统的调度"><a href="#实时系统的调度" class="headerlink" title="实时系统的调度"></a>实时系统的调度</h4><p><strong>Scheduling of a Real-Time Process</strong></p>
+<ul>
+<li>Real-Time Scheduling</li>
+<li>Deadline Scheduling</li>
+<li>Rate Monotonic Scheduling</li>
+</ul>
+<p><strong>Scheduling of a Real-Time Process（实时进程的调度）</strong></p>
+<ul>
+<li>Round Robin Preemptive Scheduler（基于时间片的轮转调度法）<ul>
+<li>响应时间在秒级</li>
+<li>广泛应用于分时系统，也可用于一般的实时信息处理系统</li>
+<li>不适合于要求严格的实时控制系统。</li>
+</ul>
+</li>
+<li>Priority-driven Nonpreemptive Scheduler（基于优先级非剥夺调度法）<ul>
+<li>为实时任务赋予较高的优先级，将它插入就绪队列队首，只要正在执行的进程释放Processor，则立即调度该实时任务执行。</li>
+<li>响应时间一般在邀百毫秒至教秘范围。</li>
+<li>多用于多道批处理系统，也可以用于要求不太严格的实时系统。</li>
+</ul>
+</li>
+<li>Priority-driven Preemptive Scheduler（基于优先级的剥夺调度法）<ul>
+<li>当实时任务到达后，可以在时钟中断时，剥夺正在执行的低优先级进程的执行，调度执行高优先级的任务</li>
+<li>响应时间较短，一般在几士毫秒或几毫秒。</li>
+</ul>
+</li>
+<li>Immediate Preemptive Scheduler（立即剥夺调度法）<ul>
+<li>要求操作系统具有快速响应外部事件的能力。一旦出现外部中断，只要当前任务未处于临界区，便立即剥夺其执行，把处理机分配给请求中断的紧迫任务。（并不是能立刻中断的，比如原语进程）</li>
+<li>调度时延可以降至100激秒，甚至更低。</li>
+</ul>
+</li>
+</ul>
+<p><strong>Aim of Real-Time scheduling（实时调度的目标）</strong></p>
+<ul>
+<li><strong><em>hard real-time task</em></strong>，在其规定的截止时间内完成尽可能使<strong><em>soft real-time task</em></strong>也能在规定的截止时间内完成。</li>
+<li>公平性和最短平均响应时间等要求已不再重要。</li>
+<li>但是，大多数现代实时操作系统无法直接处理任务的截止时间，它们只能尽量提高响应速度，以尽快地调度任务。</li>
+</ul>
+<h5 id="Real-Time-Scheduling"><a href="#Real-Time-Scheduling" class="headerlink" title="Real-Time Scheduling"></a>Real-Time Scheduling</h5><ul>
+<li>Statie table-driven（静态表驱动调度法）（建立一张表，这张表里面要记载你哪个实时任务何时到，你的截止时间是什么时候，每次调度的时候查询这张表来决定下一次调度哪个任务来执行）<ul>
+<li>Determines at run time when a task begins execution.</li>
+</ul>
+</li>
+<li>Static priority-driven preemptive（静态优先级剥夺调度法）<ul>
+<li>Traditional priority-driven scheduler is used.</li>
+</ul>
+</li>
+<li>Dynamie planning-based（动态计划调度法）</li>
+<li>Dynamic best effort（动态最大努力调度法）</li>
+</ul>
+<p><strong>Static table-driven approaches（静态表驱动方法）</strong></p>
+<ul>
+<li>用于<strong><em>调度周超性实时在多。</em></strong></li>
+<li>按照任务周期到达的时间、执行时间、完成截止时间（ending deadline）以及任务的优先级，<strong><em>制订调度表</em></strong>，调度实时任务。</li>
+<li>最早截止时间优先（EDF）调度算法即属于此类。</li>
+<li>此类算法不灵活，任何任务的调度申请改动都会引起调度表的修改。</li>
+</ul>
+<p><strong>Static priority-driven preemptive approaches</strong></p>
+<ul>
+<li>此类算法多用于非实时多道程序系统。</li>
+<li>优先级的确定方法很多，例如在分时系统中，可以对I/O bound 和processor bound的进程赋予不同的优先级。</li>
+<li>实时系统中一般根据对在务的跟定时间赋予优先级，例如速度单调算法（RM）即是为实时任务赋予静态优先级。</li>
+</ul>
+<p><strong>Dynamic planning-based approaches</strong></p>
+<ul>
+<li>当实时任务到达以后，系统为新到达的任务和正在执行的任务<strong><em>动态创建一张调度表。</em></strong></li>
+<li>在当前执行进程不会错过其截止时间的条件下，如果也能使新到达任务在截止时间内完成，则立即调度执行新任务。</li>
+</ul>
+<p><strong>Dynamic best effort approaches</strong></p>
+<ul>
+<li>实现简单，广泛用于<strong><em>非周期性实时在多调度</em></strong>。</li>
+<li>当任务到达时，系统根据其属性赋予优先级，优先级高的先调度。例如最早截止时间优先EDF调度算法就采用了这种方法。这种算法总是<strong><em>尽最大努力尽早湖度紧迫任务</em></strong>，因此称为“最大努力调度算法”。</li>
+<li>缺点在于，当任务完成，或截止时间到达时，很难知道该任务是否满足其约束时间。</li>
+</ul>
+<h4 id="截止时间调度"><a href="#截止时间调度" class="headerlink" title="截止时间调度"></a>截止时间调度</h4><p><strong>Deadline Scheduling</strong></p>
+<ul>
+<li>Information used<ul>
+<li>Ready time</li>
+<li>Starting deadline</li>
+<li>Completion deadline</li>
+<li>Processing time</li>
+<li>Resource requirements</li>
+<li>Priority</li>
+<li>Subtask scheduler：一个任务可以分解出<strong><em>强制子任务（manda tory subrask）和非强制子任务（optional subtask）</em></strong>.只有强制子任务拥有硬截止时间（hard deadline）。</li>
+</ul>
+</li>
+<li><strong>Whiclh task to schedule next?*</strong><ul>
+<li>Scheduling tasks with the earliest deadline minimized the fraction of tasks that miss their deadlines（为了能够尽量满足任务的截止时间，因此采用最早截止时间优先）</li>
+</ul>
+</li>
+<li><strong>What sort of preemption is allowed？（哪种剥夺方式）</strong><ul>
+<li>When starting deadlines are specified，then a nonpreemtive scheduler makes sense.（给定了开始截止时间，采用的非剥夺方式比较好）在执行完强制子任务或临界区后，阻塞自己。</li>
+<li>For a system with completion deadlines,a preemptive strategy is most appropriate.（给定了完成截止时间（更加要求时间不能错过），采用剥夺方式最合适）</li>
+</ul>
+</li>
+</ul>
+<h5 id="Earliest-Deadline（最早截止时间优先，商称ED）"><a href="#Earliest-Deadline（最早截止时间优先，商称ED）" class="headerlink" title="Earliest Deadline（最早截止时间优先，商称ED）"></a>Earliest Deadline（最早截止时间优先，商称ED）</h5><ul>
+<li>常用调度算法</li>
+<li>若指定任务的<strong><em>Starting deadlines（开始截止时间）</em></strong>，则采用<strong><em>Nonpreemption（非剥夺型）</em></strong>，当某任务的开始截止时间到达时，正在执行的任务必须执行完其强制部分或临界区，释放CPU，调度开始截止时间到的任务执行（严格来说还是一种剥夺型）</li>
+</ul>
+<h5 id="Periodic-tasks-with-completion-deadlines（周期任务给定完成截止时间）"><a href="#Periodic-tasks-with-completion-deadlines（周期任务给定完成截止时间）" class="headerlink" title="Periodic tasks with completion deadlines（周期任务给定完成截止时间）"></a>Periodic tasks with completion deadlines（周期任务给定完成截止时间）</h5><ul>
+<li>由于此类任务是周期性的、可预测的，可采用<strong><em>静态表驱动之最早截止时间优先调度算法</em></strong>，使系统中的任务都能按要求完成。</li>
+</ul>
+<h5 id="Aperiodic-tasks-with-starting-deadlines（非周期性任务给定开始截止时间）"><a href="#Aperiodic-tasks-with-starting-deadlines（非周期性任务给定开始截止时间）" class="headerlink" title="Aperiodic tasks with starting deadlines（非周期性任务给定开始截止时间）"></a>Aperiodic tasks with starting deadlines（非周期性任务给定开始截止时间）</h5><ul>
+<li>可以采用<strong><em>最早截止时间优先调度算法</em></strong>或<strong><em>允许CPU空闲的EDF调度算法</em></strong>。</li>
+<li><strong><em>Earliest Deadline with Unforced Idle Times（允许CPU空闲的EDF调度算法）</em></strong>，指优先调度最早截止时间的任务，并将它执行完毕才调度下一个任务。即使选定的任务未就绪，允许CPU空闲等待，也不能调度其他任务。尽管CPU的利用率不高，但这种调度算法可以保证系统中的任务都能按要求完成。</li>
+</ul>
+<h4 id="Rate-Monotonic-Scheduling（速度单调调度算法）"><a href="#Rate-Monotonic-Scheduling（速度单调调度算法）" class="headerlink" title="Rate Monotonic Scheduling（速度单调调度算法）"></a>Rate Monotonic Scheduling（速度单调调度算法）</h4><ul>
+<li>Assigns priorities to tasks on the basis of their periods.（基于周期长短给予优先级）</li>
+<li>Highest-priority task is the one with the shortest period.（周期短的优先级高）</li>
+<li><strong>Period（任务周期）</strong>，指一个任务到达至下一任务到达之间的时间范围。</li>
+<li><strong>Rate（任务速度）</strong>，即周期（以秒计）的倒数，以赫兹为单位。</li>
+<li><strong>任务周期的结束</strong>，表示任务的硬截止时间。任务的执行时间不应超过任务周期</li>
+<li>CPU的利用率=任务执行时间/任务周期</li>
+<li>在RMS调度算法中，如果以任务速度为参数，则优先级函数是一个单调递增的函数</li>
+</ul>
+<h4 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h4><p>【1】scheduling（调度）<br>【2】Real-Time（实时）<br>【3】Responsg Time（响应时间）<br>【4】Turnaround time（周转时间）<br>【5】Deadlines（截止时间）<br>【6】Throughput（吞吐量）<br>【7】Decision Mode（决策模式）<br>【8】Nonpreemptive（非剥夺）<br>【9】Preemptive（剥夺）<br>【10】User-oriented（面向用户）<br>【11】System-oriented（面向系统）<br>【12】processor（处理机）<br>【13】utilization（利用）<br>【14】CPU-bound（CPU绑定：CPU型，即计算型的，需要用到大量的CPU资源）<br>【15】I/O-bound（I/O绑定：该进程有很多的输入输出的）<br>【16】periodic（周期性）<br>【17】Deterministic（确定性）<br>【18】semaphores（信号量）</p>
+
+            </div>
+            <hr/>
+
+            
+            <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.88rem;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-large waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fa fa-close"></i></a>
+            <h4 class="reward-title">觉得可以就打钱给我买糖吃</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>转载规则</span>
+        </p>
+        
+            <div class="center-align">
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                    <img alt=""
+                         style="border-width:0"
+                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+                </a>
+            </div>
+            <br/>
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《Operating System(3)》
+                </span> 由
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/03/19/cao-zuo-xi-tong-3/" property="cc:attributionName"
+               rel="cc:attributionURL">
+                何必酷
+            </a> 采用
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                知识共享署名 4.0 国际许可协议
+            </a>进行许可。
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '0832266fa5f4e404f663',
+        clientSecret: '8472ad3803edc301eeeb98767910e11bb2d201da',
+        repo: 'RyouLmusic.github.io',
+        owner: 'RyouLmusic',
+        admin: "RyouLmusic",
+        id: '2020-03-19T15-23-04',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2020/03/19/cao-zuo-xi-tong-3/">
+                    <div class="card-image">
+                        
+                        <img src="https://cdn.pixabay.com/photo/2020/03/08/07/51/stairs-4911677_960_720.jpg" class="responsive-img" alt="Operating System(3)">
+                        
+                        <span class="card-title">Operating System(3)</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            OS
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-19
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Operating-System/" class="post-category" target="_blank">
+                                    Operating System
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/OS/" target="_blank">
+                        <span class="chip bg-color">OS</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/03/12/cao-zuo-xi-tong-os/">
+                    <div class="card-image">
+                        
+                        <img src="https://cdn.pixabay.com/photo/2020/03/08/07/51/stairs-4911677_960_720.jpg" class="responsive-img" alt="Operating System(1)">
+                        
+                        <span class="card-title">Operating System(1)</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            OS
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-12
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Operating-System/" class="post-category" target="_blank">
+                                    Operating System
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/OS/" target="_blank">
+                        <span class="chip bg-color">OS</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">117.1k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/RyouLmusic" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1768045935@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=485734107" class="tooltipped" data-tooltip="QQ联系我: 485734107" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!--单击显示烟花-->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/js/fireworks.js"></script>
+
+<!-- 
+雪花特效 
+<script type="text/javascript" src="\js\snow.js"></script>
+-->
+
+
+<!--单击显示文字-->
+<script type="text/javascript" src="/js/click_show_text.js"></script>
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+    <script src="/libs/others/clicklove.js"></script>
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>
