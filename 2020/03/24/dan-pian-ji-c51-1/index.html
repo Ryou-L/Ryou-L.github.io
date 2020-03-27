@@ -1,0 +1,1803 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="MCS51单片机, 何必酷">
+    <meta name="description" content="C51单片机单片机概述单片机主要技术指标
+字长
+8位机，16位机，32位机
+
+
+内存容量：
+容量单位：1K=2^10=1024，1M=2^20  8K、64K、16M、64M。  
+
+
+运算速度：
+时钟频率、主频、每秒运算次数 6MHz、1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>MCS51单片机 | 何必酷</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+        code[class*="language-"], pre[class*="language-"] {
+            white-space: pre !important;
+        }
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">何必酷</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">何必酷</div>
+        <div class="logo-desc">
+            
+            make a friend
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/RyouLmusic" class="waves-effect waves-light" target="_blank">
+                <i class="fa fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/RyouLmusic" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.pixabay.com/photo/2017/06/21/07/33/background-2426328_960_720.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        MCS51单片机
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C51/" target="_blank">
+                                <span class="chip bg-color">C51</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/C51/" class="post-category" target="_blank">
+                                C51
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-03-24
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        8.4k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        32 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="C51单片机"><a href="#C51单片机" class="headerlink" title="C51单片机"></a>C51单片机</h1><h3 id="单片机概述"><a href="#单片机概述" class="headerlink" title="单片机概述"></a>单片机概述</h3><h4 id="单片机主要技术指标"><a href="#单片机主要技术指标" class="headerlink" title="单片机主要技术指标"></a>单片机主要技术指标</h4><ul>
+<li><strong>字长</strong><ul>
+<li>8位机，16位机，32位机</li>
+</ul>
+</li>
+<li><strong>内存容量：</strong><ul>
+<li>容量单位：1K=2^10=1024，1M=2^20  8K、64K、16M、64M。  </li>
+</ul>
+</li>
+<li><strong>运算速度：</strong><ul>
+<li>时钟频率、主频、每秒运算次数 6MHz、12MHz、24MHz、100MHz、300MHz。</li>
+</ul>
+</li>
+<li><strong>内存存取周期</strong>：<ul>
+<li>50nS、70nS、200nS。</li>
+</ul>
+</li>
+</ul>
+<h4 id="单片机运算基础"><a href="#单片机运算基础" class="headerlink" title="单片机运算基础"></a>单片机运算基础</h4><ul>
+<li><strong>进制转换</strong></li>
+<li>原码</li>
+<li>反码</li>
+<li>补码</li>
+</ul>
+<h4 id="结构框图"><a href="#结构框图" class="headerlink" title="结构框图"></a>结构框图</h4><p><img src="https://s1.ax1x.com/2020/03/24/8Lb6UJ.png" alt="8051单片机的主要功能方框图"></p>
+<p>振荡器和时序OSC：时钟，主频</p>
+<blockquote>
+<ul>
+<li>中断:打断程序运行（中断有优先级）<ul>
+<li>内部中断：我自己编一条指令让其中断</li>
+<li>外部中断</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="单片机结构"><a href="#单片机结构" class="headerlink" title="单片机结构"></a>单片机结构</h3><p><img src="https://s1.ax1x.com/2020/03/24/8Lb6UJ.png" alt="8051单片机的主要功能方框图"></p>
+<blockquote>
+<p>计算机由：CPU（中央处理器）+存储器+I/O设备(这三个部分通过总线连接)<br>总线（Bus）：这个总线既可以走数据，还可以走一些控制命令，是一个公共的通道（公共的数据通道或者说地址通道）<br>数据总线：走数据的，地址总线：走地址的，控制总线：走控制的</p>
+</blockquote>
+<p><strong>单片机：就是把这三个部件加三条总线都把它们合到一块去了，做成一个芯片</strong></p>
+<blockquote>
+<p>指令:是计算机能够运行的最小单位(C语言的一条语句，可能相当于我们计算机的指令的几条甚至是几十条)</p>
+</blockquote>
+<ul>
+<li>程序存储器（ROM）：存放代码的，只读存储器</li>
+<li>数据存储器（RAM）：存放临时的数据，既可读也可以写，但是一断电就数据就消失（128B，字节）</li>
+</ul>
+<h4 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h4><p><strong>共性：</strong></p>
+<ul>
+<li>一个8位CPU；</li>
+<li>片内振荡和定时电路；</li>
+<li>128B内部RAM（00H~7FH）；</li>
+<li>4个8位并行I/0口；</li>
+<li>2个16位可编程定时/计数器；一个全双工串行口；</li>
+<li>5个中断源（可编程为两个优先级）；</li>
+<li>22个SFR（除PC外，其余21个分散在80H~FFH之间）</li>
+<li>堆栈深度可达80B（30H~7FH）；</li>
+<li>16B（128位，20H~2FH）可位寻址区。</li>
+</ul>
+<h4 id="硬件系统结构"><a href="#硬件系统结构" class="headerlink" title="硬件系统结构"></a>硬件系统结构</h4><h5 id="CPU内部结构"><a href="#CPU内部结构" class="headerlink" title="CPU内部结构"></a>CPU内部结构</h5><ul>
+<li>1.算术逻辑运算单元ALU（8位）：同一个时刻做8位的加法或减法<ul>
+<li>+、一、×、÷算术运算，与、或、非、异或逻辑运算、循环移位、位处理。</li>
+</ul>
+</li>
+<li>2.寄存器阵列<ul>
+<li>（1）工作寄存器<strong><em>R0~R7（8位）</em></strong>（什么叫做寄存器？就是能够把我们的二进制数放在里面的，叫寄存器，<strong><em>就是临时存放数据的地方</em></strong>）<ul>
+<li>暂存运算数据和中间结果。</li>
+<li><strong><em>4个工作寄存器区，工作寄存器0区~3区</em></strong>。每个区均含8个寄存器RO~R7。</li>
+<li>用<strong><em>PSW</em></strong>中的两位PSW.4和PSW.3（RS1和RS0）来切换工作寄存器区，选用一个工作寄存器区进行读写操作。</li>
+</ul>
+</li>
+<li>（2）累加器Acc（8位）（既是算术逻辑单元也是通用寄存器）<ul>
+<li>需要ALU处理的数据和计算结果多数要经过A累加器。</li>
+</ul>
+</li>
+<li>（3）寄存器B（8位）<ul>
+<li>与A累加器配合执行乘、除运算。也可用作通用寄存器。</li>
+</ul>
+</li>
+<li>（4）程序状态字PSW（8位）<ul>
+<li>存放ALU运算过程的标志状态Cy AC FO RS1 RSO OV-P</li>
+</ul>
+</li>
+<li>（5）数据指针DPTR（16位）<ul>
+<li>存放片外存储器地址，作为片外存储器的指针。可分成两个8位寄存器DPH、DPL使用。</li>
+</ul>
+</li>
+<li>（6）堆栈指针SP（8位）<ul>
+<li>堆栈是按“先进后出”原则存取数据的存储区。</li>
+<li>MCS-51堆栈设在片内RAM区。数据入栈/出栈时，SP自动加1/减1，其内容始终为栈顶地址。</li>
+<li>复位时SP=07H。</li>
+</ul>
+</li>
+<li>（7）程序计数器PC（16位）<ul>
+<li>CPU总是按PC的指示读取程序。PC可自动加1。因此CPU执行程序一般是顺序方式。当发生转移、子程序调用、中断和复位等操作，PC被强制改写，程序执行顺序也发生改变。复位时，PC=0000H。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="存储器结构"><a href="#存储器结构" class="headerlink" title="存储器结构"></a>存储器结构</h4><p><img src="https://s1.ax1x.com/2020/03/24/8OeUi9.png" alt="8051存储器结构"></p>
+<p>程序存储器：64K=1024X64=65536=2^16(16位的二进制数0000H~0FFFFH)(前面如果是一个数据的话，最高一位是字母ABCDEF，前面加一个0以示区别),外部扩展不一定有，但是最大的存储空间就是64K</p>
+<h5 id="程序存储器"><a href="#程序存储器" class="headerlink" title="程序存储器"></a>程序存储器</h5><ul>
+<li>在MCS-51的指令系统仅有两条：<ul>
+<li>MOVC A，@A+DPTR</li>
+<li>MOVC A，@A+PC</li>
+</ul>
+</li>
+<li>复位后，程序计数器PC的内容为0000H</li>
+<li>MCS-51最多可外扩64K字节程序存储器<br><img src="https://s1.ax1x.com/2020/03/24/8OK0te.png" alt></li>
+</ul>
+<h5 id="数据存储器"><a href="#数据存储器" class="headerlink" title="数据存储器"></a>数据存储器</h5><ul>
+<li>（1）从00H~1FH的32B单元是4个工作寄存器组。</li>
+<li>（2）地址20H~2FH的16B共128位，是可位寻址的内部RAM区，它们既可字节寻址，亦可位寻址。（P14表2-3）</li>
+<li>（3）其他80B是只能按字节寻址的内部RAM区，为用户区。MCS-51单片机的堆栈安排在内部RAM内，堆栈的深度以不超过内部RAM的空间为限。</li>
+</ul>
+<h5 id="堆栈"><a href="#堆栈" class="headerlink" title="堆栈"></a>堆栈</h5><ul>
+<li>堆栈是一种只允许在其一端进行数据插入和删除操作的一种数据结构。数据存取为“后进先出”。</li>
+<li>堆栈功能：保护断点和现场信息。</li>
+<li>堆栈的建立：MCS-51的堆栈是设置在内部RAM30H~7FH空间中，栈底为低地址单元，堆栈指针为SP。</li>
+</ul>
+<h5 id="特殊功能寄存器SFR"><a href="#特殊功能寄存器SFR" class="headerlink" title="特殊功能寄存器SFR"></a>特殊功能寄存器SFR</h5><p><img src="https://s1.ax1x.com/2020/03/24/8OQKG4.png" alt="SFR"></p>
+<p><strong>SFR区部分寄存器功能介绍如下：</strong></p>
+<ul>
+<li>程序计数器（PC、16位）：存放将要执行的指令地址。</li>
+<li>累加器（ACC、8位）：存放数据或中间结果。</li>
+<li>B寄存器（8位）：主要用于乘、除运算。</li>
+<li>数据指针（DPTR、16位）：存放外部数据存储器的地址。</li>
+<li>程序状态字（PSW、8位）：用于寄存程序运行的状态信息。格式如下：</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/03/24/8Ola7V.png" alt="程序状态字PSW"></p>
+<p><strong>标志位功能：</strong></p>
+<ul>
+<li>CY:<ul>
+<li>（1）执行算术运算时，最高位向前进位或借位时，CY为1；否则，CY为0。</li>
+<li>（2）在位操作中，作“位”累加器。</li>
+</ul>
+</li>
+<li>AC：用于十进制调整。当低四位向高四位进位或借位时，AC为1；否则AC为0。</li>
+<li>FO：供用户定义的标志位，可以用指令置位或复位，用以控制程序的转向。</li>
+<li>OV:<ul>
+<li>（1）在带符号数的加减运算中，结果产生溢出，0V=1；否则，0V=0。</li>
+<li>（2）在乘法运算中，乘积超过255，0V=1，表示积存放在B与A中；否则，0V=0，表示积只存放在A中。</li>
+<li>（3）在除法运算中，当除数为0时，0V=1，除法无意义。</li>
+</ul>
+</li>
+<li>P：累加器A中数的奇偶性，若A中“1”的个数为奇数，则P=1；否则，P=0。</li>
+</ul>
+<blockquote>
+<p>注：SFR只能使用直接寻址方式来访问它们，书写时既可使用寄存器名，也可使用寄存器单元地址。<br>在21个特殊功能寄存器中，有11个特殊功能寄存器具有位寻址能力，它们的字节地址正好能被8整除，其十六进制地址的末位，只能是0H或8H。</p>
+</blockquote>
+<h5 id="外部数据存储器-可以没有"><a href="#外部数据存储器-可以没有" class="headerlink" title="外部数据存储器(可以没有)"></a>外部数据存储器(可以没有)</h5><ul>
+<li>MCS-51外部数据存储器寻址空间为64KB</li>
+<li>MCS-51同外部数据存储器的指令有4条：<ul>
+<li>MOVX A，@Ri </li>
+<li>MOVX A，@DPTR </li>
+<li>MOVX @Ri，A </li>
+<li>MOVX @DPTR，A </li>
+</ul>
+</li>
+<li>RO，R1为8位寄存器，寻址范围256B DPTR为16位的数据指针，寻址范围64KB。</li>
+</ul>
+<blockquote>
+<p>程序存储器（MOVC）外部数据存储器（MOVX）内部存储器（MOV）</p>
+</blockquote>
+<h5 id="I-O端口"><a href="#I-O端口" class="headerlink" title="I/O端口"></a>I/O端口</h5><ul>
+<li>MCS-51有4个双向的8位并行I/0口：PO~P3</li>
+<li>每一个口都有一个8位的锁存器</li>
+<li>复位后它们的初始状态为全“1”</li>
+</ul>
+<blockquote>
+<p>三态：0，1，高阻状态（线断开）。双向：既可以输出也可以输入</p>
+</blockquote>
+<ul>
+<li>PO口是三态双向口：既可作为并行I/0口，也可作为数据总线口。当外部扩展了存储器或I/O端口，则只能作数据总线和地址总线低8位。</li>
+<li>P1口是专门供用户使用的I/0口,是准双向接口</li>
+<li>P2口是准双向接口,既可作为并行I/0口,也可作为地址总线高8位口。当外部扩展了存储器或I/0端口,则只能作地址总线高8位    </li>
+<li>P3口是准双向口,又是双功能口。该口的每一位均可独立地定义为第二功能,作为第一功能使用时,口的结构与操作与P1口相同    </li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/03/25/8XKlPe.png" alt></p>
+<h5 id="复位电路"><a href="#复位电路" class="headerlink" title="复位电路"></a>复位电路</h5><ul>
+<li>复位后PC值为0000H，故复位后的程序入口地址为0000H；</li>
+<li>复位后PSW=00H，使片内存储器中选择0区工作寄存器，用户标志为FO为0状态；</li>
+<li>复位后SP-07H，设定推栈栈底为07H；</li>
+<li>复位后的P1，P2，P3口锁存器全为1状态，使这些准双向口皆处于输入状态；</li>
+<li>内部RAM不受复位影响</li>
+</ul>
+<blockquote>
+<p>复位电路的基本功能是：系统上电时提供复位信号，在加电瞬间，RST端出现一定时间的高电平，直至系统电源稳定后，撤销复位信号。</p>
+</blockquote>
+<h5 id="CPU时序"><a href="#CPU时序" class="headerlink" title="CPU时序"></a>CPU时序</h5><p>MCS-51内部有一个用于构成振荡器的高增益反相放大器，引脚XTAL1和XTAL2分别是此放大器的输入端和输出端。</p>
+<ul>
+<li><strong><em>CPU执行一条指令的时间称为指令周期</em></strong>，它是以机器周期为单位的，MCS-51典型的<strong><em>指令周期为一个机器周期。</em></strong></li>
+<li>每个机器周期由6个状态周期组成，每个状态周期由2个振荡周期组成，状态周期即S1、S2、S3、S4、S5、S6，而每个状态周期由两个节拍P1，P2组成。</li>
+<li>大多数8051指令执行时间为一个机器周期，MUL（乘法）和DIV（除法）需要4个机器周期。</li>
+</ul>
+<blockquote>
+<p>一个机器周期是有12个时钟周期（晶体振荡周期）</p>
+</blockquote>
+<h4 id="引脚功能"><a href="#引脚功能" class="headerlink" title="引脚功能"></a>引脚功能</h4><ul>
+<li>1.端口线（4×8=32条）(点灯)<ul>
+<li>1）PO.0-P0.7</li>
+<li>2）P1.0-P1.7</li>
+<li>3）P2.0-P2.7</li>
+<li>4）P3.0-P3.7</li>
+</ul>
+</li>
+<li>2.电源线（2条）：VCC为+5V电源线，VSS为地线</li>
+<li>3.控制线（6条）</li>
+<li>ALE/PROG：地址锁存允许/编程线</li>
+<li>EA/VPP：允许访问片外存储器/编程电源线</li>
+<li>PSEN：片外ROM选通线</li>
+<li>RST/VPD：复位/备用电源线</li>
+<li>XTAL1和XTAL2：片内振荡电路输入/输出线</li>
+</ul>
+<h4 id="工作方式"><a href="#工作方式" class="headerlink" title="工作方式"></a>工作方式</h4><ul>
+<li>复位方式<ul>
+<li>单片机在开机时都需要复位，以便CPU以及其他功能部件都处于一个确定的初始述态，并从这个状态开始工作</li>
+<li>RST引脚是复位信号的输入端</li>
+<li>复位信号是高电平有效，持续时间要有24个时钟周期以上</li>
+<li>若时钟频率为12MHz，则复位脉冲宽度至少应为2uS（2微秒）。</li>
+<li>单片机复位后，其片内各寄存器状态。这时，堆栈指针SP为07H、ALE、PSEN、PO、P1、P2、和P3口各引脚均为高电平，片内RAM中内容不变。</li>
+</ul>
+</li>
+<li>程序执行方式<ul>
+<li>单步执行方式<ul>
+<li>单步执行方式是指按一次单步执行键就执行一条用户指令的方式。单步执行方式常常用于用户程序的调试。单步执行方式是利用单片机外部中断功能实现的。</li>
+</ul>
+</li>
+<li>连续执行方式<ul>
+<li>连续执行方式是单片机都需要的一种工作方式被执行程序可以放在片内或片外ROM中由于复位后程序计数器PC=0000H，可以预先在0000H处放一条转移指令，以便跳转到0000H~0FFFFH中的任何地方执行程序。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>节电方式（待机方式和掉电方式都是由电源控制寄存器PCON的有关位来控制的。）<ul>
+<li>待机方式<ul>
+<li>待机方式的进入：使用指令将PCON寄存器的IDL位置1即可。</li>
+<li><strong><em>单片机进入待机方式时振荡器仍然运行CPU不工作</em></strong></li>
+<li><strong><em>通用寄存器都保持原有状态不变</em></strong></li>
+<li><strong><em>退出待机方式的方法有两种：中断和硬件复位。</em></strong></li>
+</ul>
+</li>
+<li>掉电保护方式<ul>
+<li>掉电保护方式的进入：使用指令将PCON寄存器的PD位置1即可。</li>
+<li><strong><em>单片机的一切工作全部停止</em></strong></li>
+<li><strong><em>只有内部的RAM单元的内容被保存</em></strong></li>
+<li><strong><em>I/0引脚状态和相关的特殊功能寄存器的内容相对应</em></strong></li>
+<li><strong><em>ALE和为逻辑低电平。</em></strong></li>
+<li>退出掉电保护方式的方法只有一个：硬件复位。复位后特殊功能寄存器的内容被初始化，但RAM的内容仍然保持不变。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>EPROM的编程和校验方式</li>
+</ul>
+<h3 id="MSC-51指令系统"><a href="#MSC-51指令系统" class="headerlink" title="MSC-51指令系统"></a>MSC-51指令系统</h3><h4 id="指令编码格式及分类"><a href="#指令编码格式及分类" class="headerlink" title="指令编码格式及分类"></a>指令编码格式及分类</h4><p>一、指令编码格式<br>一条指令表示计算机所完成的某种操作。它通常由<strong><em>操作码</em></strong>和<strong><em>操作数</em></strong>两部分组成。例如：MOV A,R1 </p>
+<p><strong>本系统有下列三种指令编码格式</strong></p>
+<ul>
+<li>单字节指令（49条）<ul>
+<li>两种格式</li>
+</ul>
+</li>
+<li>双字节指令（46条）（加法）<ul>
+<li>格式：操作码+数据或地址</li>
+</ul>
+</li>
+<li>三字节指令（16条）<ul>
+<li>格式：操作码+数据或地址+数据或地址</li>
+</ul>
+</li>
+</ul>
+<p><strong>例如：</strong></p>
+<ul>
+<li>一字节指令空操作<strong><em>NOP</em></strong>的编码格式为：操作码 00000000 。数据传送指令<strong><em>MOV A,R1</em></strong>编码格式为：11101001。（前5不变，后三个表示R1~R7）</li>
+<li>两字节指令<strong><em>MOV A,#40H</em></strong>的编码格式为：操作码 01110100+立即数40H 01000001。</li>
+</ul>
+<p>二、指令分类<br>按指令功能分为：</p>
+<ul>
+<li>数据传送类指令（29条）；</li>
+<li>算术运算类指令（24条）；</li>
+<li>逻辑运算类指令（24条）；</li>
+<li>控制转移类指令（17条）；</li>
+<li>位操作指令（17条）。</li>
+</ul>
+<h4 id="寻址方式"><a href="#寻址方式" class="headerlink" title="寻址方式"></a>寻址方式</h4><blockquote>
+<p>寻址方式是指操作数存放存储单元地址的表示形式。</p>
+</blockquote>
+<p><strong>MCS-51指令系统共提供七种寻址方式：</strong></p>
+<ul>
+<li>1、立即寻址<ul>
+<li>该方式把操作数（即立即数）包含在指令字节中。</li>
+<li>在指令格式中，在立即数前冠以符号”#”表示立即寻址方式</li>
+</ul>
+</li>
+<li>2、直接寻址<ul>
+<li>该方式是把操作数的地址包含在指令字节中，而操作数本身则存放在该地址指示的数据存储单元中。</li>
+<li>在指令格式中，操作数的地址直接写在指令中。</li>
+<li>例如：MOV A, 40H;A&lt;—（40H）。设：（40H）=2BH</li>
+</ul>
+</li>
+<li>3.寄存器寻址方式<ul>
+<li>该方式把操作数存放在指定的寄存器中。能实现这种寻址的寄存器有：<strong>RO~R7、A、B、DPTR。</strong></li>
+</ul>
+</li>
+<li>4.寄存器间接寻址方式<ul>
+<li>该方式是把操作数的所在地址存放在指定的寄存器中。</li>
+<li>能实现这种寻址方式的寄存器有：<strong>RO、R1、DPTR。</strong></li>
+<li>在指令格式中，在寄存器前面冠以符号“@”表示例如：MOV A，@RO；A&lt;-（（RO））  </li>
+</ul>
+</li>
+<li>5.基址加变址寻址方式<ul>
+<li>该方式把DPTR或PC寄存器作为基址寄存器，累加器A作为变址寄存器，（A）+（PC）或（A）+（DPTR）的和作为操作数的16位地址。</li>
+<li>这种寻址方式的指令只有三条：<ul>
+<li>MOVC A，@A+DPTR；A&lt;-（（A）+（DPTR）） DPTR的地址加上A的地址得到源地址，取出源地址的数据再送到A寄存器</li>
+<li>MOVC A，@A+PC；A&lt;-（（A）+（PC））</li>
+<li>JMP @A+DPTR；跳转至（A）+（DPTR）  </li>
+<li>前两条是程序存储器读指令，用MOVC助记符</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>6.相对寻址方式<ul>
+<li>这种寻址方式是以程序计数器PC的当前值为基准，加上指令中给出的相对偏移量rel以形成且标地址。</li>
+<li>该寻址方式常用在条件转转指令中，相对偏移量rel给出相对于PC当前值的跳转范围，其值是一个带符号的8位二进制数，取值范为-128~127，以补码形式置于操作码之后存放。</li>
+</ul>
+</li>
+<li>7、位寻址方式<ul>
+<li>MCS-51具有位处理功能，可以对二进制“位”进行操作。</li>
+<li>（1）位寻址的寻址范围<ul>
+<li>内部RAM中的20H-2FH字节地址范围，共128位，位地址为00H-7FH。</li>
+<li>特殊功能寄存器的可寻址位。可位寻址的特殊功能寄存器有B、ACC、<strong><em>PSW</em></strong>、IP、IE、SCON、TCON、PO~P3，共11个。</li>
+<li>PSW中的CY作为位累加器。1</li>
+</ul>
+</li>
+<li>（2）位寻址方式<ul>
+<li>位寻址方式使用直接寻址方式，有下列四种表示形式：</li>
+<li>直接地址方式：在指令中直接给出位地址。</li>
+<li>点操作符方式：在字节地址或寄存器名与位序号之间加一个点。</li>
+<li>位名称方式：直接给出寄存器的位名称。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/03/25/8jOsk8.png" alt="位寻址方式例子(C是CY)"></p>
+<blockquote>
+<p>所有的程序的代码都在程序存储器中</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/03/25/8jXtEV.png" alt="寻址方式与寻址储存空间"></p>
+<p><strong>指令表中符号意义的说明：</strong></p>
+<ul>
+<li>Rn:n=0～7，即RO~R7</li>
+<li>Ri:i=0、1，即RO、R1</li>
+<li>direct：表示直接寻址方式</li>
+<li>#data：8位立即数</li>
+<li>#data16：16位立即数</li>
+<li>addr16：16位地址</li>
+<li>addr11：11位地址</li>
+<li>rel：相对偏移量</li>
+<li>bit：直接寻址位</li>
+</ul>
+<h4 id="数据传送类指令"><a href="#数据传送类指令" class="headerlink" title="数据传送类指令"></a>数据传送类指令</h4><p><strong>格式：MOV目标，源；目标&lt;–源</strong><br>特点：</p>
+<ul>
+<li>（1）指令中有数据源地址和传送数据目标地址，传送方向由源地址中的数据传送到目的地址中，源地址中的内容不变。</li>
+<li>（2）数据传送类指令的执行结果不影响程序状态寄存器（PSW）中的各标志位。</li>
+</ul>
+<h5 id="数据传送类指令分为以下几种："><a href="#数据传送类指令分为以下几种：" class="headerlink" title="数据传送类指令分为以下几种："></a>数据传送类指令分为以下几种：</h5><ul>
+<li>1.内部数据传送指令<ul>
+<li>数据传送在单片机内部进行，不通过外部总线，传送速度快。</li>
+<li>指令格式如下：**（A，Rn,Ri,DPTR,data）<ul>
+<li>MOV A，#data；A&lt;-data </li>
+<li>MOV Rn，#data；Rn-data </li>
+<li>MOV direct，#data；direct-data </li>
+<li>MOV @Ri，#data；（Ri）&lt;-data </li>
+<li>MOV DPTR，#datal6；DPTR&lt;-datal6</li>
+<li>MOV A，Rn；A&lt;-（Rn）</li>
+<li>MOV Rn，A；Rn&lt;-A</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>2.累加器与外部RAM之间的数据传送指令<ul>
+<li>（1）由Ri提供外部RAM的单元地址。格式：<ul>
+<li>MOVX A，@Ri；A&lt;-（（Ri）），i=0，1</li>
+<li>MOVX @Ri，A；（Ri）-（A），i=0，1</li>
+<li>只能访问外部RAM *<em>00H-FFH *</em>256个存储单元。</li>
+</ul>
+</li>
+<li>（2）由DPTR提供外部RAM单元地址。格式：<ul>
+<li>MOVX A，@DPTR；A&lt;-（（DPTR））</li>
+<li>MOVX @DPTR，A（DPTR）-（A）</li>
+<li>可以访问外部RAM的任意一个存储单元。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>3.程序存储器数据传送指令(程序存储器是只能读的无法写进去数据，所以无法反过来)<ul>
+<li>包括内部程序存储器和外部程序存储器。只能读数据传送是单方向的。格式如下：<ul>
+<li>MOVC A，@A+DPTR A&lt;-（（A）+（DPTR））</li>
+<li>MOVC A，@A+PC；A&lt;-（（A）+（PC））</li>
+<li>这两条指令同常用于查找程序中的数据表格</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>4.堆栈操作指令<ul>
+<li>堆栈是建立在内部RAM中，通过堆栈指示器SP进行读写操作。指令格式为：<ul>
+<li>PUSH direct；SP&lt;-（SP）+1，（SP）&lt;-（direct）</li>
+<li>POP direct；direct&lt;-（（SP）），（SP）&lt;-（SP）-1</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>5.数据交换指令<ul>
+<li>（1）字节交换指令,格式为：<ul>
+<li>XCH A，Rn；（A）&lt;—→（Rn），n=0～7</li>
+<li>XCH A，direc；（A）&lt;-→（direct）</li>
+<li>XCH A，@Ri；（A）&lt;—→（（Ri）），i=0，1</li>
+</ul>
+</li>
+<li>（2）半字节交换指令,格式为：<ul>
+<li>XCHD A，@Ri；（A3～0）&lt;-→（（Ri）3～0）</li>
+<li>SWAP A；（A3～0）&lt;-→（A7～4）这两条指令通常用于十六进制数或BCD码的数位交换。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="算术运算类指令"><a href="#算术运算类指令" class="headerlink" title="算术运算类指令"></a>算术运算类指令</h4><blockquote>
+<p>该类指令有加、减、乘、除四种，其特点是运算结果影响程序状态寄存器PSW中的标志位。</p>
+</blockquote>
+<p><strong>一、加法类运算指令</strong>(cy:进位位，AC：半进位位，P:奇偶位)</p>
+<ul>
+<li>1.加法指令（影响CY、OV、AC、P）<ul>
+<li>ADD A，#data；A&lt;—（A）+data ADD A，Rn；A·—（A）+（Rn）</li>
+<li>ADD A，direct；A&lt;—（A）+（direct）</li>
+<li>ADD A，@Ri；A&lt;—（A）+（（Ri））</li>
+</ul>
+</li>
+<li>2.带进位位CY的加法（影响CY、OV、AC、P）<ul>
+<li>ADDC A，#data；A&lt;—（A）+data+CY </li>
+<li>ADDC A，Rn；A&lt;-（A）+（Rn）+CY </li>
+<li>ADDC A，direct；A&lt;—（A）+（direct）+CY</li>
+<li>ADDC A，@Ri；A&lt;-（A）+（（Ri））+CY</li>
+</ul>
+</li>
+<li>3.加1指令<ul>
+<li>INC A；A&lt;—（A）+1（影响P）</li>
+<li>INC Rn；Rn&lt;—（Rn）+1</li>
+<li>INC direct；direct&lt;—（direct）+1</li>
+<li>INC @Ri；（Ri）&lt;—（（Ri））+1  </li>
+</ul>
+</li>
+</ul>
+<p><strong>二.减法运算指令</strong></p>
+<ul>
+<li>1.带借位位CY的减法（影响CY、OV、AC、P）<ul>
+<li>SUBB A，#data；A&lt;—（A）-data-CY </li>
+<li>SUBB A，Rn；A&lt;—（A）-（Rn）-CY</li>
+<li>SUBB A，direct；A&lt;—（A）-（direct）-CY SUBB A，@Ri；A·—（A）-（（Ri））-CY</li>
+</ul>
+</li>
+<li>2.减1指令<ul>
+<li>DEC A；A&lt;—（A）-1（影响P）</li>
+<li>DEC Rn；Rn&lt;-（Rn）-1</li>
+<li>DEC direct；direct&lt;—（direct）-1</li>
+<li>DEC @Ri；（Ri）&lt;—（（Ri））-1</li>
+</ul>
+</li>
+</ul>
+<p><strong>三、乘除指令</strong></p>
+<ul>
+<li>1.乘法指令<ul>
+<li>MUL AB；B、A&lt;—（A）x（B），影响OV、P,</li>
+<li>若（B）&gt;0，则OV=1；否则OV=0。</li>
+</ul>
+</li>
+<li>2.除法指令<ul>
+<li>DIV AB；A、B&lt;—（A）/（B），影响OV、P </li>
+<li>A中存放被除数，B中存放除数，执行之后A中存放商，B中存放余数。若除数为0，则OV=1，表示除法无意义。</li>
+</ul>
+</li>
+</ul>
+<p><strong>四、十进制调整指令</strong></p>
+<ul>
+<li>十进制调整指令用于对BCD码十进制数加法运算的结果进行调整。<ul>
+<li>格式：DA A</li>
+</ul>
+</li>
+<li>调整方法为：<ul>
+<li>A中低四位大于9或标志位AC=1，则低四位加6调整，即A&lt;—（A）+06H。</li>
+<li>A中高四位大于9或标志位CY=1，则高四位加6调整，即A&lt;—（A）+60H。</li>
+</ul>
+</li>
+</ul>
+<h4 id="逻辑运算类指令"><a href="#逻辑运算类指令" class="headerlink" title="逻辑运算类指令"></a>逻辑运算类指令</h4><p><strong>一.单操作数逻辑运算指令</strong></p>
+<ul>
+<li>1.累加器清零<ul>
+<li>CLR A；A&lt;-0。</li>
+</ul>
+</li>
+<li>2.累加器取反<ul>
+<li>CPL A；A&lt;-（A）</li>
+</ul>
+</li>
+<li>3.累加器循环左移（最高位移到最低位）<ul>
+<li>RL A;</li>
+</ul>
+</li>
+<li>4.累加器循环右移（最低位移到最高位）<ul>
+<li>RR A；</li>
+</ul>
+</li>
+<li>5.累加器带进位CY循环左移（最高位进入CY寄存器，CY寄存器的内容移到最低位）<ul>
+<li>RLC A;</li>
+</ul>
+</li>
+<li>累加器带进位CY循环右移（最低位移到CY，CY移到最高位）<ul>
+<li>RRC A;</li>
+</ul>
+</li>
+</ul>
+<p><strong>二.双操作数逻辑运算指令</strong></p>
+<ul>
+<li>1.逻辑与<ul>
+<li>ANL A，#data；A&lt;-（A）^data </li>
+<li>ANL A，Rn；A&lt;-（A）^（Rn），n=0~7</li>
+<li>ANL A，direct；A&lt;-（A）（direct）</li>
+<li>ANL A，@Ri；A&lt;-（A）^（（Ri）），i=0，1</li>
+<li>ANL direct，A；direct&lt;—（direct）^（A）</li>
+<li>ANL direct，#data；direct&lt;—（direct）^data</li>
+</ul>
+</li>
+<li>2.逻辑或<ul>
+<li>ORL A，#data；A&lt;-（A）Vdata </li>
+<li>ORL A，Rn；A&lt;—（A）V（Rn），n=0~7</li>
+<li>ORL A，direct；A&lt;-（A）V（direct）</li>
+<li>ORL A，@Ri；A&lt;-（A）V（（Ri）），i=0，1</li>
+<li>ORL direct，A；direct&lt;-（direct）V（A）</li>
+</ul>
+</li>
+<li>3.逻辑异或<ul>
+<li>XRL A，#data；A&lt;-（A）④data </li>
+<li>XRL A，Rn；A&lt;—（A）④（Rn），n=0-7</li>
+<li>XRL A，direct；A&lt;-（A）④（direct）</li>
+<li>XRL A，@Ri；A&lt;—（A）④（（Ri）），i=0，1</li>
+<li>XRL direct，A；direct&lt;-（direct）④（A）</li>
+<li>XRL direct，#data；direct&lt;-（direct）④data</li>
+</ul>
+</li>
+</ul>
+<h4 id="控制程序转移类指令"><a href="#控制程序转移类指令" class="headerlink" title="控制程序转移类指令"></a>控制程序转移类指令</h4><blockquote>
+<p>共分三种：无条件转移、条件转移和循环转移。</p>
+</blockquote>
+<ul>
+<li>1、无条件转移<ul>
+<li>（1）长转移指令<ul>
+<li>格式：LJMP标号；转移至标号处执行，转移范围为<strong>64KB。</strong></li>
+</ul>
+</li>
+<li>（2）短转移指令<ul>
+<li>格式：SJMP标号；转移至标号处执行，转移范围为<strong>256B。</strong></li>
+</ul>
+</li>
+<li>（3）绝对转移指令<ul>
+<li>格式：AJMP标号；转移范围为<strong>2KB</strong></li>
+</ul>
+</li>
+<li>（4）相对转移指令<ul>
+<li>格式：JMP标号；转移目标地址为（A）+（DPTR）—&gt;PC。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>2、条件转移指令<ul>
+<li>（1）累加器判零转移指令<ul>
+<li>JZ标号；若（A）=0，转至标号执行。</li>
+<li>JNZ标号；若（A）&gt;0，转至标号执行。</li>
+</ul>
+</li>
+<li>（2）比较转移指令<ul>
+<li>CJNE A，#data，标号；（A）&gt;data，转至标号执行</li>
+<li>CJNE A，direct，标号；（A）&gt;（direct），转至标号执行</li>
+<li>CJNE Rn，#data，标号；（Rn）&gt;data，转至标号执行</li>
+<li>CJNE @Ri，#data，标号；（（Ri））&gt;data，转至标号执行</li>
+</ul>
+</li>
+<li>（3）减‘1’不为零转移指令<ul>
+<li>DJNZ Rn，标号；Rn&lt;-（Rn）-1，若（Rn）&gt;0，转至标号执行。</li>
+<li>DJNZ direct，标号；direct&lt;-（direct）-1，若（direct）&gt;0，转至标号执行。  </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>3、空操作指令<ul>
+<li>NOP；PC&lt;—（PC）+1，不作任何操作，只消耗一个机器周期的时间，常用于程序的等待和延时。 </li>
+</ul>
+</li>
+</ul>
+<h4 id="位操作类指令"><a href="#位操作类指令" class="headerlink" title="位操作类指令"></a>位操作类指令</h4><ul>
+<li>1、位传送指令<ul>
+<li>MOV C，bit；CY&lt;—（bit）</li>
+<li>MOV bit，C；bit&lt;-（CY）</li>
+</ul>
+</li>
+<li>2、位置位和清除指令<ul>
+<li>CLR C；CY&lt;-0</li>
+<li>SETB C；CY&lt;-1</li>
+<li>CLR bit；bit&lt;-0</li>
+<li>SETB bit；bit&lt;1</li>
+</ul>
+</li>
+<li>3、位运算指令<ul>
+<li>ANL C，bit；CY&lt;-（CY）^（bit）</li>
+<li>ANL C，/bit；CY&lt;-（CY）^（bit(取反)）</li>
+<li>ORL C，bit；CY&lt;-（CY）V（bit）</li>
+<li>ORL C，/bit；CY&lt;-（CY）V（bit(取反)）</li>
+<li>CPL C；CY&lt;-（CY取反）</li>
+<li>CPL bit；bit&lt;—（bit取反）</li>
+</ul>
+</li>
+<li>4、位控制转移指令<ul>
+<li>JC标号；若（CY）=1，转至标号处执行</li>
+<li>JNC标号；若（CY）=0，转至标号处执行</li>
+<li>JB bit,标号; 若（bit）=1，转至标号处执行</li>
+<li>JNB bit,标号; 若（bit）=0，转至标号处执行</li>
+<li>JBC bit,标号; 若（bit）=1，转至标号处执行，并且0-&gt;bit。</li>
+</ul>
+</li>
+</ul>
+<h3 id="汇编语言及程序设计"><a href="#汇编语言及程序设计" class="headerlink" title="汇编语言及程序设计"></a>汇编语言及程序设计</h3><h4 id="汇编语言语句格式"><a href="#汇编语言语句格式" class="headerlink" title="汇编语言语句格式"></a>汇编语言语句格式</h4><p><strong>一、指令格式</strong></p>
+<ul>
+<li>[标号：]助记符 操作数1，操作数2[；注释]<ul>
+<li>注释：为不可执行部分，对程序加以说明。</li>
+<li>助记符：MOV等</li>
+<li>标号：由1-8个字符组成，且第一个字符必须是字母。用于指示指令的地址。</li>
+<li>操作数：可使用二（B结尾）、十（D结尾或省略）、十六（H结尾）进制数和字符串（加“”）。</li>
+</ul>
+</li>
+</ul>
+<p><strong>二、伪指令格式</strong><br>伪指令是不可执行的指令，其功能是为汇编程序提供信息。<br>常用伪指令有：</p>
+<ul>
+<li>1、汇编起始地址命令：<ul>
+<li>ORG格式：ORG 地址</li>
+<li>功能：规定程序的起始地址，省略时起始地址从0000H开始。</li>
+</ul>
+</li>
+<li>2、汇编终止命令：<ul>
+<li>END格式：END 表达式</li>
+<li>功能：源程序汇编终止。在主程序模块中含有“表达式”给出程序的起始地址，在其它模块（子程序）中表达式可省略。</li>
+</ul>
+</li>
+<li>3、赋值命令：<ul>
+<li>EQU格式：字符名称 EQU 表达式</li>
+<li>功能：将表达式的值赋给字符名称。表达式可以是常数、地址、标号和表达式。</li>
+<li>赋值之后的字符名称可以在程序中使用。</li>
+</ul>
+</li>
+<li>4、定义数据命令：DB，DW）<ul>
+<li>格式：[标号：]DB字节数据项表</li>
+<li>功能：从指定地址（即标号）开始，在<strong><em>程序存储器</em></strong>中定义字节数据。</li>
+<li>格式：[标号：]DW字数据项</li>
+<li>功能：从指定地址（即标号）开始，在程序存储器中定义16位字数据。高8位数据在低地址单元，低8位数据在高地址单元。</li>
+</ul>
+</li>
+<li>5、定义存储区命令：DS<ul>
+<li>格式：[标号：] DS 表达式</li>
+<li>功能：从指定地址（即标号）开始，保留指定数目（表达式的值）的字节单元作为存储区，供程序运行使用（用于程序存储器）。</li>
+<li>例如：ORG 2000H ; TAB: DS 05H</li>
+</ul>
+</li>
+<li>6、位定义命令：BID<ul>
+<li>格式：字符名称 BIT 位地址</li>
+<li>功能：将位地址赋给字符名称。位地址为绝对地址或符号地址。</li>
+<li>例如：HULED BIT P1.0</li>
+</ul>
+</li>
+</ul>
+<h4 id="分支程序设计"><a href="#分支程序设计" class="headerlink" title="分支程序设计"></a>分支程序设计</h4><blockquote>
+<p>一般情况下，程序按顺序方式执行，但根据实际需要也可改变程序的执行顺序，称为分支程序。<br>分支程序是根据给出的条件满足与否执行不同的走向，基本结构分为单分支、双分支和多分支程序。</p>
+</blockquote>
+<h4 id="循环程序设计"><a href="#循环程序设计" class="headerlink" title="循环程序设计"></a>循环程序设计</h4><p><strong>一、循环程序的基本结构</strong><br>在基本设计中，控制一部分指令重复执行若干次，用简短的程序完成大量的处理任务，这种按某种控制规律重复执行的程序，称为循环程序。</p>
+<ul>
+<li>1.先执行后判断结构此结构</li>
+<li>2.先判断后执行结构</li>
+</ul>
+<p><strong>循环程序由以下四个基本组成部分.</strong></p>
+<ul>
+<li>（1）置循环初值。设置循环开始的初始值，为循环做准备。如设计数器，工作单元初值。</li>
+<li>（2）循环处理。循环程序中重复执行的内容。</li>
+<li>（3）循环修改。修改循环参数，为执行下一次循环做准备。</li>
+<li>（4）循环控制。判断是否结束循环</li>
+</ul>
+<p><strong>设计20ms延时程序</strong></p>
+<ul>
+<li>延时程序与MCS-51指令执行时间有很大的关系。</li>
+<li>在使用12MHz晶振时，一个机器周期为luS，执行一个条“DJNZ”指令的时间为2uS(2微秒)，</li>
+<li>20ms=2uS×10000，由于8位的计数值最大为256，这时可用双重循环方法</li>
+<li>20ms=2uS×100×100，延时20ms程序如下的：</li>
+</ul>
+<pre><code>D20MS: MOV R4，#100; 20ms=2uS×100×100；外循环初值=100
+DY1:MOV R3，#100; 内循环初值=100
+DY2：DJNZ R3,DY2; 100×2=200=0.2ms
+DJNZ R4,DY1; 0.2×100=20ms 
+RET</code></pre><h4 id="子程序"><a href="#子程序" class="headerlink" title="子程序"></a>子程序</h4><blockquote>
+<p>子程序的主要特点是：在执行过程中需要由其它程序来调用，执行完毕又需要把执行流程返回到调用该子程序的程序中。</p>
+</blockquote>
+<p><strong>在子程序调用过程中须解决以下两个方面的问题：</strong></p>
+<ul>
+<li>程序之间的调用与返回；</li>
+<li>调用程序与被调用程序之间的参数传送。</li>
+</ul>
+<h5 id="程序设计举例"><a href="#程序设计举例" class="headerlink" title="程序设计举例"></a>程序设计举例</h5><p><strong>查表程序</strong><br>在很多情况下，通过查表程序可以简化计算，简化程序的多分支结构，提高程序的运行效率。<br>查表所使用的数据表格是按一定顺序排列的常数，存放在程序存储器中。</p>
+<p>MCS-5l指令系统用于查表的指令有两条；</p>
+<ul>
+<li>MOVC A,@A+DPTR</li>
+<li>MOVC A,@A+PC</li>
+</ul>
+<p><strong>布尔处理程序</strong></p>
+<h3 id="C51"><a href="#C51" class="headerlink" title="C51"></a>C51</h3><p><img src="https://s1.ax1x.com/2020/03/26/GSQ4Ts.png" alt="C51存储类型"><br><img src="https://s1.ax1x.com/2020/03/26/GS1dIA.png" alt="C51存储类型"></p>
+<h4 id="C-51程序结构"><a href="#C-51程序结构" class="headerlink" title="C-51程序结构"></a>C-51程序结构</h4><ul>
+<li>C51的数据声明的一般格式如下<ul>
+<li>[类型说明符][修饰符]标识符[=初值]…..</li>
+<li>例如：unsigned char code Flag=0xOf；就是声明一个无符号的char型变量Flag，并给他赋初值为0×0f；并且声明他所在的存储空间在片内统一编址的ROM中。</li>
+<li>声明中，如果没有修饰符，则数据默认的存储空间为data型，也就是在片内RAM中。</li>
+</ul>
+</li>
+<li>与一般C语言的结构相同，以main）函数为程序人口，程序体中包含若干语句还可以包含若干函数。</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/03/26/GSNotg.png" alt="基本数据类型"></p>
+<h5 id="C-51的数据类型扩充定义"><a href="#C-51的数据类型扩充定义" class="headerlink" title="C-51的数据类型扩充定义"></a>C-51的数据类型<strong><em>扩充定义</em></strong></h5><ul>
+<li>sfr：特殊功能寄存器声明</li>
+<li>sfr16：sfr的16位数据声明</li>
+<li>sbit：特殊功能位声明</li>
+<li>bit：位变量声明</li>
+<li>例：<ul>
+<li>sfr SCON=0X98；</li>
+<li>sfr16 T2=0xCC；</li>
+<li>sbit OV=PSW~2；</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/03/26/GSaBJe.png" alt="C-51数据的存储类型"></p>
+<h5 id="中断服务程序"><a href="#中断服务程序" class="headerlink" title="中断服务程序"></a>中断服务程序</h5><p>函数名（）interrupt n<br>{  }</p>
+<h5 id="I-0口定义"><a href="#I-0口定义" class="headerlink" title="I/0口定义"></a>I/0口定义</h5><ul>
+<li>#include&lt;absacc.h&gt;</li>
+<li>#define prot xbyte[0x1000]</li>
+</ul>
+<p>或<br>用指针定义</p>
+<h3 id="定时器-计数器"><a href="#定时器-计数器" class="headerlink" title="定时器/计数器"></a>定时器/计数器</h3><blockquote>
+<p>频率固定称为计时</p>
+</blockquote>
+<h4 id="定时方法"><a href="#定时方法" class="headerlink" title="定时方法"></a>定时方法</h4><p>1.软件定时<br>2.硬件定时<br>3.可编程的定时器定时</p>
+<blockquote>
+<p>MCS-51单片机内共有两个可编程的定时/计数器T0和T1。它们都是十六位加法计数器结构，分别由THO、TL0和TH1、TL1四个8位计数器组成，每个定时/计数器都具有定时和计数两种功能。</p>
+</blockquote>
+<p><strong>功能</strong></p>
+<ul>
+<li>1.计数功能:对外来脉冲进行计数计数脉冲的输入端来自单片机的两个信号引脚TO（P3.4）和T1（P3.5），外部输入的脉冲在负跳变(由正到负)时有效，计数脉冲的频率最高为振荡频率的1/24。</li>
+<li>2.定时功能：（记一个数就是一微秒）定时功能也是通过计数器的计数来实现的，不过这时的计数脉冲来自单片机的内部，即每个机器周期产生一个计数脉冲。因此，计数频率为振荡频率的1/12。这样，不但可以根据计数器的预置值计算出定时时间，也可以反过来按定时时间的要求，计算出计数器的预置值。</li>
+</ul>
+<p><strong>二、与定时/计数器有关的寄存器</strong></p>
+<ul>
+<li>1.定时器控制寄存器（TCON）<ul>
+<li>该寄存器既参与中断控制又参与定时控制。</li>
+<li>其主要功能是：定时器在溢出时，设定标志位（TFx），并控制定时器的运行或停止等（TRx）。</li>
+</ul>
+</li>
+<li></li>
+</ul>
+<p>M1MO：工作方式选择位：<br>M1MO=00，方式0：13位计数（TLO-4、THO-7）M1MO=01，方式1：16位计数M1MO=10，方式2：8位计数，有自动装入功能。<br>M1MO=11，方式3：T0分为两个8位计数器，TLO允许作为定时或计数方式，THO只能作为定时方式。</p>
+<h4 id="定时器的工作方式"><a href="#定时器的工作方式" class="headerlink" title="定时器的工作方式"></a>定时器的工作方式</h4><h5 id="方式0"><a href="#方式0" class="headerlink" title="方式0"></a>方式0</h5><p>方式0工作逻辑图</p>
+<p><img src="https://s1.ax1x.com/2020/03/26/GpPlrV.png" alt="方式0工作逻辑图"></p>
+<ul>
+<li>fosc：晶振频率/主频</li>
+<li>C/T = 0==&gt; 定时（对内部的机器周期进行计数） 。C/T = 1==&gt;计数（对T1的管脚进行计数(脉冲)，也可以进行定时：前提是外部输入的频率固定）</li>
+<li>当十六位满了之后，进一位到<strong><em>TF1</em></strong></li>
+<li>软件启动方式：SETB TR1 ;  门（GATE）设置为0起效</li>
+<li>方式0是13位结构的工作方式，其计数器由TH1的全8位和TL1的低5位构成。TL1的高3位弃之不用。</li>
+<li>计数方式：计数值的范围为：1~8192（218）定时方式：定时时间T的计算公式为：<ul>
+<li>T=（2^13一计数初值x）×晶振周期×12</li>
+<li>或T=（2^13一计数初值x）x机器周期</li>
+<li>启动的条件是：（TRx=1）AND（GATE=0 OR INTX=1）</li>
+</ul>
+</li>
+<li>TMOD寄存器初始化<ul>
+<li>定时器1，M1MO=00H方式，C/T=0（定时），GATE=0（以软件启动定时器），不用的位设定为0，最后得TMOD应初始化00H。(MOV TMOD,#00H)</li>
+</ul>
+</li>
+<li>用TCON寄存器的TR1位来启动（=1）或停止（=0）定时器。</li>
+</ul>
+<p><strong>程序设计</strong><br>查询方式：</p>
+<pre><code>    MOV TMOD,#00H;T1工作在方式0
+    SETB TR1; 启动T1工作
+LOOP:MOV TL1,#03H 
+    MOV TH1，#OFCH;置定时初值
+WAIT:JNB TF1,WAIT; 定时未到，循环等待
+    CLR TF1; 定时到，清TF1
+    CPL P1.0; 由P1.0输出，信号取反
+    SJMP LOOP;循环输出方波</code></pre><blockquote>
+<p>2.方式1其逻辑电路和工作情况与方式0完全相同。所不同的只是组成计数器的位数为16位。</p>
+</blockquote>
+<h5 id="方式2"><a href="#方式2" class="headerlink" title="方式2"></a>方式2</h5><p><img src="https://s1.ax1x.com/2020/03/26/GpYkLV.png" alt="工作方式2逻辑结构图"></p>
+<ul>
+<li>TH0（八位）作为一个自动重装的寄存器，进位之后会自动把TH0里面的初值重新赋给TL0</li>
+<li>方式2具有<strong><em>自动重新加载功能</em></strong>，即自动加载计数初值。该方式把16位计数器分为两部分，既以TL1作计数器，以TH1作预置计数器，初始化时把计数初值分别装入TL1和TH1中。</li>
+<li>当计数溢出后，由预置寄存器TH1，以硬件方法自动给计数器TL1重新加载。最大计数值只能到255。这种工作方式非常适用于循环定时或循环计数应用。</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/03/26/GpNtxA.png" alt></p>
+<pre><code>程序设计（查询方式）：
+MOV TMOD，#02H;TO工作在方式2
+MOV TLO，#OCEH 
+MOV THO，#0CEH；置定时初值
+SETB TRO; 启动TO工作
+WAIT:JNB TFO，WAIT; 定时未到，循环等待
+CLR TFO;  定时到，清TFO /
+CPL P1.0;   由P1.0输出，信号取反
+SJMP WAIT; 循环输出方波</code></pre>
+            </div>
+            <hr/>
+
+            
+            <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.88rem;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-large waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fa fa-close"></i></a>
+            <h4 class="reward-title">觉得可以就打钱给我买糖吃</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>转载规则</span>
+        </p>
+        
+            <div class="center-align">
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                    <img alt=""
+                         style="border-width:0"
+                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+                </a>
+            </div>
+            <br/>
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《MCS51单片机》
+                </span> 由
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/03/24/dan-pian-ji-c51-1/" property="cc:attributionName"
+               rel="cc:attributionURL">
+                何必酷
+            </a> 采用
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                知识共享署名 4.0 国际许可协议
+            </a>进行许可。
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '0832266fa5f4e404f663',
+        clientSecret: '8472ad3803edc301eeeb98767910e11bb2d201da',
+        repo: 'RyouLmusic.github.io',
+        owner: 'RyouLmusic',
+        admin: "RyouLmusic",
+        id: '2020-03-24T16-11-31',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2020/03/24/dan-pian-ji-c51-1/">
+                    <div class="card-image">
+                        
+                        <img src="https://cdn.pixabay.com/photo/2017/06/21/07/33/background-2426328_960_720.jpg" class="responsive-img" alt="MCS51单片机">
+                        
+                        <span class="card-title">MCS51单片机</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            C51
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-24
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/C51/" class="post-category" target="_blank">
+                                    C51
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C51/" target="_blank">
+                        <span class="chip bg-color">C51</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/03/19/cao-zuo-xi-tong-3/">
+                    <div class="card-image">
+                        
+                        <img src="https://cdn.pixabay.com/photo/2020/03/08/07/51/stairs-4911677_960_720.jpg" class="responsive-img" alt="Operating System(3)">
+                        
+                        <span class="card-title">Operating System(3)</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            OS
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-19
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Operating-System/" class="post-category" target="_blank">
+                                    Operating System
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/OS/" target="_blank">
+                        <span class="chip bg-color">OS</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">125.5k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/RyouLmusic" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1768045935@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=485734107" class="tooltipped" data-tooltip="QQ联系我: 485734107" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!--单击显示烟花-->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/js/fireworks.js"></script>
+
+<!-- 
+雪花特效 
+<script type="text/javascript" src="\js\snow.js"></script>
+-->
+
+
+<!--单击显示文字-->
+<script type="text/javascript" src="/js/click_show_text.js"></script>
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+    <script src="/libs/others/clicklove.js"></script>
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>
