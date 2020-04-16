@@ -1,0 +1,1166 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="Operating System(5), 何必酷">
+    <meta name="description" content="操作系统–进程管理–死锁与饥饿内容提要·产生死锁与饥饿的原因·解决死锁的方法·死锁/同步的经典问题：哲学家进餐问题
+Deadlock（死锁定义）
+Permanent blocking of a set of processes that e">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Operating System(5) | 何必酷</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+        code[class*="language-"], pre[class*="language-"] {
+            white-space: pre !important;
+        }
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">何必酷</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">何必酷</div>
+        <div class="logo-desc">
+            
+            make a friend
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/RyouLmusic" class="waves-effect waves-light" target="_blank">
+                <i class="fa fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/RyouLmusic" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.pixabay.com/photo/2020/03/08/07/51/stairs-4911677_960_720.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        Operating System(5)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/OS/" target="_blank">
+                                <span class="chip bg-color">OS</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Operating-System/" class="post-category" target="_blank">
+                                Operating System
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-04-16
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        3.5k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        13 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="操作系统–进程管理–死锁与饥饿"><a href="#操作系统–进程管理–死锁与饥饿" class="headerlink" title="操作系统–进程管理–死锁与饥饿"></a>操作系统–进程管理–死锁与饥饿</h1><h3 id="内容提要"><a href="#内容提要" class="headerlink" title="内容提要"></a>内容提要</h3><p>·产生死锁与饥饿的原因<br>·解决死锁的方法<br>·死锁/同步的经典问题：哲学家进餐问题</p>
+<h4 id="Deadlock（死锁定义）"><a href="#Deadlock（死锁定义）" class="headerlink" title="Deadlock（死锁定义）"></a>Deadlock（死锁定义）</h4><ul>
+<li>Permanent blocking of a set of processes that either compete for system resources or communicate with each other.（因为竞争资源或者通信不当而造成的进程永久阻塞现象就称为死锁）</li>
+<li>No efficient solution.（没有有效的解决办法：需要外力作用才能解开这种阻塞）</li>
+<li>Involve conflicting needs for resources by two or more processes.（涉及两个或多个进程之间竞争资源产生的冲突）</li>
+<li>存在单进程死锁问题，但是很少</li>
+</ul>
+<h4 id="Reusable-Resources（可重用资源）"><a href="#Reusable-Resources（可重用资源）" class="headerlink" title="Reusable Resources（可重用资源）"></a>Reusable Resources（可重用资源）</h4><ul>
+<li>Used by one process at a time and not depleted（耗尽）by that use.(一次只被一个进程所使用但是这次使用并不会把资源消耗掉)</li>
+<li>Processes obtain resources that they later release for reuse by other processes.（进程获取资源，之后它会释放这个资源给其他进程再次使用）</li>
+<li>Processors，I/O channels，main and secondary memory，files，databases，and semaphores.（资源包括：处理器、I/O通道、主存和副存、文件、数据库和信号量。）</li>
+<li>Deadlock occurs if each process holds one resource and requests the other.（如果每个进程持有一个资源并请求另一个资源，就会发生死锁）</li>
+</ul>
+<p><strong>Another Example of Deadlock（另一个死锁的例子）</strong></p>
+<ul>
+<li>Space is available for allocation of 200K bytes, and the following sequence of events occur.（空间可用来分配200K字节，并发生以下事件序列。）</li>
+<li>进程A申请80K内存空间，进程B申请70K内存空间，进程A还要60K的内存资源，进程B也还要80K的内存。这样就会竞争内存资源而引起死锁</li>
+<li>Deadlock occurs if both processes progress to their second reguest.（如果两个进程都进展到第二个请求，就会发生死锁。）</li>
+</ul>
+<h4 id="Consumable-Resources（可消耗资源）"><a href="#Consumable-Resources（可消耗资源）" class="headerlink" title="Consumable Resources（可消耗资源）"></a>Consumable Resources（可消耗资源）</h4><ul>
+<li>Created（produced）and destroyed（consumed）by a process.（由进程创建(产生)和销毁(消耗)。）</li>
+<li>Interrupts，signals，messages，and information in I/O buffers.（中断、信号、消息和I/O缓冲区中的信息。）</li>
+</ul>
+<p><strong>Example of Deadlock</strong></p>
+<ul>
+<li>Deadloclk occurs if receive is blocking（如果receive被阻塞，就会发生死锁）</li>
+<li>P1; Receive(p2);Send(p2,M1);  P2;Receive(p1);Send(p1,M1); 都是只有接收了对方的信息才能发出信息给对方，因此双方都无法发消息给彼此，陷入死锁</li>
+<li>此类死锁是由于设计失误造成的，很难发现，且潜伏期较长</li>
+</ul>
+<h4 id="死锁的产生条件Conditions-for-Deadlock"><a href="#死锁的产生条件Conditions-for-Deadlock" class="headerlink" title="死锁的产生条件Conditions for Deadlock"></a>死锁的产生条件Conditions for Deadlock</h4><ul>
+<li>Mutual exclusion（互斥）<ul>
+<li>only one process may use a resource at a time.（同一时间只允许一个进程使用这个资源）</li>
+</ul>
+</li>
+<li>Hold-and-wait（保持并等待）<ul>
+<li>A process may hold allocated resourees while awaiting assignment of other resources.（进程可以持有已分配的资源，同时等待其他资源的分配。）</li>
+</ul>
+</li>
+<li>No preemption（不剥夺）<ul>
+<li>No resource can be forcibly removed from a process holding it.（任何资源都不能从进程中强制移除）</li>
+</ul>
+</li>
+<li>Circular wait（环路等待：有环路就一定有死锁）<ul>
+<li>A closed chain of processes exists，such that each process holds at least one resource needed by the next process in the chain.（存在一个封闭的进程链，每个进程至少拥有该链中下一个进程所需的一个资源）</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>互斥、保特并等待不夺是死锁产生的必要条件而不是充分条件(有可能会产生死锁)<br>出现环路就一定有死锁</p>
+</blockquote>
+<h3 id="解决死锁"><a href="#解决死锁" class="headerlink" title="解决死锁"></a>解决死锁</h3><h4 id="死锁的预防"><a href="#死锁的预防" class="headerlink" title="死锁的预防"></a>死锁的预防</h4><ul>
+<li>间接方法，禁止前3个条件之一的发生：<ol>
+<li>互压：是某些系统资源固有的属性，不能禁止</li>
+<li>禁止“保赫并茎”条件：要求进程一次性地申请其所需的全部资源。若系统中没有足够的资源可分配给它，则进程阻塞。</li>
+<li>禁止“不剩”条件：①若一个进程占用了某些系统资源，又申请新的资源，则不能立即分配给它。必须让它首先释放出已占用资源，然后再重新申请；②若一个进程申请的资源被另一个进程占有，0S可以剥夺低优先权进程的资源分配给高优先权的进程（要求此类可剥夺资源的状态易于保存和恢复，否则不能剥夺）</li>
+</ol>
+</li>
+<li>直接方法，禁止条件4（环路等待）的发生<ol>
+<li>即禁止“环整爹”条件：可以将系统的所有资源按类型不同进行线性排队，并赋予不同的序号。进程对某类资源的申请只能按照序号递增的方式进行。</li>
+</ol>
+</li>
+</ul>
+<blockquote>
+<p>显然，此方法是低效的，它将影响进程执行的速度，甚至阻碍资源的正常分配。</p>
+</blockquote>
+<h4 id="避免死锁Deadlock-Avoidance"><a href="#避免死锁Deadlock-Avoidance" class="headerlink" title="避免死锁Deadlock Avoidance"></a>避免死锁Deadlock Avoidance</h4><ul>
+<li>避免死镀的关键在于为进程分配资源之前，首先通过计算，判断此次分配是否会导致死锁，只有不会导致死锁的分配才可实行。</li>
+<li>A decision is made dynamically whether thecurrent resource allocation request will，if granted，potentially lead to a deadlock.（动态地决定当前的资源分配请求如果被授予，是否会导致死锁）</li>
+<li>Requires knowledge of future process request.（需要了解未来的进程要求）</li>
+</ul>
+<p><strong>Approaches to Deadlock Avoidance（避免方法）</strong></p>
+<ul>
+<li>Do not start a process if its demands might lead to deadlock.(如果进程的要求可能导致死锁，则不要启动该进程,即阻塞)</li>
+<li>Do not grant an incremental resource request to a process if this allocation might lead to deadlock.（如果分配可能导致死锁，则不要向进程授予增量资源请求，让此进程阻塞）</li>
+</ul>
+<p><strong>Resource Allocation Denial（拒绝资源分配）</strong></p>
+<ul>
+<li>Referred to as the banker’s algorithm.(银行家算法)</li>
+<li>State of the system is the currentallocation of resources to process.(系统状态是要处理的资源的当前位置)<ul>
+<li>Safe state is where there is at least one sequence that does not result in deadlock.(安全状态是指至少有一个序列不会导致死锁)</li>
+<li>Unsafe state is a state that is not safe.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Safe State</strong></p>
+<ul>
+<li>指系统能按某种顺序如&lt;P1，P2，…，Pn&gt;（称&lt;P1，P2，..，Pn&gt;为安全序列），来为每个进程分配其所需资源，直至最大需求，使每个进程都可顺序完成，则称系统处于safe state</li>
+</ul>
+<p><strong>Safe State vs Unsafe State</strong></p>
+<ul>
+<li>并非所有不安全状态都是死锁状态</li>
+<li>当系统进入不安全状态后，便可能进入死锁状态</li>
+<li>只要系统处于安全状态，则可避免进入死锁状态</li>
+</ul>
+<p><strong>例：</strong></p>
+<ul>
+<li>假设系统中有3个进程P1、P2、P3，共有12台磁带机。进程P1共需要10台，P2、P3分别需要4台和9台。设T0时刻，进程P1、P2、P3已分别获得5台、2台和2台，尚有3台未分配。</li>
+<li>T0时刻系统是安全的，因为存在一个安全序列&lt;P2，Pl，P3&gt;，即只要系统按此进程序列分配资源，每个进程都可顺利完成。</li>
+<li>但是，如果不按照安全序列分配资源，则系统可能会由安全状态进入不安全状态<ul>
+<li>例如，T0时刻以后，P3又申请1台磁带机。若系统将剩余3台中的1台分配给P3，则系统进入不安全状态。</li>
+</ul>
+</li>
+</ul>
+<h3 id="银行家算法"><a href="#银行家算法" class="headerlink" title="银行家算法"></a>银行家算法</h3><ul>
+<li>该算法可用于银行发放一笔贷款前，预测该笔贷款是否会引起银行资金周转问题。</li>
+<li>这里，银行的资金就类似于计算机系统的资源，贷款业务类似于计算机的资源分配。银行家算法能预测一笔贷款业务对银行是否是安全的，该算法也能预测一次资源分配对计算机系统是否是安全的。</li>
+<li>为实现银行家算法，系统中必须设置若干数据结构。</li>
+</ul>
+<h4 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h4><ol>
+<li>可利用资源向量Available：是一个具有m个元素的数组，其中的每一个元素代表一类可利用资源的数目，其初始值为系统中该类资源的最大可用数目。其值将随着该类资源的分配与回收而动态改变。Available[j]=k，表示系统中现有Rj；类资源k个。</li>
+<li>最大需求矩阵Max：是一个n*m的矩阵，定义了系统中n个进程中的每一个进程对m类资源的最大需求。Max（i,j）=k，表示进程i对Rj类资源的最大需求数目为k个。</li>
+<li>分配矩阵Allocation：是一个n*m的矩阵，定义了系统中每一类资源的数量。例如，Allocation（i，j）=k，表示进程i当前已分得R类资源的数目为k个。</li>
+<li>需求矩阵Need：是一个n*m的矩阵，用以表示每一个进程尚需的各类资源数。例如，Need[i，j]=k，表示进程i还需要Rj，类资源k个，方能完成其任务。</li>
+</ol>
+<blockquote>
+<p>上述三类矩阵存在下述关系：Need[i，i] = Max[i，j] - Allocation[i，j];需求矩阵=最大需求矩阵-已分配矩阵</p>
+</blockquote>
+<h4 id="流程-是下标，如P-i-为P下标为i"><a href="#流程-是下标，如P-i-为P下标为i" class="headerlink" title="流程 ({}是下标，如P{i} 为P下标为i)"></a>流程 ({}是下标，如P{i} 为P下标为i)</h4><p>设Request{i}；是进程P{i}；的请求向量。Request{i}[j]=k，表示进程P{i}，需要k个R{j}类资源。当进程P{i}，发出资源请求后，系统按下述步骤进行检查：</p>
+<ol>
+<li>如果，Request{i}；≤Need{i}；则转向步骤2；否则，出错</li>
+<li>如果，Request{i}；≤Available，则转向步骤3；否则，表示尚无足够资源可供分配，进程P{i}；必须阻塞等待。</li>
+<li>系统试探性地将P{i}；申请的资源分配给它，并修改下列数据结构中的值：Available：=Available - Request{i};  Allocation ：=Allocation +Request{i}; Need{i}：=Need{i}-Request{i}；</li>
+<li>系统利用安全性算法，检查此次资源分配以后，系统是否处于安全状态。若安全，才正式将资源分配给进程P{i}，完成本次资源分配；否则，试探分配失效，让进程P{i}阻塞等待。</li>
+</ol>
+<h4 id="安全性算法"><a href="#安全性算法" class="headerlink" title="安全性算法"></a>安全性算法</h4><p>（1）设置两个工作向量：<br>①设置一个数组Finish[n]。当Finish[i]=True（0≤i≤n，n为系统中的进程数）时，表示进程P{i}，可以获得其所需的全部资源，而顺利执行完成。<br>②设置一个临时向量Work，表示系统可提供给选程继续运行的资源的集合，安全性算法随开始执行时。Work：=Available<br>（2）从进程集合中找到一个满足下列条件的进程：Finish[i]=false；并且Need≤Work；若找到满足该条件的进程，则执行步骤（3），否则执行步骤（4）；<br>（3）当进程P获得资源后，将顺利执行直至完成，并释放其所拥有的全部资源，故应执行以下操作：Work：=Work+Allocation{i}（Allocation{i}就是之前分配给P{i}的资源数）；以及Finish[i]：=True；转向步骤（2）；<br>（4）如果所有进程的Finish[i]=True，则表示系统处于安全状态，否则系统处于不安全状态。</p>
+<p><strong>举例</strong><br>T0，时刻的资源分配情况</p>
+<ul>
+<li>假定系统中有四个进程P1，P2，P3，P4和三种类型的资源R1，R2，R3，每一种资源的数量分别为9、3、6，T，时刻的资源分配情况如下表所示：</li>
+<li>从T0时刻的安全性分析可知，T0时刻存在着一个安全序列&lt;P2，P1，P4，P3&gt;，故，T0时刻系统是安全的。</li>
+<li>假设T0时刻，进程P1申请资源，其请求向量为Request1（0，0，1），系统按银行家算法进行检查：Request1（0，0，1）≤Need（2，2，2），且Request1（0，0，1）≤ Available（0，1，1）</li>
+<li>故，系统试探性地为P1分配资源，并修改Available，Allocation，和Need，向量。</li>
+</ul>
+<h4 id="Deadlock-Detection（检测死锁）"><a href="#Deadlock-Detection（检测死锁）" class="headerlink" title="Deadlock Detection（检测死锁）"></a>Deadlock Detection（检测死锁）</h4><h4 id="哲学家进餐问题Dining-Philosophers-Problem"><a href="#哲学家进餐问题Dining-Philosophers-Problem" class="headerlink" title="哲学家进餐问题Dining Philosophers Problem"></a>哲学家进餐问题Dining Philosophers Problem</h4><ul>
+<li><strong>描述：</strong>有5个哲学家，他们的生活方式是交替地进行思考和进餐。哲学家们共用一张圆桌，分别坐在周围的五张椅子上。圆桌中间放有一大碗面条，每个哲学家分别有1个盘子和1支叉子。如果哲学家想吃面条，则必须拿到靠其最近的左右两支叉子。进餐完毕，放下叉子继续思考。</li>
+<li><strong>要求：</strong>设计一个合理的算法，使全部哲学家都能进餐（非同时）。算法必须避免死锁和饥饿，哲学家互斥共享叉子。</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/04/16/JEiDWF.png" alt="哲学家进餐问题示意图"></p>
+<pre class="line-numbers language-java"><code class="language-java">Program diningphilosophers<span class="token punctuation">;</span>
+Var fork<span class="token operator">:</span>array<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token number">4</span><span class="token punctuation">]</span>of <span class="token function">semaphore</span><span class="token punctuation">(</span><span class="token operator">:</span><span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Var i<span class="token operator">:</span>integer<span class="token punctuation">;</span>
+procedure <span class="token function">philosopher</span><span class="token punctuation">(</span>i<span class="token operator">:</span>integer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+begin 
+    repeat 
+        think<span class="token punctuation">;</span><span class="token comment" spellcheck="true">/*哲学家正在思考*/</span>
+        <span class="token function">wait</span><span class="token punctuation">(</span>fork<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">/*产取其左边的筷子。*/</span> 
+        <span class="token comment" spellcheck="true">/**在这个wait之后可能会被中断，那么就有可能产生5个哲学家每个人都只有拿到一个叉子*/</span>
+        <span class="token function">wait</span><span class="token punctuation">(</span>fork<span class="token punctuation">[</span><span class="token punctuation">(</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span>mod <span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">/*取其右边的筷子 mod 5是为了形成环路*/</span>
+        eat<span class="token punctuation">;</span><span class="token comment" spellcheck="true">/*吃面条*/</span>
+        <span class="token function">signal</span><span class="token punctuation">(</span>fork<span class="token punctuation">[</span><span class="token punctuation">(</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span>mod <span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">/*放回右边的筷子制*/</span>
+        <span class="token function">signal</span><span class="token punctuation">(</span>fork<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">/*放回左边的筷子*/</span>
+    forever 
+end<span class="token punctuation">;</span>
+
+begin 
+parbegin 
+    <span class="token function">philosopher</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token function">philosopher</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token function">philosopher</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token function">philosopher</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token function">philosopher</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+parend<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><strong>可能产生死锁！在第一个wait之后可能会被中断，那么就有可能产生5个哲学家每个人都只有拿到一个叉子</strong></li>
+<li>可行的解决方案：只允许4个哲学家同时进餐厅用餐，则至少有一个哲学家可以拿到两支叉子进餐，完毕，放下叉子，其他哲学家就可进餐。不会出现死锁和饥饿</li>
+</ul>
+<pre class="line-numbers language-java"><code class="language-java">Program diningphilosophers<span class="token punctuation">;</span>
+Var fork<span class="token operator">:</span>array<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token number">4</span><span class="token punctuation">]</span>of <span class="token function">semaphore</span><span class="token punctuation">(</span><span class="token operator">:</span><span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Var room<span class="token operator">:</span><span class="token function">semaphore</span><span class="token punctuation">(</span><span class="token operator">:</span><span class="token operator">=</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Var i<span class="token operator">:</span>integer<span class="token punctuation">;</span>
+procedure <span class="token function">philosopher</span><span class="token punctuation">(</span>i<span class="token punctuation">;</span>integer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+begin 
+    repeat 
+        think<span class="token punctuation">;</span><span class="token operator">/</span>哲学家正在思考<span class="token operator">*</span><span class="token operator">/</span>
+        <span class="token function">wait</span><span class="token punctuation">(</span>room<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">/*第5位哲学家将被阻塞在room信号量队列*/</span>
+        <span class="token function">wait</span><span class="token punctuation">(</span>fork<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">/*取其左边的筷子*/</span>
+        <span class="token function">wait</span><span class="token punctuation">(</span>fork<span class="token punctuation">[</span><span class="token punctuation">(</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span>mod <span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">/*取其右边的筷子*/</span>
+        <span class="token function">signal</span><span class="token punctuation">(</span>fork<span class="token punctuation">[</span><span class="token punctuation">(</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span>mod <span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">/*放回右边的筷子*/</span>
+        <span class="token function">signal</span><span class="token punctuation">(</span>fork<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">/*放回左边的筷子*/</span>
+        <span class="token function">signal</span><span class="token punctuation">(</span>room<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">/*唤醒阻塞在room信号量队列中的哲学家*/</span>
+    forever 
+end<span class="token punctuation">;</span>
+
+
+begin 
+parbegin 
+    <span class="token function">philosopher</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token function">philosopher</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token function">philosopher</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token function">philosopher</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token function">philosopher</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+parend 
+end<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>room这个信号量使得只有4个哲学家可以同时进入抢查找</p>
+</blockquote>
+<blockquote>
+<p>银行家问题：了解怎么样解决多进程高度竞争资源而引起系统里面可能出现的死锁的一个通用方法问题</p>
+</blockquote>
+<h3 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h3><p>【1】Involve（涉及）<br>【2】forcibly （强制地）<br>【3】Allocation（分配）</p>
+
+            </div>
+            <hr/>
+
+            
+            <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.88rem;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-large waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fa fa-close"></i></a>
+            <h4 class="reward-title">觉得可以就打钱给我买糖吃</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>转载规则</span>
+        </p>
+        
+            <div class="center-align">
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                    <img alt=""
+                         style="border-width:0"
+                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+                </a>
+            </div>
+            <br/>
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《Operating System(5)》
+                </span> 由
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/04/16/cao-zuo-xi-tong-5/" property="cc:attributionName"
+               rel="cc:attributionURL">
+                何必酷
+            </a> 采用
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                知识共享署名 4.0 国际许可协议
+            </a>进行许可。
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '0832266fa5f4e404f663',
+        clientSecret: '8472ad3803edc301eeeb98767910e11bb2d201da',
+        repo: 'RyouLmusic.github.io',
+        owner: 'RyouLmusic',
+        admin: "RyouLmusic",
+        id: '2020-04-16T18-43-30',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/04/16/cao-zuo-xi-tong-6/">
+                    <div class="card-image">
+                        
+                        <img src="https://cdn.pixabay.com/photo/2020/03/08/07/51/stairs-4911677_960_720.jpg" class="responsive-img" alt="Operating System(4)">
+                        
+                        <span class="card-title">Operating System(4)</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            OS
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-16
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Operating-System/" class="post-category" target="_blank">
+                                    Operating System
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/OS/" target="_blank">
+                        <span class="chip bg-color">OS</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/04/11/cao-zuo-xi-tong-4/">
+                    <div class="card-image">
+                        
+                        <img src="https://cdn.pixabay.com/photo/2020/03/08/07/51/stairs-4911677_960_720.jpg" class="responsive-img" alt="Operating System(4)">
+                        
+                        <span class="card-title">Operating System(4)</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            OS
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-11
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Operating-System/" class="post-category" target="_blank">
+                                    Operating System
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/OS/" target="_blank">
+                        <span class="chip bg-color">OS</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">134.2k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/RyouLmusic" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1768045935@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=485734107" class="tooltipped" data-tooltip="QQ联系我: 485734107" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!--单击显示烟花-->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/js/fireworks.js"></script>
+
+<!-- 
+雪花特效 
+<script type="text/javascript" src="\js\snow.js"></script>
+-->
+
+
+<!--单击显示文字-->
+<script type="text/javascript" src="/js/click_show_text.js"></script>
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+    <script src="/libs/others/clicklove.js"></script>
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

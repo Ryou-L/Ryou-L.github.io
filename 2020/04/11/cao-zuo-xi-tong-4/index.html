@@ -1,0 +1,1589 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="Operating System(4), 何必酷">
+    <meta name="description" content="操作系统–进程管理–进程并发互斥与同步概述Concurrency（并发性）
+Mutual Exclusion and Synchronization
+Deadlock And Starvation
+
+
+Mutual Exclusion(互斥">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Operating System(4) | 何必酷</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+        code[class*="language-"], pre[class*="language-"] {
+            white-space: pre !important;
+        }
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">何必酷</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">何必酷</div>
+        <div class="logo-desc">
+            
+            make a friend
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/RyouLmusic" class="waves-effect waves-light" target="_blank">
+                <i class="fa fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/RyouLmusic" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.pixabay.com/photo/2020/03/08/07/51/stairs-4911677_960_720.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        Operating System(4)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/OS/" target="_blank">
+                                <span class="chip bg-color">OS</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Operating-System/" class="post-category" target="_blank">
+                                Operating System
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-04-11
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        5.1k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        22 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="操作系统–进程管理–进程并发"><a href="#操作系统–进程管理–进程并发" class="headerlink" title="操作系统–进程管理–进程并发"></a>操作系统–进程管理–进程并发</h1><h3 id="互斥与同步概述"><a href="#互斥与同步概述" class="headerlink" title="互斥与同步概述"></a>互斥与同步概述</h3><h4 id="Concurrency（并发性）"><a href="#Concurrency（并发性）" class="headerlink" title="Concurrency（并发性）"></a>Concurrency（并发性）</h4><ul>
+<li>Mutual Exclusion and Synchronization</li>
+<li>Deadlock And Starvation</li>
+</ul>
+<blockquote>
+<p>Mutual Exclusion(互斥)：计算机里面一些硬件或者软件资源必须是互斥（不能同时）被访问的<br>Synchronization(同步)：当进程A因为资源C不能获取而进行自我阻塞，当进程B将C资源释放之后，进程B会通知其他进程资源C可以进行使用</p>
+</blockquote>
+<blockquote>
+<p>Deadlock（死锁）：进程之间对资源的高度竞争，造成死锁问题<br>Starvation（饥饿）：进程长时间无法得到服务</p>
+</blockquote>
+<h4 id="Learning-objectives"><a href="#Learning-objectives" class="headerlink" title="Learning objectives"></a>Learning objectives</h4><p><strong>By the end of this lecture you should be able to：</strong></p>
+<ul>
+<li>Explain what’s Concurreney，Synchronization，Mutual exclusion，Deadlock，Starvation，Critical sections（临界区:对应临界资源，只能互斥使用：访问临界资源的代码叫做临界区）</li>
+<li>掌握Requirements for Mutual Exclusion</li>
+<li>掌握Approaches of Mutual Exclusion:Software Approaches&amp;Hardware Support-Semaphores、Monitors、Message Passing</li>
+<li>区别掌握Types and meanings of Semaphores</li>
+<li>掌握3个经典问题的解决方法：Producer/Consumer Problem、Readers/Writers Problem、Dining Philosophers Problem</li>
+<li>理解Conditions for Deadlock、Deadlock Prevention、Deadlock Avoidance、Deadlock Detection、Strategies once Deadlock Detected，Banker’s Algorithm（Safe State irs.Unsafe State）</li>
+</ul>
+<h3 id="并发原理"><a href="#并发原理" class="headerlink" title="并发原理"></a>并发原理</h3><h4 id="Design-Issues-of-Concurrency（并发性的设计问题）"><a href="#Design-Issues-of-Concurrency（并发性的设计问题）" class="headerlink" title="Design Issues of Concurrency（并发性的设计问题）"></a>Design Issues of Concurrency（并发性的设计问题）</h4><ul>
+<li>Communication among processes（进程之间的通信）</li>
+<li>Sharing/Competing of resources（共享/竞争资源）</li>
+<li>Synchronization of multiple processes（多进程同步）</li>
+<li>Allocation of processor time（分配进程占有的时间）</li>
+</ul>
+<h4 id="Difficulties-with-Concurrency（设计并发的困难）"><a href="#Difficulties-with-Concurrency（设计并发的困难）" class="headerlink" title="Difficulties with Concurrency（设计并发的困难）"></a>Difficulties with Concurrency（设计并发的困难）</h4><ul>
+<li>Sharing global resources(全局资源的共享)</li>
+<li>Management of allocation of resources（资源的分配的管理）</li>
+<li>Programming errors difficult to locate（程序错误）</li>
+</ul>
+<h4 id="Operating-System-Concerns（操作系统的关注点）"><a href="#Operating-System-Concerns（操作系统的关注点）" class="headerlink" title="Operating System Concerns（操作系统的关注点）"></a>Operating System Concerns（操作系统的关注点）</h4><ul>
+<li>Keep track of active processes:PCB（对进程的PCB进行跟踪）</li>
+<li>Allocate and deallocate resources（分配和回收资源）<ul>
+<li>Processor time:scheduling</li>
+<li>Memory:virtual memory</li>
+<li>Files</li>
+<li>I/O devices</li>
+</ul>
+</li>
+<li>Protect data and resources（保护数据跟资源：是否可以进行无限制的修改等）</li>
+<li>Result of process must be independent of the speed of execution of other concurrent processes.（进程的结果必须独立于其他并发进程的执行速度）</li>
+</ul>
+<h4 id="Process-Interaction（进程之间的相互作用-关系）"><a href="#Process-Interaction（进程之间的相互作用-关系）" class="headerlink" title="Process Interaction（进程之间的相互作用/关系）"></a>Process Interaction（进程之间的相互作用/关系）</h4><ul>
+<li>Processes unaware of each other（进程之间都不知道其他进程的存在）<ul>
+<li>Competition</li>
+<li>Mutual exclusion，Deadlock，Starvation</li>
+</ul>
+</li>
+<li>Processes indirectly aware of each other(进程间接地知道彼此)<ul>
+<li>Cooperation by sharing(合作共享)</li>
+<li>Mutual exclusion，Deadlock，Starvation，Data coherence（一致性：写数据的时候，不允许其他进程操作数据）</li>
+</ul>
+</li>
+<li>Process directly aware of each other(进程之间地知道彼此)<ul>
+<li>Cooperation by communication（进行通信）</li>
+<li>Deadlock，Starvation</li>
+</ul>
+</li>
+</ul>
+<h3 id="临界资源、临界区与互斥"><a href="#临界资源、临界区与互斥" class="headerlink" title="临界资源、临界区与互斥"></a>临界资源、临界区与互斥</h3><h4 id="Competition-Among-Processes-for-Resources（进程之间的资源竞争）"><a href="#Competition-Among-Processes-for-Resources（进程之间的资源竞争）" class="headerlink" title="Competition Among Processes for Resources（进程之间的资源竞争）"></a>Competition Among Processes for Resources（进程之间的资源竞争）</h4><ul>
+<li>Mutual Exclusion（互斥）<ul>
+<li>Critical sectiors（临界区）:涉及到使用资源的的这一段代码就叫做临界区<ul>
+<li>Only one program at a time is allowed in its critical section.（临界区一次只允许一个进程访问）</li>
+<li>Eg.Only one process at a time is allowed to send command to the printer（打印机）（<strong><em>critical resource</em></strong>）.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Deadlock（死锁）</li>
+<li>Starvation</li>
+</ul>
+<p><strong>Deadlock</strong></p>
+<ul>
+<li>例如，有两个进程P1、P2，竞争两个资源A、B。假设：<ul>
+<li>占用：P1（B）and P2（A）</li>
+<li>申请：P1（A）and P2（B）</li>
+<li>结果：P1、P2永久等待（死锁）</li>
+<li>P1占有B资源又申请A资源，而p2占有A资源又去申请B资源，就形成一个环路，P1、P2互相等待，<strong>都处于阻塞态，都在等待对方把资源释放然后来唤醒自己</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="Mutual-Exclusion-Mechanism（互斥机制）"><a href="#Mutual-Exclusion-Mechanism（互斥机制）" class="headerlink" title="Mutual Exclusion Mechanism（互斥机制）"></a>Mutual Exclusion Mechanism（互斥机制）</h4><blockquote>
+<p>entry section(进入区：判断是否能进去) ==&gt; critical section(临界区) ==&gt; exit section(退出区：退出之后要有表明自己已经退出来的动作)</p>
+</blockquote>
+<h4 id="Cooperation-Among-Processes-by-Sharing（通过共享进行进程之间的合作）"><a href="#Cooperation-Among-Processes-by-Sharing（通过共享进行进程之间的合作）" class="headerlink" title="Cooperation Among Processes by Sharing（通过共享进行进程之间的合作）"></a>Cooperation Among Processes by Sharing（通过共享进行进程之间的合作）</h4><ul>
+<li>Writing must be mutually exclusive.(写数据必须保存互斥)</li>
+<li>Critical sections are used to provide data integrity（临界区来保证数据完整性）.</li>
+<li>Messages are passed（消息的传递）<ul>
+<li>Mutual exclusion is not a control requirement.（不要求要进行互斥）</li>
+</ul>
+</li>
+<li>Possible to have deadlock（可能会产生死锁）<ul>
+<li>Each process waiting for a message from the other process.（每个进程都在等待来自另一个进程的消息。）</li>
+</ul>
+</li>
+<li>Possible to have starvation（可能会产生饥饿）<ul>
+<li>Two processes sending message to each other while another process waits for a message.（有三个进程进行通信：两个进程相互发送消息，而另一个进程等待消息）</li>
+</ul>
+</li>
+</ul>
+<h4 id="Requirements-for-Mutual-Exclusion（互斥的要求）"><a href="#Requirements-for-Mutual-Exclusion（互斥的要求）" class="headerlink" title="Requirements for Mutual Exclusion（互斥的要求）"></a>Requirements for Mutual Exclusion（互斥的要求）</h4><ul>
+<li>Only one process at a time is allowed in the critical section for a resource.（在资源的临界区一次只允许一个进程）</li>
+<li>A process that halts in its non-critical section must do so without interfering with other processes.（一个进程在它的非临界区停止时，必须在不干扰其他进程的情况下停止）</li>
+<li>No deadlock or starvation.（没有死锁和饥饿）</li>
+<li>A process must not be delayed access to a critical section when there is no other process using it.（如果没有进程在使用临界区，那么进程在要申请进入临界区的时候不允许被延误，必须马上执行）</li>
+<li>No assumptions are made about relativeprocess speeds or number of processes.（不要做任何关于进程速度或进程数量的假设）</li>
+<li>A process remains inside its critical section for a finite time only.（一个进程仅在有限的时间内保持在其临界区内。）</li>
+</ul>
+<blockquote>
+<p>空闲让进、忙着等待、有限等待、让权等待。(让权等待:不能拿着这个临界资源又去等待其他的资源 )</p>
+</blockquote>
+<h4 id="Approaches-of-Mutual-Exclusion（解决互斥的方法）"><a href="#Approaches-of-Mutual-Exclusion（解决互斥的方法）" class="headerlink" title="Approaches of Mutual Exclusion（解决互斥的方法）"></a>Approaches of Mutual Exclusion（解决互斥的方法）</h4><ul>
+<li>Software Approaches(软件方法)<ul>
+<li>Memory access level</li>
+<li>Access to the same location in main memory are serialized by some sort of memory arbiter.</li>
+<li>Dekker’s Algorithm</li>
+<li>Peterson’s Algorithm</li>
+<li>To mutual exclusion for two processes.</li>
+<li>To illustrate most of the common bugs encountered in developing concurrent programs.</li>
+<li>Is likely to have high processing overhead.</li>
+<li>The risk of logical errors is significant.</li>
+</ul>
+</li>
+<li>Hardware Support(硬件方法)</li>
+<li><strong><em>Semaphores(信号量方法)</em></strong></li>
+<li>Monitors(管程方法)</li>
+<li>Message Passing(消息传递方法)</li>
+</ul>
+<h3 id="Mutual-Exclusion-Hardware-Support-硬件方式实现互斥"><a href="#Mutual-Exclusion-Hardware-Support-硬件方式实现互斥" class="headerlink" title="Mutual Exclusion:Hardware Support(硬件方式实现互斥)"></a>Mutual Exclusion:Hardware Support(硬件方式实现互斥)</h3><h4 id="屏蔽中断"><a href="#屏蔽中断" class="headerlink" title="屏蔽中断"></a>屏蔽中断</h4><ul>
+<li>Interrupt Disabling(中断不可用)<ul>
+<li>A process runs until it invokes an operating-system service or until it is interrupted.（进程将一直运行，直到调用操作系统服务或中断为止）</li>
+<li>Disabling interrupts guarantees mutual exclusion.（停止中断保证互斥）</li>
+</ul>
+</li>
+<li>The price of this approach is high.（这种方式的代价很高）</li>
+<li>Multiprocessing（多处理机系统）<ul>
+<li>Disabling interrupts on one processor will not guarantee mutual exclusion.（在一个处理器上禁用中断并不保证互斥。）</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>Disable interrupts(禁止中断) –&gt; critical section（进入临界区） –&gt; Enable interrupts（允许中断）</p>
+</blockquote>
+<h4 id="Test-and-Set-指令"><a href="#Test-and-Set-指令" class="headerlink" title="Test and Set 指令"></a>Test and Set 指令</h4><blockquote>
+<p>机器指令期间没有中断点</p>
+</blockquote>
+<p><strong>Special Machine Instructions（·特殊的机器指令）</strong></p>
+<ul>
+<li>Performed in a single instruction cyele.（在一个指令周期内执行。）</li>
+<li>Not subject to interference from other</li>
+<li>instructions（避免冲突）</li>
+<li>Reading and writing</li>
+<li>Reading and testing</li>
+</ul>
+<p><strong>Test and Set Instruction</strong></p>
+<pre class="line-numbers language-java"><code class="language-java">function <span class="token function">testset</span><span class="token punctuation">(</span>var i<span class="token operator">:</span> integer<span class="token punctuation">)</span><span class="token operator">:</span> <span class="token keyword">boolean</span><span class="token punctuation">;</span>
+begin <span class="token keyword">if</span> i<span class="token operator">=</span><span class="token number">0</span> then 
+    begin 
+        i<span class="token operator">:</span><span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span> 
+        testset<span class="token operator">:</span><span class="token operator">=</span><span class="token boolean">true</span><span class="token punctuation">;</span> 
+    end 
+    <span class="token keyword">else</span> testset<span class="token operator">:</span><span class="token operator">=</span><span class="token boolean">false</span><span class="token punctuation">;</span> 
+end
+
+<span class="token comment" spellcheck="true">//i=0,testset:=true; 处于空闲状态。i=1，testset:=false; 处于忙状态</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-java"><code class="language-java">program mutualexclusion；<span class="token keyword">const</span> n<span class="token operator">=</span><span class="token punctuation">.</span>…<span class="token punctuation">;</span><span class="token comment" spellcheck="true">/*进程数*/</span>
+var bolt<span class="token operator">:</span>integer<span class="token punctuation">;</span>
+procedure P（i<span class="token operator">:</span>integer）<span class="token punctuation">;</span>
+begin 
+    repeat 
+        repeat <span class="token punctuation">{</span>nothing<span class="token punctuation">}</span>until testset（bolt）<span class="token punctuation">;</span><span class="token comment" spellcheck="true">//如果testset是false，就在此循环检测，是true就进入到临界区&lt;进入区></span>
+        <span class="token operator">&lt;</span>临界区<span class="token operator">></span><span class="token punctuation">;</span>
+        bolt：<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//出了临界区，把bolt设置为0，让其他进程可以占用这个临界区&lt;退出区></span>
+        <span class="token operator">&lt;</span>其余部分<span class="token operator">></span>
+    forever 
+end<span class="token punctuation">;</span>
+
+
+
+begin<span class="token operator">/</span><span class="token operator">*</span>主程序<span class="token operator">/</span>
+bolt：<span class="token operator">=</span><span class="token number">0</span>；
+    parhegin 
+        <span class="token function">P</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">P</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+        <span class="token function">P</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span>
+
+    parend 
+end<span class="token punctuation">.</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>Exchange Instruction</strong>（交换指令）</p>
+<pre class="line-numbers language-java"><code class="language-java">procedure <span class="token function">exchange</span><span class="token punctuation">(</span>var r<span class="token operator">:</span> register<span class="token punctuation">;</span>var m<span class="token operator">:</span> memory<span class="token punctuation">)</span><span class="token punctuation">;</span>
+var temp<span class="token punctuation">;</span> 
+begin 
+    temp<span class="token operator">:</span><span class="token operator">=</span>m<span class="token punctuation">;</span> 
+    m<span class="token operator">:</span><span class="token operator">=</span>r<span class="token punctuation">;</span> 
+    r<span class="token operator">:</span><span class="token operator">=</span>temp<span class="token punctuation">;</span> 
+end<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-java"><code class="language-java">program mutualexclusion<span class="token punctuation">;</span>
+<span class="token keyword">const</span> n<span class="token operator">=</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">/*进程数*/</span>
+var holt<span class="token operator">:</span>integer<span class="token punctuation">;</span>
+procedure <span class="token function">P</span><span class="token punctuation">(</span>i<span class="token operator">:</span>integer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+var key<span class="token operator">:</span>integer<span class="token punctuation">;</span>
+begin 
+    repeat 
+        key<span class="token operator">:</span><span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>
+        repeat <span class="token function">eschange</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span>bolt<span class="token punctuation">)</span>until key<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token operator">&lt;</span>临界区<span class="token operator">></span><span class="token punctuation">;</span>
+        bolt<span class="token operator">:</span><span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token operator">&lt;</span>其余部分<span class="token operator">></span>
+    forever 
+end<span class="token punctuation">;</span>
+
+begin<span class="token operator">/</span><span class="token operator">*</span>主程序<span class="token operator">/</span>
+bolt：<span class="token operator">=</span><span class="token number">0</span>；
+    parhegin 
+        <span class="token function">P</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">P</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+        <span class="token function">P</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span>
+    parend 
+end<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>Advantages(优势)</strong></p>
+<ul>
+<li>Applicable to any number of processes on either a single processor or multiple processors sharing main memory.（适用于共享主存的单处理器或多处理器上的任意数量的进程。）</li>
+<li>It is simple and therefore easy to verify.</li>
+<li>It can be used to support multiple critical sections.</li>
+</ul>
+<p><strong>Disadvantages（缺陷）</strong></p>
+<ul>
+<li>Busy-waiting is employed.（忙等待使用。：降低处理器的使用效率）</li>
+<li>Starvation is possible.<ul>
+<li>when a process leaves a critical section and more than one process is waiting.</li>
+</ul>
+</li>
+<li>Deadlock is possible.<ul>
+<li>If a low priority process has the critical region and a higher priority process needs, the higher priority process will obtain the processor to wait for the critical region.（如果一个低优先级的进程有临界区，而一个高优先级的进程需要，高优先级的进程将获得处理器来等待临界区。低优先级占有临界区，但是高优先级进程占有处理器，低优先级进程退出临界区需要处理器）</li>
+</ul>
+</li>
+</ul>
+<h3 id="信号量Semaphores"><a href="#信号量Semaphores" class="headerlink" title="信号量Semaphores"></a>信号量Semaphores</h3><h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><ul>
+<li>Special variable called a semaphore is used for signaling.(一种特殊变量信号量用于发送信号：进程之间用来交换信息的)</li>
+<li>If a process is waiting for a signal, it is blocked until that signal is sent.（如果一个进程在等待一个信号，那么他将会被阻塞直到哪个信号被发送）</li>
+<li>Wait and Signal operations cannot be interrupted.（等待和信号操作不能被中断）</li>
+<li>Queue is used to hold processes waiting on the semaphore.（队列用于保持进程对信号量的等待。）</li>
+<li>Semaphore is a variable that has an integer value.（信号量是一个拥有整数值的变量）<ul>
+<li>May be initialized to a nonnegative number.（可能初始化一个非负整数）</li>
+<li>Wait and Signal are primitives(atomic, cannot be interrupted and each routine can be treated as an indivisible step).（等待和信号是基本的(原子的，不能被中断，每个例程可以被视为一个不可分割的步骤)。）</li>
+</ul>
+</li>
+<li>Wait operation decrements the semaphore value<ul>
+<li><strong><em>wait（s）：s-1</em></strong></li>
+<li>wait操作：申请资源且可能阻塞自己（s&lt;0）</li>
+</ul>
+</li>
+<li>Signal operation increments semaphore value<ul>
+<li><strong><em>signal（s）：s+1</em></strong></li>
+<li>signal操作：释放源并乘醒醒塞进程（s&lt;0）(唤醒之后的进程不用再执行wait操作，直接进入临界区)</li>
+</ul>
+</li>
+</ul>
+<h4 id="Types-of-Semaphores（信号量类型）"><a href="#Types-of-Semaphores（信号量类型）" class="headerlink" title="Types of Semaphores（信号量类型）"></a>Types of Semaphores（信号量类型）</h4><ul>
+<li>General Semaphore（通用信号量）<ul>
+<li>通用信号量是记录型，其中一个域为整型，另一个域为队列，其元素为等待该信号量的阻塞进程（FIFO）</li>
+</ul>
+</li>
+<li>Binary Semaphore（二进制信号量）<ul>
+<li>只能是0或1</li>
+</ul>
+</li>
+</ul>
+<p><strong>General Semaphore</strong></p>
+<pre class="line-numbers language-java"><code class="language-java">type semaphore<span class="token operator">=</span>record 
+count<span class="token operator">:</span>integer<span class="token punctuation">;</span> 
+queue<span class="token operator">:</span>list of process 
+end<span class="token punctuation">;</span>
+
+
+var s<span class="token operator">:</span>semaphore<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="wait-signal-Operations-wait-signal操作"><a href="#wait-signal-Operations-wait-signal操作" class="headerlink" title="wait/signal Operations(wait/signal操作)"></a>wait/signal Operations(wait/signal操作)</h4><p><strong>General Semaphore</strong>定义Semaphore</p>
+<pre class="line-numbers language-java"><code class="language-java">type semaphore<span class="token operator">=</span>record 
+count<span class="token operator">:</span>integer<span class="token punctuation">;</span> 
+queue<span class="token operator">:</span>list of process 
+end<span class="token punctuation">;</span>
+
+
+var s<span class="token operator">:</span>semaphore<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>wait(s)</strong></p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token function">wait</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token operator">:</span>
+s<span class="token punctuation">.</span>count<span class="token operator">:</span><span class="token operator">=</span>s<span class="token punctuation">.</span>count<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span> 
+<span class="token keyword">if</span> s<span class="token punctuation">.</span>count<span class="token operator">&lt;</span><span class="token number">0</span> then begin 
+    block P<span class="token punctuation">;</span> 
+    insert P into s<span class="token punctuation">.</span>queue<span class="token punctuation">;</span> 
+end<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>signal(s)</strong></p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token function">signal</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token operator">:</span>
+s<span class="token punctuation">.</span>count<span class="token operator">:</span><span class="token operator">=</span>s<span class="token punctuation">.</span>count<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span> 
+<span class="token keyword">if</span> s<span class="token punctuation">.</span>count ≤ <span class="token number">0</span> then begin <span class="token comment" spellcheck="true">/*发现阻塞队列里面有进程，唤醒其中一个*/</span>
+    wakeup the first P<span class="token operator">:</span> 
+    remove the P from s<span class="token punctuation">.</span>queue<span class="token punctuation">;</span> 
+end<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>**wait(s)和signal(s)的使用</p>
+<pre class="line-numbers language-java"><code class="language-java">program mutualexcdlusian
+<span class="token keyword">const</span> n<span class="token operator">=</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">/*进程数*/</span>
+var s<span class="token operator">:</span><span class="token function">semaphore</span><span class="token punctuation">(</span><span class="token operator">:</span><span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">/*定义信号量s,s.count初始化为1,可以为其他值？*/</span>
+procedure <span class="token function">P</span><span class="token punctuation">(</span>i<span class="token operator">:</span>integer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+begin 
+    repeat 
+        <span class="token function">wait</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token operator">&lt;</span>临界区<span class="token operator">></span><span class="token punctuation">;</span>
+        <span class="token function">signal</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token operator">&lt;</span>其余部分<span class="token operator">></span>
+    forever 
+end<span class="token punctuation">;</span>
+
+
+begin<span class="token operator">/</span><span class="token operator">*</span>主程序<span class="token operator">/</span>
+bolt：<span class="token operator">=</span><span class="token number">0</span>；
+    parhegin 
+        <span class="token function">P</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">P</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+        <span class="token function">P</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span>
+    parend 
+end
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="信号量的类型"><a href="#信号量的类型" class="headerlink" title="信号量的类型"></a>信号量的类型</h4><ul>
+<li>信号量分为：互斥信号量和资源信号量。</li>
+<li>互斥信号量用于申请或释放资源的使用权，常初始化为1。</li>
+<li>资源信号量用于申请或归还资源，可以初始化为大于1的正整数，表示系统中某类资源的可用个数。</li>
+<li>wait操作用于申请资源（或使用权），进程执行wait原语时，可能会阻塞自己；</li>
+<li>signal操作用于释放资源（或归还资源使用权），进程执行signal原语时，有责任唤醒一个阻塞进程。</li>
+<li>信号量的意义<ul>
+<li>1.互后信号量：申请/释放使用权，常初始化为1</li>
+<li>2.资源信号量：申请/归还资源，资源信号量可以初始化为一个正整数（表示系统中某类资源的可用个数），s.count的意义为：s.count&gt;0：表示还可执行wait（s）而不会阻塞的进程数（可用资源数）。s.count&lt;0：表示s.queue队列中阻塞进程的个数（被阻塞进程数）</li>
+</ul>
+</li>
+</ul>
+<p><strong>s.count的取值范围</strong></p>
+<ul>
+<li>当仅有两个并发进程共享临界资源时，互斥信号量仅能取值0，1，-1；</li>
+<li>其中：<ul>
+<li>s.count=1，表示无进程进入临界区</li>
+<li>s.count=0，表示已有一个进程进入临界区</li>
+<li>s.count=-1，则表示已有一进程正在等待进入临界区</li>
+</ul>
+</li>
+<li>当用s来实现n个进程的互斥时，s.count函敢值范围为1 ~ -(n-1)</li>
+</ul>
+<blockquote>
+<p>操作系统内核以系统调用形式提供wait和signal原语，应用程序通过该系统调用实现进程间的互斥<br>工程实践证明，利用信号量方法实现进程互斥是高效的，一直被广泛采用。</p>
+</blockquote>
+<h3 id="生产者-消费者问题Producer-Consumer-Problem"><a href="#生产者-消费者问题Producer-Consumer-Problem" class="headerlink" title="生产者/消费者问题Producer/Consumer Problem"></a>生产者/消费者问题Producer/Consumer Problem</h3><ul>
+<li>One or more producers are generating data and placing data in a buffer.(一个或多个生产者正在生成数据并将数据放在缓冲区中)</li>
+<li>A single consumer is taking items out of the buffer one at time(单个消费者每次从缓冲区中取出一个项)</li>
+<li>Only one producer or consumer may access the buffer at any one time(互斥使用buffer：任何时候只有一个生产者或消费者可以访问缓冲区)</li>
+</ul>
+<h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p><strong>·任务及要求</strong></p>
+<ul>
+<li>1.buffer不能并行操作（互斥），即某时刻只允许一个实体（ producer or consumer）访问buffer</li>
+<li>2.控制 producer and consumer同步读/写buffer（同步），即不能向满 buffer写数据;不能在空buffer中取数据</li>
+</ul>
+<p><strong>生产者/消费者必须互斥</strong></p>
+<ul>
+<li>如果对生产者和消费者都不加以控制，那么生产者和消费者可能同时进入缓冲区，甚至可能同时读/写一个存储单元，将导致执行结果不确定</li>
+<li>这显然是不允许的。必须使生产者和消费者互斥进入缓冲区。即，某时刻只允许一个实体（生产者或消费者）访问缓冲区，生产者互斥消费者和其它任何生产者</li>
+</ul>
+<p><strong>生产者/消费者必须同步</strong></p>
+<ul>
+<li>生产者不能向满缓冲区写数据，消费者也不能在空缓冲区中取数据，即生产者与消费者必须同步。</li>
+</ul>
+<h4 id="生产者与消费者问题解决流程"><a href="#生产者与消费者问题解决流程" class="headerlink" title="生产者与消费者问题解决流程"></a>生产者与消费者问题解决流程</h4><p><img src="https://s1.ax1x.com/2020/04/16/JFwHud.png" alt="生产者/消费者执行流程图"></p>
+<p><strong>流程的伪代码</strong></p>
+<pre class="line-numbers language-java"><code class="language-java">program producer_consumer
+sizeofbuffer<span class="token operator">=</span>…<span class="token punctuation">;</span><span class="token operator">/</span>缓冲区大小<span class="token operator">*</span><span class="token operator">/</span>
+<span class="token function">semaphore</span><span class="token punctuation">(</span><span class="token operator">:</span><span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token operator">/</span>互斥信号量s，初始化为<span class="token number">1</span><span class="token operator">*</span>
+n<span class="token operator">:</span> <span class="token function">semaphore</span><span class="token punctuation">(</span><span class="token operator">:</span><span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">/*资源信号量n，数据单元，初始化为0*/</span>
+e<span class="token operator">:</span> <span class="token function">semaphore</span><span class="token punctuation">(</span><span class="token operator">:</span><span class="token operator">=</span> sizeofbuffer<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">/*资源信号量e，空存储单元*/</span>
+
+<span class="token comment" spellcheck="true">/*生产者*/</span>
+procedure producer<span class="token punctuation">;</span>
+begin
+    repeat
+        生产一条数据<span class="token punctuation">;</span>
+        <span class="token function">wait</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">wait</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        存入一条数据<span class="token punctuation">;</span>
+        <span class="token function">signal</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">signal</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">/*生产了一条数据*/</span>
+    forever
+end<span class="token punctuation">;</span>
+
+
+<span class="token comment" spellcheck="true">/*消费者*/</span>
+procedure consumer<span class="token punctuation">;</span>
+begin
+    repeat
+        <span class="token function">wait</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">wait</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        取一条数据<span class="token punctuation">;</span>
+        <span class="token function">signal</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">signal</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">/*取了数据多了一个空单元，并且可能唤醒生产者*/</span>
+        消费数据；
+    forever
+end<span class="token punctuation">;</span>
+
+begin<span class="token operator">/</span><span class="token operator">*</span>主程序<span class="token operator">/</span>
+bolt：<span class="token operator">=</span><span class="token number">0</span>；
+    parhegin 
+        producer<span class="token punctuation">;</span>
+        consumer<span class="token punctuation">;</span>
+    parend 
+end
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>wait,signal的位置都不能交换</p>
+</blockquote>
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><ul>
+<li>1.进程应该先申请资源信号量，再申请互斥信号量，顺序不能颠倒。</li>
+<li>2.对任何信号量的wlit与 signal操作必须配对。同一进程中的多对wait与 signal语句只能嵌套，不能交叉。</li>
+<li>3.对同一个信号量的wat与 signal可以不在同个进程中。</li>
+<li>4.wait与signal语句不能颠倒顺序，wait语句定先于signal语句。</li>
+<li>先获取资源，再获取使用权</li>
+</ul>
+<h3 id="读者-写者问题Readers-writers-problem"><a href="#读者-写者问题Readers-writers-problem" class="headerlink" title="读者/写者问题Readers /writers problem"></a>读者/写者问题Readers /writers problem</h3><ul>
+<li>Any number of readers may simultaneously read the file（任何数量的读者都可以同时读取文件）</li>
+<li>Only one writer at a time may write to the file（一个时间内，只有一个写者可以向文件里面写数据）</li>
+<li>If a writer is writing to the file,no reader may read it.（如果写者正在对文件进行写入，则任何读者都不能读它。互斥）</li>
+</ul>
+<blockquote>
+<p>可用于解决多个进程共享一个数据区(文件、内存区、一组寄存器等),其中若干读进程只能读数据,若干写进程只能写数据等实际问题。</p>
+</blockquote>
+<p>读者优先：文件里面有读者，那么待会有写者和读者过来，那么读者可以进去，写者等待，等读者全部出来了，写者才能进去<br>写者优先：文件里面有读者，如果来了写者，那么接下来的读者来了之后都不可以进去文件，等到里面的读者出来了之后，写者进去，待写者也结束了操作之后，后来的读者才可以进去文件</p>
+<h4 id="读者优先（要求理解）"><a href="#读者优先（要求理解）" class="headerlink" title="读者优先（要求理解）"></a>读者优先（要求理解）</h4><blockquote>
+<p><strong>Readers have priority:</strong>指一旦有读者正在读数据,允许多个读者同时进入读数据,只有当全部读者退出,才允许写者进入写数据。<strong><em>Writers are subject to starvation(容易导致写者饥饿)</em></strong></p>
+</blockquote>
+<pre class="line-numbers language-java"><code class="language-java">
+对readercount的修改要求互斥，一次只能有一个修改readercount，通过信号量x来达成互斥
+
+
+program reader_writers
+<span class="token keyword">const</span> readcount<span class="token operator">:</span> integer<span class="token punctuation">;</span><span class="token comment" spellcheck="true">//统计读者个数</span>
+var x<span class="token punctuation">,</span>wsem<span class="token operator">:</span> <span class="token function">semaphore</span><span class="token punctuation">(</span><span class="token operator">:</span><span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//互斥信号量,初始化为1</span>
+
+procedure reader
+begin
+    repeat
+        <span class="token function">wait</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        readcount<span class="token operator">:</span> <span class="token operator">=</span> readcount <span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> readcount<span class="token operator">=</span> <span class="token number">1</span> then <span class="token function">wait</span><span class="token punctuation">(</span>wsem<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">/*如果里面有写者wait(wsem)会使读者在此阻塞*/</span>
+        <span class="token comment" spellcheck="true">/*如果第一个读者没有被阻塞，那么wesm信号量减一会小于0，就是说写者将无法进入文件，写者会被阻塞*/</span>
+        <span class="token function">signal</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        读数据<span class="token punctuation">;</span>
+        <span class="token function">wait</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+        readcount<span class="token operator">:</span><span class="token operator">=</span> readcount<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> readcount <span class="token operator">=</span> <span class="token number">0</span> then <span class="token function">signal</span><span class="token punctuation">(</span>wsem<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">/*最后一个退出的读者要唤醒写者的进程*/</span>
+        <span class="token function">signal</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+    forever
+end<span class="token punctuation">;</span>
+
+
+procedure writer<span class="token punctuation">;</span>
+begin
+    repeat<span class="token punctuation">;</span>
+    <span class="token function">wait</span><span class="token punctuation">(</span>wsem<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    写数据<span class="token punctuation">;</span>
+    <span class="token function">signal</span><span class="token punctuation">(</span>wsem<span class="token punctuation">)</span><span class="token punctuation">;</span>
+forever
+end<span class="token punctuation">;</span>
+
+
+begin<span class="token comment" spellcheck="true">/*主程序*/</span>
+readcount <span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
+parbegin
+    reader<span class="token punctuation">;</span>
+    writer<span class="token punctuation">;</span>
+parend
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="写者优先"><a href="#写者优先" class="headerlink" title="写者优先"></a>写者优先</h4><blockquote>
+<p><strong>Writers have priority（写者优先）:</strong>指只要有一个 writer申请写数据,则不再允许新的 reader进入读数据</p>
+</blockquote>
+<pre class="line-numbers language-java"><code class="language-java">
+<span class="token comment" spellcheck="true">/*不懂*/</span>
+
+program readers_writers<span class="token punctuation">;</span>
+<span class="token keyword">const</span> readcount<span class="token punctuation">,</span> writecount<span class="token operator">:</span> integer<span class="token punctuation">;</span>
+var x<span class="token punctuation">,</span>y<span class="token punctuation">,</span>Z<span class="token punctuation">,</span>rsem<span class="token punctuation">,</span>wsem<span class="token operator">:</span> <span class="token function">semaphore</span><span class="token punctuation">(</span><span class="token operator">:</span><span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">/*各种信号量，，达成互斥的目的*/</span>
+
+procedure reader<span class="token punctuation">;</span>
+    repeat
+        <span class="token function">wait</span><span class="token punctuation">(</span>z<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">wait</span><span class="token punctuation">(</span>rsem<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">wait</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        readcount <span class="token operator">:</span><span class="token operator">=</span> readcount <span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> readcount<span class="token operator">=</span> <span class="token number">1</span> then <span class="token function">wait</span><span class="token punctuation">(</span>wsem<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">signal</span><span class="token punctuation">(</span>rsem<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">signal</span><span class="token punctuation">(</span>z<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        读数据<span class="token punctuation">;</span>
+        <span class="token function">wait</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        readcount<span class="token operator">:</span> readcount<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> readcount <span class="token operator">=</span><span class="token number">0</span> then <span class="token function">signal</span><span class="token punctuation">(</span>wsem<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">signal</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    forever
+end<span class="token punctuation">;</span>
+
+
+procedure writer<span class="token punctuation">;</span>
+begin 
+    repeat 
+        <span class="token function">wait</span><span class="token punctuation">(</span>y<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        writecount<span class="token operator">:</span><span class="token operator">=</span>writecount<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> writecount<span class="token operator">=</span><span class="token number">1</span> then <span class="token function">wait</span><span class="token punctuation">(</span>rsem<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">signal</span><span class="token punctuation">(</span>y<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token function">wait</span><span class="token punctuation">(</span>wsem<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        写数据<span class="token punctuation">;</span>
+        <span class="token function">signal</span><span class="token punctuation">(</span>wsem<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">wait</span><span class="token punctuation">(</span>y<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        writecount<span class="token operator">:</span><span class="token operator">=</span>writecount<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> writecount<span class="token operator">=</span><span class="token number">0</span> then <span class="token function">signal</span><span class="token punctuation">(</span>rsem<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">signal</span><span class="token punctuation">(</span>y<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    forever 
+end<span class="token punctuation">;</span>
+
+
+begin<span class="token comment" spellcheck="true">/*主程序*/</span>
+readcount<span class="token operator">:</span><span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
+writecount<span class="token operator">:</span><span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
+parbegin 
+    reader<span class="token punctuation">;</span>
+    writer<span class="token punctuation">;</span>
+parendend<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="Monitor（管程）——-面向对象方法"><a href="#Monitor（管程）——-面向对象方法" class="headerlink" title="Monitor（管程）—— 面向对象方法"></a>Monitor（管程）—— 面向对象方法</h3><blockquote>
+<p>类似工具包</p>
+</blockquote>
+<ul>
+<li>用信号量实现互斥，编程容易出错（wait、signal的出现顺序和位置非常重要）</li>
+<li>Support at Programming-language level</li>
+<li>管程是用并发pascal、paseal plus、Modula-2、Modula-3等语言编写的程序，现在已形成了许多库函数。管程可以锁定任何对象，如链表或链表的元素等。</li>
+<li>用管程实现互斥比用信号量实现互斥，更简单、方便</li>
+<li>Monitor is a software module（管程是软件模块），由若干过程、局部于管程的数据、初始化语句（组）组成，是一个封装对象</li>
+<li>Chief characteristics(主要特点)<ul>
+<li>Local data variables are accessible only by the monitor.(局部变量只能在管程里面使用)</li>
+<li>Process enters monitor by invoking one of its procedures.（进程要使用临界资源的话是通过调用管程里面的一个过程来实现的）</li>
+<li>Only one process may be executing in the monitor at a time.（一次只允许一个进程进到管程里面去使用）</li>
+</ul>
+</li>
+</ul>
+<h3 id="消息传递-Message-Passing"><a href="#消息传递-Message-Passing" class="headerlink" title="消息传递 Message Passing"></a>消息传递 Message Passing</h3><blockquote>
+<p>消息传递本来是一种进程通信方式</p>
+</blockquote>
+<ul>
+<li>Enforce mutual exclusion</li>
+<li>Exchange information <ul>
+<li>send(destination,message)</li>
+<li>receive(source,message)</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>send,receive也是原语</p>
+</blockquote>
+<p><strong>Synchronization</strong></p>
+<ul>
+<li>Sender and receiver may or may not be blocked（waiting for message）.（发送方和接收方可能被阻塞，也可能没有被阻塞(等待消息）</li>
+<li>Blocking send，blocking receive（阻塞发送，阻塞接收）<ul>
+<li>Both sender and receiver are blocked until message is delivered.（发送方和接收方都被阻塞，直到消息被发送。）</li>
+<li>Called a rendezvous（紧密同步，汇合）</li>
+<li>A向B发送消息，A要阻塞等待B给它一个回应，B要等待A给它的信息</li>
+</ul>
+</li>
+<li>Nonblocking send, blocking receive（非阻塞发送，阻塞接收）<ul>
+<li>Sender continues processing such as sending messages as quickly as possible.（发送方持续处理，如尽快发送消息）</li>
+<li>Receiver is blocked until the requested message arrives.（接收方被阻塞，直到请求的消息到达。）</li>
+</ul>
+</li>
+<li>Nonblocking send,nonblocking receive（都不需要阻塞）<ul>
+<li>Neither party is required to wait（都不需要等待）</li>
+</ul>
+</li>
+</ul>
+<p><strong>Addressing（寻址）</strong></p>
+<ul>
+<li>Direct addressing<ul>
+<li>Send primitive includes a specifie identifier of the destination process.</li>
+<li>Receive primitive could know ahead of time which process a message is expected.</li>
+<li>Receive primitive could use source parameter to return a value when the receive operation has been performed.</li>
+</ul>
+</li>
+<li>Indirect addressing<ul>
+<li>messages are sent to a shared data structure consisting of queues.*</li>
+<li>queues are called mailboxes.</li>
+<li>one process sends a message to the mailbox and the other process picks up the message from the mailbox.</li>
+</ul>
+</li>
+</ul>
+<h4 id="Message-Passing-Mutual-Exclusion"><a href="#Message-Passing-Mutual-Exclusion" class="headerlink" title="Message Passing(Mutual Exclusion)"></a>Message Passing(Mutual Exclusion)</h4><ul>
+<li>若采用Nonblocking send，blocking receive（<strong><em>非阻塞发送，阻塞接收</em></strong>）</li>
+<li>多个进程共享<strong><em>邮箱mnutex</em></strong>。若进程申请进入临界区，首先申请从mutex邮箱中接收一条消息。若邮箱空，则进程阻塞；若进程收到邮箱中的消息，则进入临界区，执行完毕退出，并将该消息放回邮箱mutex。该消息as a <strong><em>token</em></strong>在进程间传递。<strong><em>消息只有一条</em></strong></li>
+</ul>
+<h4 id="Message-Passing-Producer-Consumer-Problem"><a href="#Message-Passing-Producer-Consumer-Problem" class="headerlink" title="Message Passing(Producer/Consumer Problem)"></a>Message Passing(Producer/Consumer Problem)</h4><ul>
+<li>解决有限buffer Producer/Consumer Problem</li>
+<li>设两个邮箱：<ul>
+<li>Mayconsume:Producer存放数据，供Consumer取走（即buffer数据区）</li>
+<li>Mayproduce：存放空消息的buffer空间()</li>
+</ul>
+</li>
+</ul>
+<h3 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h3><p>【1】Concurrency（并发性）<br>【2】Mutual Exclusion（互斥）<br>【3】Synchronization（同步）<br>【4】Deadlock（死锁）<br>【5】Starvation（饥饿）<br>【6】Critical sections（临界区）<br>【8】Monitors（管程）<br>【9】initialized（初始化）<br>【10】primitives（基元：原子）<br>【11】buffer（缓冲）</p>
+
+            </div>
+            <hr/>
+
+            
+            <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.88rem;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-large waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fa fa-close"></i></a>
+            <h4 class="reward-title">觉得可以就打钱给我买糖吃</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>转载规则</span>
+        </p>
+        
+            <div class="center-align">
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                    <img alt=""
+                         style="border-width:0"
+                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+                </a>
+            </div>
+            <br/>
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《Operating System(4)》
+                </span> 由
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/04/11/cao-zuo-xi-tong-4/" property="cc:attributionName"
+               rel="cc:attributionURL">
+                何必酷
+            </a> 采用
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                知识共享署名 4.0 国际许可协议
+            </a>进行许可。
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '0832266fa5f4e404f663',
+        clientSecret: '8472ad3803edc301eeeb98767910e11bb2d201da',
+        repo: 'RyouLmusic.github.io',
+        owner: 'RyouLmusic',
+        admin: "RyouLmusic",
+        id: '2020-04-11T19-40-08',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/04/16/cao-zuo-xi-tong-5/">
+                    <div class="card-image">
+                        
+                        <img src="https://cdn.pixabay.com/photo/2020/03/08/07/51/stairs-4911677_960_720.jpg" class="responsive-img" alt="Operating System(5)">
+                        
+                        <span class="card-title">Operating System(5)</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            OS
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-16
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Operating-System/" class="post-category" target="_blank">
+                                    Operating System
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/OS/" target="_blank">
+                        <span class="chip bg-color">OS</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/03/24/dan-pian-ji-c51-1/">
+                    <div class="card-image">
+                        
+                        <img src="https://cdn.pixabay.com/photo/2017/06/21/07/33/background-2426328_960_720.jpg" class="responsive-img" alt="MCS51单片机">
+                        
+                        <span class="card-title">MCS51单片机</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            C51
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-24
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/C51/" class="post-category" target="_blank">
+                                    C51
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C51/" target="_blank">
+                        <span class="chip bg-color">C51</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">134.2k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/RyouLmusic" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1768045935@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=485734107" class="tooltipped" data-tooltip="QQ联系我: 485734107" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!--单击显示烟花-->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/js/fireworks.js"></script>
+
+<!-- 
+雪花特效 
+<script type="text/javascript" src="\js\snow.js"></script>
+-->
+
+
+<!--单击显示文字-->
+<script type="text/javascript" src="/js/click_show_text.js"></script>
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+    <script src="/libs/others/clicklove.js"></script>
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>
