@@ -4,11 +4,11 @@
   
     
     <entry>
-      <title>Operating System(4)</title>
+      <title>Operating System(6)</title>
       <link href="/2020/04/16/cao-zuo-xi-tong-6/"/>
       <url>/2020/04/16/cao-zuo-xi-tong-6/</url>
       
-        <content type="html"><![CDATA[<h1 id="操作系统–进程管理–进程并发"><a href="#操作系统–进程管理–进程并发" class="headerlink" title="操作系统–进程管理–进程并发"></a>操作系统–进程管理–进程并发</h1>]]></content>
+        <content type="html"><![CDATA[<h1 id="操作系统–储存管理（Memory-Management）"><a href="#操作系统–储存管理（Memory-Management）" class="headerlink" title="操作系统–储存管理（Memory Management）"></a>操作系统–储存管理（Memory Management）</h1><h3 id="操作系统启动"><a href="#操作系统启动" class="headerlink" title="操作系统启动"></a>操作系统启动</h3><blockquote><p>初始化流程分析：加电或复位 —&gt; BIOS的启动 —&gt; Boot Loader —&gt; 操作系统初始化</p></blockquote><p><strong><em>BIOS在ROM里面</em></strong></p><p><strong>加电或复位</strong></p><ul><li>CS寄存器=FFFF[0]；IP寄存器=0000[0]</li><li>CS:IP组合指向BIOS入口，作为处理器运行的第一条指令<br>注：CS（Code Segment）寄存器：存放当前运行段的起始地址；IP中（Instruction pointer）寄存器：存放指令在码段内的偏移量；CS:IP组合：确定下一条执行指令的物理地址。</li></ul><p><strong>BIOS的启动</strong></p><ul><li>BIOS：主要提供CPU需要的启动指令。后动程序的运行过程：上电自检-&gt;监测并连接系统硬件-&gt;从软盘/硬盘读入Boot Loader（硬盘的0面0道1扇区中）</li><li>BIOS还提供一组中断，以便对硬件设备的访问。在OS未装入前，负责响应中断。</li></ul><p><strong>Boot Loader</strong></p><ul><li>将系统启动代码读入内存</li></ul><p><strong>燥作系统初给化</strong></p><ul><li>当Boot Loader将控制权交给OS的初始代码以后，OS开始其初始化工作，负责：<ul><li>完成存储管理、设备管理、文件管理、进程管理的初始化</li></ul></li><li>当OS的初始化工作完成以后，进入用户态，等待用户的操作</li></ul><h3 id="存储管理概述"><a href="#存储管理概述" class="headerlink" title="存储管理概述"></a>存储管理概述</h3><h4 id="Outline（大纲）"><a href="#Outline（大纲）" class="headerlink" title="Outline（大纲）"></a>Outline（大纲）</h4><ul><li>Memory Management Requirements(存储管理的需求分析)</li><li>Memory Management Techniques（存储管理的技术）<ul><li>Partitioning（分区）</li><li>Simple Paging（简单分页）</li><li>Simple Segmentation（简单分段）</li></ul></li><li>Virtual Memory Management Techniques<ul><li>Virtual-Memory Paging</li><li>Virtual-Memory Segmentation</li></ul></li></ul><h4 id="overView"><a href="#overView" class="headerlink" title="overView"></a>overView</h4><p><strong>Memory Management（内存管理）</strong></p><ul><li>Subdividing memory to accommodate multiple processes.（分割内存以适应多个进程）</li><li>Memory needs to be allocated efficiently to pack as many processes into memory as possible.（需要高效地分配内存，以便将尽可能多的进程打包到内存中）</li></ul><p><strong>Memory Management Requirements</strong></p><ul><li>Relocation（重定位）</li><li>Memory Protection（存储保护）</li><li>Memory Sharing（存储共享）</li><li>Logical Organization（逻辑组织）</li><li>Physical Organization（物理组织）</li></ul><blockquote><p>对于操作系统的存储管理的子系统来说，它具有重定位功能。重定位功能是指在系统里面我的进程要把程序和数据从外存装到内存去，在外存的时候我们的程序的地址都是相对的地址，每个程序都从零地址开始。但是你的程序装到内存去，你的地址就会各不一样。两个程序在内存里面对应的物理地址不一样，就需要进行地址转换<br>因此重定位就是对它（进到内存里的程序）的地址进行重新计算</p></blockquote><blockquote><p>存储保护：内存里面有多个进程，各进程是相互独立的，父子进程之间都是相互独立的，要保证各个进程之间的数据受到保护，不能出现一个进程非法访问另外一个进程的数据</p></blockquote><blockquote><p>存储共享：在多道程序系统里面，有限的内存空间装入尽量多的进程，其中一个关键技术就是存储共享技术。多个进程都能访问同一段代码，那么将这段代码独立出来一个共享段，可以被多个进程通过指针来访问</p></blockquote><p><strong>Addresse</strong></p><ul><li>Logical<ul><li>reference to a memory location independent of the current assignment of data to memory.(引用独立于当前分配给内存的数据的内存位置)</li><li>translation must be made to the physical address.(必须对物理地址进行转换)</li></ul></li><li>Relative<ul><li>address expressed as a location relative to some known point.(地址表示为相对于某个已知点的位置)</li></ul></li><li>Physical<ul><li>the absolute address or actual location in main memory.(在主存中的绝对地址或实际位置)</li></ul></li></ul><p><strong>Protection</strong></p><ul><li>Processes should not be able to reference memorylocations in another process without permission.(未经允许，进程不能引用另一个进程中的内存位置)</li><li>Impossible to check absolute addresses in programs at compile time since the program could be relocated.(无法在编译时检查程序中的绝对地址，因为程序可能被重新定位:所以在运行的时候做)</li><li>Must be checked during execution by the processor(hardware) rather than OS(software)-Operating system cannot anticipate all of the memory references that a program will make.(必须由处理器(硬件)而不是操作系统(软件)在执行期间进行检查-操作系统无法预测程序将会产生的所有内存引用)</li></ul><p><strong>sharig</strong></p><ul><li>Allow several processes to access the same portion of memory.(允许多个进程访问同一内存段)</li><li>Better to allow each process (person) access to the same copy of the program rather than have their own separate copy.(最好允许每个进程(人员)访问程序的相同副本，而不是拥有自己的单独副本:节省内存空间)</li></ul><p><strong>Logical Organization（逻辑组织）</strong></p><ul><li>Programs are written in modules.(程序是在模块中编写的)</li><li>Modules can be written and compiled independently.(模块可以独立编写和编译)</li><li>Different degrees of protection given to modules (read-only, execute-only).(给模块不同程度的保护(只读，仅执行))</li><li>Share modules.(分享模块)</li></ul><p><strong>Physical Organization</strong></p><ul><li>Computer memory is organized into at least two levels, referred as <strong><em>main memory(主存)</em></strong> and <strong><em>secondary memory（外存）</em></strong>（计算机内存至少分为两个层次）</li><li>Memory available for a program plus its data may be insufficient.（可用于程序及其数据的内存可能不够）<ul><li>Overlaying allows various modules to be assigned the same region of memory.（覆盖技术允许将不同的模块分配到相同的内存区域）</li></ul></li><li>Programmer does not know how much space will be available.（程序员不知道有多少空间可用）</li></ul><h4 id="Memory-Management-Techniques（内存管理技术）"><a href="#Memory-Management-Techniques（内存管理技术）" class="headerlink" title="Memory Management Techniques（内存管理技术）"></a>Memory Management Techniques（内存管理技术）</h4><ul><li>Fixed Partitioning（固定分区）</li><li>Dynamic Partitioning（动态分区）</li><li>Simple Paging（简单分页）</li><li>Simple Segmentation（简单分段）</li><li>Virtual-Memory Paging（虚拟存储分页）</li><li>Virtual-Memory Segmentation（虚拟存储分段）</li></ul><blockquote><p>存储空间是否连续：如果对于一个进程，分给其一个连续内存空间，即对于一个进程来说只能占一块空间。<br>连续：分区<br>离散：分段、分页</p></blockquote><blockquote><p><strong>简单和虚拟的区别</strong>：简单存储：一个进程要执行之前，把它的程序数据全部装入内存。虚拟存储：在程序、进程执行之前，只把它的一部分数据装入内存，后面需要的部分再慢慢装入内存<br>根本区别：一个进程是否需要全部装入内存才能运行</p></blockquote><h3 id="Fixed-Partitioning-固定分区"><a href="#Fixed-Partitioning-固定分区" class="headerlink" title="Fixed Partitioning(固定分区)"></a>Fixed Partitioning(固定分区)</h3><p><strong>Partitioning Technique（分区技术）</strong></p><ul><li>Fixed Partitioning Technique（固定分区技术）</li><li>Dynamic Partitioning Technique（动态分区技术）</li><li>Buddy System（伙伴系统）</li></ul><p><strong>Fixed Partitioning</strong></p><ul><li>系统初始启动时将内存划分为数目固定、尺寸固定的多个分区。</li><li>这些分区的尺寸可以相等也可以不等。</li><li>Equal-size partitions(相同大小的分区)<ul><li>any process whose size is less than or equal to the partition size can be loaded into an available partition.(大小小于或等于分区大小的任何进程都可以加载到一个可用分区中)</li><li>if all partitions are full, the operating system can swap a process out of a partition.(如果所有分区都满了，操作系统可以将一个进程交换出一个分区.那这个进程的优先级比较高)</li></ul></li><li>A program may be too big to fit into a partition.The programmer must design the program with overlays.(一个程序可能太大而不能放入一个分区中。程序员必须用覆盖来设计程序)</li><li>Main memory use is inefficient.Any program，no matter how small，occupies an entire partition.This is called <strong><em>internal fragmentation（内零头）</em></strong>。(主存的使用效率很低。任何程序，不管多小，都会占用整个分区。这就是所谓的内部分裂(内零头))</li><li>Both of these problems can be lessened, though not solved, by using unequal-size partitions.(通过使用大小不相等的分区，这两个问题都可以减少，但不能解决)</li></ul><p><strong>Placement Algorithm with Partitions（分区布局算法）</strong></p><ul><li>Equal-size partitions<ul><li>because all partitions are of equal size, it does not matter which partition is used.</li></ul></li><li>Unequal-size partitions<ul><li>can assign each process to the smallest partition within which it will fit.</li><li>queue for each partition.（排队，合适的被占用了，就排着）</li><li>processes are assigned in such a way as tominimize wasted memory within a partition.</li></ul></li></ul><h4 id="Fixed-Partitioning（长处和不足）"><a href="#Fixed-Partitioning（长处和不足）" class="headerlink" title="Fixed Partitioning（长处和不足）"></a>Fixed Partitioning（长处和不足）</h4><p><strong>Advantages</strong></p><ul><li>实现简单；</li><li>系统开销小。</li></ul><p><strong>Disadvantages</strong></p><ul><li>存在Imternal Fragmen，存储利用率不高；</li><li>分区尺寸固定，系统无法运行大程序；</li><li>分区数目固定，使活动进程的数目受限</li></ul><h3 id="Dynamic-Partitioning（动态分区技术）"><a href="#Dynamic-Partitioning（动态分区技术）" class="headerlink" title="Dynamic Partitioning（动态分区技术）"></a>Dynamic Partitioning（动态分区技术）</h3><ul><li>Partitions are of variable length and number.(分区的长度和数量是可变的)</li><li>Process is allocated exactly as much memory as equired.(进程被精确地分配与所需要的内存相同的内存)</li><li>Eventually get holes in the memory.This is called <strong><em>external fragmentation（外零头）</em></strong>.</li><li>Must use <strong><em>compaction（紧凑）</em></strong>to shift processes so they are contiguous and all free memory is in one block.<ul><li>紧凑可以解决外零头问题，但是会很耗时间，系统开销很大</li></ul></li></ul><p><strong>外零头和紧凑技术</strong></p><ul><li>动态分区为进程分配大小合适的分区，消除了分区<strong><em>Internal Fragment</em></strong>.但是，却产生分区<strong><em>External Fragment</em></strong> </li><li><strong><em>Compaction</em></strong>：为了使外零头得到充分利用，可以将把内存中的所有空闲分区拼接成一个较大的空闲分区。即系统可以把内存中的所有进程移到内存的某一端；相应地，内存中的所有空闲分区将被移到内存的另一端。<ul><li>Compaction技术要求系统具有动态重定位的能力</li></ul></li></ul><blockquote><p>外零头：当采用动态分区技术的系统运行了一段时间以后，系统里面就会存在一些不连续的空闲分区，这些不连续的空闲分区总容量是比较大的，但是有要进来的进程需要的大小超过了任何分区的大小，我们就称这些空闲分区为<strong><em>外零头</em></strong><br>外零头是相对的。内零头是绝对的</p></blockquote><h4 id="Dynamic-Partitioning-Placement-Algorithm（动态分区布局算法）"><a href="#Dynamic-Partitioning-Placement-Algorithm（动态分区布局算法）" class="headerlink" title="Dynamic Partitioning Placement Algorithm（动态分区布局算法）"></a>Dynamic Partitioning Placement Algorithm（动态分区布局算法）</h4><ul><li>Operating system must decide which free block to allocate to a process.</li><li>Best-fit algorithm（最佳适应算法）<ul><li>Chooses the block that is closest in size to the request.（选择大小最接近请求的块）</li><li>Worst performer overall.(整体表现最差)</li><li>Since smallest block is found for process，the smallest amount of fragmentation is left.Memory compaction must be done more often.(因为为进程找到了最小的块，所以只剩下最小数量的碎片。必须更经常地进行内存压缩)</li></ul></li><li>First-fit algorithm（首次适应算法）<ul><li>Scan memory from the beginning and choose the first available block that is large enough.(从一开始就扫描内存，选择第一个足够大的可用块)</li><li>Simplest，Best and Fastest.(最简单，最好，最快)</li><li>May have many process loaded in the front end of memory that must be searched over when trying to find a free block.(可能有许多进程加载在内存前端，必须在试图查找时进行搜索)</li></ul></li><li>Next-fit（下次适应算法）<ul><li>Scan memory from the location of the last placement and choose the next available block that is large enough.(从最后一个位置扫描内存，然后选择下一个足够大的可用块)</li><li>More often allocate a block of memory at the end of memory where the largest block is found.(更常见的情况是，在内存的末尾，也就是找到最大内存块的地方，分配一块内存)</li><li>The largest block of memory is broken up into smaller blocks.(最大的内存块被分成更小的块)</li><li>Compaction is required more frequently to obtain a large block at the end of memory.(为了在内存结束时获得一个大的块，需要更频繁地进行压缩)</li></ul></li></ul><h4 id="Registers-Used-during-Execution-执行期间使用的寄存器"><a href="#Registers-Used-during-Execution-执行期间使用的寄存器" class="headerlink" title="Registers Used during Execution(执行期间使用的寄存器)"></a>Registers Used during Execution(执行期间使用的寄存器)</h4><ul><li>Base register（基址寄存器：记录当前执行进程的起始地址：其他不在运行的进程的起始地址放在各自的PCB里面）<ul><li>starting address for the process.(保存进程的地址)</li><li>单核CPU的基址寄存器只有一个。基址寄存器是被所有进程高度共享使用的、切换使用的</li></ul></li><li>Bounds register（界限寄存器:进程是否越界）<ul><li>ending location of the process.（进程的结束位置）</li></ul></li><li>These values are set when the process is loaded and when the process is swapped in.(这些值是在加载进程和交换进程时设置的，放入寄存器的话是进程被调度的时候)</li><li>The value of the base register is added to a <strong><em>relative address</em></strong> to produce an <strong><em>absolute address.</em></strong></li><li>The resulting address is compared with the value in the bounds register.</li><li>If the address is not within bounds, aninterrupt is generated to the operating system.</li></ul><p><img src="https://s1.ax1x.com/2020/04/18/JnMM8g.png" alt="示意图"></p><h3 id="简单分页技术Simple-Paging-Technique"><a href="#简单分页技术Simple-Paging-Technique" class="headerlink" title="简单分页技术Simple Paging Technique"></a>简单分页技术Simple Paging Technique</h3><ul><li>Partition memory into small equal-size chunks and divide each process into the same size chunks.(将内存划分为大小相等的小块，并将每个进程划分为大小相同的块。)</li><li>The chunks of a process are called pages and chunks of memory are called firames（页框、页帧）(进程的块被称为页面、内存所分的块被称为页框或页帧)</li><li>Operating system maintains a page table（页表）for each process.（操作系统为每个进程维护一张页表）<ul><li>contains the frame location for each page in the process.（包含进程中每个页面的帧位置）</li><li>logical address consists of a page number（页号）and an offset（偏移量）within the page.（逻辑地址由页号页内的偏移量组成）</li></ul></li><li>A single firee-frame list（空闲页框表）of all frames in main memory that are currently unoccupied and available for pages.（有一个空闲页框表，保存空闲可用的页框）</li></ul><h4 id="Logical-to-Physical-Address-Translation（逻辑-物理地址转换）"><a href="#Logical-to-Physical-Address-Translation（逻辑-物理地址转换）" class="headerlink" title="Logical-to-Physical Address Translation（逻辑-物理地址转换）"></a>Logical-to-Physical Address Translation（逻辑-物理地址转换）</h4><ul><li>Address translation is done by processor hardware（地址转换是由处理器硬件完成的）（MMU，存储管理单元：处理地址转换）.</li><li>The processor must know how to access the page table of the current process，using <strong><em>page table register（页表寄存器）.</em></strong>：只有当前执行进程的页表起始地址才会占用系统里面唯一的页表寄存器</li><li>Logical address : page number, offset.</li><li>Physical address: frame number, offset.</li></ul><blockquote><p>CPU直接到页表寄存器里取当前进程页表的起始地址，找到页表起始地址才找到了页表，然后从页表里面去找进程的某一页在内存里面的页框号。再用页框号加上相对地址才得到物理地址</p></blockquote><p><strong>Logical-to-Physical Address Translation（逻辑地址到物理地址的转换）</strong><br>在分页系统中，地址变换步骤：</p><ol><li>根据逻辑地址及页大小求出页号和页内偏移；</li><li>用页号检索页表，查找指定页对应的页框号；</li></ol><blockquote><p>逻辑地址：这一条指令在该进程中的位置，相对于该进程的零号地址<br>PCB本身从物理上讲，它是放在系统区的。PCB只要记住自己进程的页表起始地址就可以了。页表本身可以跟PCB完全物理上分开</p></blockquote><h3 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h3><p>【1】Partitioning（分区）<br>【2】Paging（分页）<br>【3】Segmentation（分段）<br>【4】Relocation（重定位）<br>【5】Logical Organization（逻辑结构）<br>【6】Physical Organization（逻辑结构）<br>【7】Logical Physical Address（逻辑物理地址）<br>【8】Relative Absolute Address（相对绝对地址）<br>【9】Overlay（覆盖）<br>【10】Page Frame（页框）<br>【11】Translation Lookaside Buffer（联想存储器，快表）<br>【12】Intermal External Fragmentation（内外零头）<br>【13】Compaction（紧凑）<br>【14】Dynamic Partitioning（动态分区）<br>【15】Subdividing （分割）<br>【16】Modules（模块）<br>【17】Insufficient（不足的）<br>【18】Offset（偏离量）</p>]]></content>
       
       
       <categories>
@@ -195,9 +195,9 @@
       
         <tags>
             
-            <tag> spring </tag>
-            
             <tag> 框架 </tag>
+            
+            <tag> spring </tag>
             
         </tags>
       
@@ -276,9 +276,9 @@
       
         <tags>
             
-            <tag> 数字电路 </tag>
-            
             <tag> 基础 </tag>
+            
+            <tag> 数字电路 </tag>
             
         </tags>
       
@@ -303,9 +303,9 @@
       
         <tags>
             
-            <tag> 基础 </tag>
-            
             <tag> web安全 </tag>
+            
+            <tag> 基础 </tag>
             
         </tags>
       
@@ -391,9 +391,9 @@
       
         <tags>
             
-            <tag> spring </tag>
-            
             <tag> 框架 </tag>
+            
+            <tag> spring </tag>
             
         </tags>
       
@@ -418,9 +418,9 @@
       
         <tags>
             
-            <tag> 基础 </tag>
-            
             <tag> web安全 </tag>
+            
+            <tag> 基础 </tag>
             
         </tags>
       
@@ -472,9 +472,9 @@
       
         <tags>
             
-            <tag> 基础 </tag>
-            
             <tag> web安全 </tag>
+            
+            <tag> 基础 </tag>
             
         </tags>
       
