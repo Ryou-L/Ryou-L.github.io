@@ -1,0 +1,1582 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="Operating System(7), 何必酷">
+    <meta name="description" content="操作系统–I/O设备管理学习目标
+计算机I/O子系统的组成
+OS设备管理模块的结构
+I/O缓冲技术
+磁盘调度策略
+RAID技术
+
+I/O控制Categories of I/O Devices（设备分类）
+
+Human readable
+Ma">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Operating System(7) | 何必酷</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+        code[class*="language-"], pre[class*="language-"] {
+            white-space: pre !important;
+        }
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">何必酷</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">何必酷</div>
+        <div class="logo-desc">
+            
+            make a friend
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/RyouLmusic" class="waves-effect waves-light" target="_blank">
+                <i class="fa fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/RyouLmusic" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.pixabay.com/photo/2016/11/22/19/24/archive-1850170_960_720.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        Operating System(7)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/OS/" target="_blank">
+                                <span class="chip bg-color">OS</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Operating-System/" class="post-category" target="_blank">
+                                Operating System
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-04-21
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        8.4k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        32 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="操作系统–I-O设备管理"><a href="#操作系统–I-O设备管理" class="headerlink" title="操作系统–I/O设备管理"></a>操作系统–I/O设备管理</h1><h3 id="学习目标"><a href="#学习目标" class="headerlink" title="学习目标"></a>学习目标</h3><ul>
+<li>计算机I/O子系统的组成</li>
+<li>OS设备管理模块的结构</li>
+<li>I/O缓冲技术</li>
+<li>磁盘调度策略</li>
+<li>RAID技术</li>
+</ul>
+<h3 id="I-O控制"><a href="#I-O控制" class="headerlink" title="I/O控制"></a>I/O控制</h3><p><strong>Categories of I/O Devices（设备分类）</strong></p>
+<ul>
+<li>Human readable</li>
+<li>Machine readable</li>
+<li>ommunication</li>
+</ul>
+<p><strong>Differences in I/O Devices(设备不同点)</strong></p>
+<ul>
+<li>Data Transfer Rate（数据传输速率）</li>
+<li>Application（应用）</li>
+<li>Complexity of Control（控制复杂性）</li>
+<li>Data Transfer Unit（数据传输单位）</li>
+<li>Data Representation（数据表示）</li>
+<li>Error Conditions（错误条件）</li>
+</ul>
+<p><strong>Techniques for Performing I/O(I/O控制技术)</strong></p>
+<ul>
+<li>Programmed I/O（程序控制1/0）</li>
+<li>Interrupt-Driven（中断驱动）</li>
+<li>DMA Control（DMA控制）</li>
+</ul>
+<h4 id="程序控制Programmed-I-O"><a href="#程序控制Programmed-I-O" class="headerlink" title="程序控制Programmed I/O"></a>程序控制Programmed I/O</h4><ul>
+<li>The processor issues an I/O command to an I/O module, IO module performs the I/O.（处理器向I/O模块发出I/O命令，IO模块执行I/O）</li>
+<li>Sets appropriate bits in the I/O status register.（在I/O状态寄存器中设置适当的位）</li>
+<li>No interrupts occur.（没有中断发生）</li>
+<li>Processor checks status until operation is complete.（处理器检查状态，直到操作完成：这样会有忙等，cpu一直来查看I/O是否可用，浪费cpu资源）</li>
+<li>Process is busy-waiting for the operation to complete.（进程正忙着等待操作完成）</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/04/22/JY5PaR.png" alt="Programmed I/O,每次只读取一个字的单位，需要多次进行直到Done"></p>
+<h4 id="Interrupt-Driven-I-O"><a href="#Interrupt-Driven-I-O" class="headerlink" title="Interrupt-Driven I/O"></a>Interrupt-Driven I/O</h4><ul>
+<li>Processor is interrupted when I/O module ready to exchange data.（当I/O模块准备交换数据时，处理器中断。让处理器不再处理这个进程，转去处理其他进程）</li>
+<li>Processor is free to do other work.（处理器可以自由地做其他工作，不需要在这里等待）</li>
+<li>No needless waiting.（没有不必要的等待）</li>
+<li>Consumes a lot of processor time because every word read or written passes through the processor.（由于每个读或写的单词都要经过处理器，因此会消耗大量处理器时间）</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/04/22/JY5xYt.png" alt="Interrupt-dri ven I/O"></p>
+<h4 id="Direct-Memory-Access-DMA"><a href="#Direct-Memory-Access-DMA" class="headerlink" title="Direct Memory Access(DMA)"></a>Direct Memory Access(DMA)</h4><ul>
+<li>Transfers a block of data directly to or from memory.(直接向内存或从内存中传输数据块)</li>
+<li>An interrupt is sent when the task is complete.(当任务完成时发送一个中断)</li>
+<li>The processor is only involved at the beginning and end of the transfer.(处理器只在传输的开始和结束时参与)</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/04/22/JYq74J.png" alt="Direct memory access"></p>
+<ul>
+<li>Takes control of the system from the CPU to transfer data to and from memory over the system bus.(从CPU控制系统，通过系统总线在内存之间传输数据)</li>
+<li>Cycle stealing is used to transfer data on the system bus.(周期窃取用于在系统总线上传输数据)</li>
+<li>The instruction eycle is suspended so data can be transferred.(指令环被挂起以便传输数据:只是小暂停。cpu不要用地址总线，DMA用，进行传数据)</li>
+<li>The CPU pauses one bus eycle.（CPU暂停一个总线循环）</li>
+<li>No interrupts occur（传输一组数据之间）<ul>
+<li>Do not save context.</li>
+</ul>
+</li>
+</ul>
+<h4 id="DMA控制器的工作原理"><a href="#DMA控制器的工作原理" class="headerlink" title="DMA控制器的工作原理"></a>DMA控制器的工作原理</h4><ul>
+<li>当CPU将一块数据从某1/0设备读入内存某处或把一块数据从内存某处写入某1/0设备时<ul>
+<li>CPU将把相关数据块的长度通过DMA的”Data Lines”脚写入DMA的”Data Counr”寄存器</li>
+<li>把内存起始地址和10设备地址通过DMA的”Data Lines”脚写入DMA的”Address Register”寄存器</li>
+<li>通过DMA的”Read”脚或”Write”脚向DMA发出读或写命令</li>
+</ul>
+</li>
+<li>DMA通过”DMA Request”脚和”DMA Acknowledge”脚控制相关的10设备</li>
+<li>通过“Data Lines”脚与10设备以及内存交换数据</li>
+<li>通过“Address L.ines”脚寻址内存</li>
+<li>工作完毕，DAM将通过“Interrupt”脚向CPU发出中断，CPU对本次数据传输进行善后处理。</li>
+</ul>
+<h4 id="Evolution-of-the-I-O-Function（I-O功能的演变）"><a href="#Evolution-of-the-I-O-Function（I-O功能的演变）" class="headerlink" title="Evolution of the I/O Function（I/O功能的演变）"></a>Evolution of the I/O Function（I/O功能的演变）</h4><ul>
+<li>Processor directly controls a peripheral device.（处理器直接控制外部设备）</li>
+<li>Controller or I/O module is added <ul>
+<li>Processor uses programmed I0 without interrupts.</li>
+<li>Processor does not need to handle details of external devices.</li>
+</ul>
+</li>
+<li>Controller or I/0 module with interrupts<ul>
+<li>Processor does not spend time waiting for an IO operation to be performed.</li>
+</ul>
+</li>
+<li>Direct Memory Access <ul>
+<li>Blocks of data are moved into memory without involving the processor.</li>
+<li>Processor involved at beginning and end only.</li>
+</ul>
+</li>
+<li>I/O module is a separate processor: I/O channel.</li>
+<li>I/O processor<ul>
+<li>I/O module has its own local memory.</li>
+<li>It’s a computer in its own right.</li>
+</ul>
+</li>
+</ul>
+<h3 id="设备管理模块子系统"><a href="#设备管理模块子系统" class="headerlink" title="设备管理模块子系统"></a>设备管理模块子系统</h3><h4 id="Operating-System-Design-Issues"><a href="#Operating-System-Design-Issues" class="headerlink" title="Operating System Design Issues"></a>Operating System Design Issues</h4><ul>
+<li>Efficiency <ul>
+<li>Most I/O devices extremely slow compared to main memory.（与主存相比，大多数I/O设备的效率非常低）</li>
+<li>Use of multiprogramming allows for some processes to be waiting on I/O while another process executes.（使用多道程序设计允许一些进程在另一个进程执行时等待I/O）</li>
+<li>I/O cannot keep up with processor speed.（I/O跟不上处理器的速度）</li>
+<li>Swapping is used to bring in additional Ready processes which is an I/O operation.（交换用于引入额外的就绪进程，这是一个I/O操作。）</li>
+</ul>
+</li>
+<li>Generality （通用性）<ul>
+<li>Desirable to handle all IO devices in a uniform manner.（希望以统一的方式处理所有IO设备）</li>
+<li>Hide most of the details of device I/O in <code>lower-level(驱动程序)</code> routines so that processes andupper levels see devices in general terms such as read, write, open, close, lock, unlock.（在较低级的例程中隐藏设备IO的大部分细节，以便进程和程序级能够看到设备的一般情况，如读、写、打开、关闭、锁定和解锁）</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>外部设备首要考虑效率</p>
+</blockquote>
+<h4 id="Device-Independence（设备无关性）"><a href="#Device-Independence（设备无关性）" class="headerlink" title="Device Independence（设备无关性）"></a>Device Independence（设备无关性）</h4><p>即，应用软件所引用的用于实现I/O操作的设备与计算机I/O子系统中实际安装的设备没有固定的联系。</p>
+<p><strong>Logical I/O Device（逻辑I/O设备）</strong><br>应用软件引用的用于实现1/0操作的设备。</p>
+<ul>
+<li>从应用软件的角度看，逻辑1/0设备是一类具有相同或相似属性的物理1/0设备的抽象。</li>
+</ul>
+<p><strong>逻辑1/0设备的分类</strong></p>
+<ul>
+<li>字符设备（键盘、鼠标）<ul>
+<li>也叫面向流的设备（Stream-Oriented Device）；</li>
+<li>应用软件以字符为单位读写此类逻辑I/O设备.</li>
+</ul>
+</li>
+<li>块设备（磁盘）<ul>
+<li>也叫面向块的设备（Block-Ooriented Device）；</li>
+<li>应用软件以块为单位读写此类逻辑I/O设备。</li>
+</ul>
+</li>
+</ul>
+<h4 id="OS设备管理模块的分层结构"><a href="#OS设备管理模块的分层结构" class="headerlink" title="OS设备管理模块的分层结构"></a>OS设备管理模块的分层结构</h4><ul>
+<li>为了实现“通用性”这一设计目标，大多数OS的设备管理模块采用分层结构。</li>
+<li>典型的两层结构：<ul>
+<li>设备硬件无关层，实现设备映射功能，把逻辑I/O设备映射到物理I/O设备</li>
+<li>设备硬件相关层，实现设备驱动功能，控制物理I/O设备以便完成实际的I/O操作（驱动程序来完成）</li>
+</ul>
+</li>
+</ul>
+<h3 id="I-O-Buffering（I-O缓冲技术）"><a href="#I-O-Buffering（I-O缓冲技术）" class="headerlink" title="I/O Buffering（I/O缓冲技术）"></a>I/O Buffering（I/O缓冲技术）</h3><blockquote>
+<p>没有I/O缓存不仅会造成系统效率低，还可能造成单进程死锁</p>
+</blockquote>
+<h4 id="提高用户进程运行效率的方法"><a href="#提高用户进程运行效率的方法" class="headerlink" title="提高用户进程运行效率的方法"></a>提高用户进程运行效率的方法</h4><p>许多OS通过引入<strong><em>I/O Buffering</em></strong>来提高用户进程的运行效率、缩短其周转时间。<br><strong>I/O Buffering</strong></p>
+<ul>
+<li>核心思想：在<code>内存中</code>建立I/O缓冲区</li>
+<li>缓存从输入设备流入内存的数据</li>
+<li>缓存从内存流向输出设备的数据</li>
+<li>Block-oriented(面向块)<ul>
+<li>Information is stored in fixed sized blocks(信息存储在固定大小的块中)</li>
+<li>Transfers are made a block at a time(传输一次完成一个块)</li>
+<li>Used for disks and tapes(用于磁盘和磁带)</li>
+</ul>
+</li>
+<li>Stream-oriented （面向流）<ul>
+<li>Trarisfer information as a stream of bytes（将信息以字节流的形式转移）</li>
+<li>byte：每个buffer缓存一个字符（字节），键盘输入等</li>
+<li>line：每个buffer缓存一个字符串或长度可变的多个字节，用于显示输出、打印输出等</li>
+</ul>
+</li>
+</ul>
+<h4 id="Read-Ahead-and-Write-Postponing-提前读，延后写"><a href="#Read-Ahead-and-Write-Postponing-提前读，延后写" class="headerlink" title="Read Ahead and Write Postponing(提前读，延后写)"></a>Read Ahead and Write Postponing(提前读，延后写)</h4><ul>
+<li>Read Ahead（提前读）<ul>
+<li>用户进程从I/O缓冲区取走前一个数据后立即发出对下一个数据的输入请求；OS将在适当的时候响应该请求，把需要的数据读入I/O缓冲区.（<strong><em>这两者是并行的</em></strong>）</li>
+</ul>
+</li>
+<li>Write Postponing（延后写）<ul>
+<li>当用户进程请求输出数据时，Os将很快把用户进程请求输出的数据从用户进程的工作区取走，将其暂存在I/O缓冲区中；直到用户进程指定的输出设备空闲时，OS才把暂存在I/O缓冲区中的数据写入用户进程指定的输出设备上.</li>
+<li>需要考虑安全问题、延长多长时间……</li>
+</ul>
+</li>
+</ul>
+<h4 id="具体技术"><a href="#具体技术" class="headerlink" title="具体技术"></a>具体技术</h4><ul>
+<li>Single Buffer（单缓冲区）</li>
+<li>Double Buffer（双缓冲区）</li>
+<li>Circular Buffer（循环缓冲区）</li>
+</ul>
+<h4 id="Single-Buffer（单缓冲区）"><a href="#Single-Buffer（单缓冲区）" class="headerlink" title="Single Buffer（单缓冲区）"></a>Single Buffer（单缓冲区）</h4><ul>
+<li>Operating system assigns a buffer in main memory for an I/O request.（操作系统在主存中为I/O请求分配一个缓冲区）</li>
+<li>Block-oriented<ul>
+<li>Input transfers made to buffer Block moved to user space when needed（当需要时，将向缓冲区块的输入传输移动到用户空间）</li>
+<li>Another block is moved into the buffer （另一个块被移到缓冲区中）<ul>
+<li>Read ahead</li>
+</ul>
+</li>
+<li>User process can process one block of data while next block is read in.（用户进程可以处理一个数据块，同时读入下一个数据块）</li>
+<li>Swapping can occur since input is takingplace in system memory, not user memory.（交换可以发生，因为输入是发生在系统内存，而不是用户内存）</li>
+<li>Operating system keeps track of assignment of system buffers to user processes.（操作系统跟踪系统缓冲区分配给用户进程的情况）</li>
+</ul>
+</li>
+<li>Stream-oriented <ul>
+<li>Used a line at time.（一次一行）</li>
+<li>User input from a terminal is one line at atime with carriage return signaling the end of the line.（来自终端的用户输入是一行，在时间轴上用回车表示行结束）</li>
+<li>Output to the terminal is one line at a time.（终端的输出是一行一行的）</li>
+</ul>
+</li>
+</ul>
+<p><strong>效率是否提高</strong>（在单缓冲区下，非同一块数据,T和C可以并行）</p>
+<ul>
+<li>若一块数据从外部设备输入到内存所花费的时间为T，在内存中移动所花费的时间为M，被用户进程加工处理所花费的时间为C，则<ul>
+<li>在没有使用I/O缓冲区的情况下，平均每块数据的处理时间近似为：<strong><em>T+C</em></strong></li>
+<li>在使用单I/O缓冲区的情况下，平均每块数据的处理时间近似为：<strong><em>max（T，C）+M</em></strong></li>
+</ul>
+</li>
+<li>可见，相对于没有使用I/O缓冲区的情形，引入单I/O缓冲区后，用户进程的运行效率得到了提高</li>
+<li>然而，如果用户进程在对有关数据进行加工处理时并不释放I/O缓冲区，那么用户进程的性能并不能得到改善。</li>
+<li>此外，如果T远远大于C，即外部设备的I/O速度比用户进程的计算速度慢得多，那么即使引入单I/O缓冲区，用户进程的性能也几乎没有得到改善.</li>
+</ul>
+<h4 id="Double-Buffer（双缓冲区）"><a href="#Double-Buffer（双缓冲区）" class="headerlink" title="Double Buffer（双缓冲区）"></a>Double Buffer（双缓冲区）</h4><ul>
+<li>Use two system buffers instead of one.（使用两个系统buffer）</li>
+<li>A process can transfer data to or from one buffer while the operating system empties or fills the other buffer.（两个缓冲区交替使用）</li>
+<li>外部设备和应用进程常常交替引用Double Buffer</li>
+<li>Double Buffer也称为Buffer Swapping（缓冲交换）</li>
+</ul>
+<h4 id="Single-Buffer-vs-Double-Buffer"><a href="#Single-Buffer-vs-Double-Buffer" class="headerlink" title="Single Buffer vs Double Buffer"></a>Single Buffer vs Double Buffer</h4><ul>
+<li>使用双I/O缓冲区，即使用户进程在对有关数据进行加工处理时不释放相关的1/0缓冲区，用户进程的性能也能得到改善。</li>
+<li>与单I/O缓冲区类似，如果T远远大于C，即外部设备的I/O速度比用户进程的计算速度慢得多，那么即使引入双I/O缓冲区，用户进程的性能也几乎没有得到改善。</li>
+<li>缓和外部设备的I/O速度与用户进程的计算速度不匹配的一种有效的办法是，在外部设备和用户进程之间设立多个I/O缓冲区。</li>
+</ul>
+<h4 id="Circular-Buffer（循环缓冲区）"><a href="#Circular-Buffer（循环缓冲区）" class="headerlink" title="Circular Buffer（循环缓冲区）"></a>Circular Buffer（循环缓冲区）</h4><ul>
+<li>More than two buffers are used.（两个以上的缓冲区数）</li>
+<li>Each individual buffer is one unit in a circular buffer.（每个单独的缓冲区是一个循环缓冲区中的一个单元）</li>
+<li>Used when I/O operation must keep up with process.（当I/O操作必须跟上进程时使用）</li>
+</ul>
+<h3 id="DiskCache介绍（磁盘缓存：在内存里面-应该是buffer的一种）"><a href="#DiskCache介绍（磁盘缓存：在内存里面-应该是buffer的一种）" class="headerlink" title="DiskCache介绍（磁盘缓存：在内存里面,,应该是buffer的一种）"></a>DiskCache介绍（磁盘缓存：在内存里面,,应该是buffer的一种）</h3><ul>
+<li>Buffer in main memory for disk sectors，不是一种硬件设施</li>
+<li>Contains a copy of some of the sectors on the disk.（包含磁盘上某些扇区的副本）</li>
+<li>其组织形式基于程序引用的局部性原理</li>
+</ul>
+<h4 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h4><ul>
+<li>当用户进程请求从磁盘读入一个扇区时，系统首先在disk eache中寻找该扇区的副本<ul>
+<li>如果能够找到，那么系统将从disk cache中取出该扇区的副本并返给用户进程；</li>
+</ul>
+<ul>
+<li>否则，系统首先从碰盘上读入该扇区并在disk eache中为其建立一个副本，然后将该副本运给用户进程</li>
+</ul>
+</li>
+<li>当用户进程请求向磁盘上写出一个扇区时，系统同样首先在disk cache中寻找该扇区的副本<ul>
+<li>如果能够找到，那么系统将根据用户进程的请求修改该扇区的副本；</li>
+<li>否则，系统同样首先从碰盘上读入该扇区并在disk cache中为其建立一个副本，然后根据用户进程的请求修改该副本.（为什么还要从扇区读进来）</li>
+</ul>
+</li>
+</ul>
+<h4 id="磁盘高速缓存的数据安全性"><a href="#磁盘高速缓存的数据安全性" class="headerlink" title="磁盘高速缓存的数据安全性"></a>磁盘高速缓存的数据安全性</h4><ul>
+<li>Disk Cache中的数据写出到磁盘：<ol>
+<li>在系统空闲或需要淘汰被写的缓存空间时进行写。</li>
+<li>周期性地进行写。</li>
+<li>立即写回，称为“写穿透高速缓存”，相当于只有读缓存而没有写缓存。</li>
+</ol>
+</li>
+</ul>
+<h4 id="向用户进程提交扇区副本的方法"><a href="#向用户进程提交扇区副本的方法" class="headerlink" title="向用户进程提交扇区副本的方法**"></a>向用户进程提交扇区副本的方法**</h4><ul>
+<li>如果系统不允许用户进程访问disk cache，那么系统将把用户进程需要的扇区从disk cache中复制到用户进程的工作区。</li>
+<li>如果系统允许用户进程访问disk cache，那么系统将把用户进程需要的扇区副本在disk eache中的位置指针传递给用户进程。</li>
+</ul>
+<h4 id="扇区置换算法"><a href="#扇区置换算法" class="headerlink" title="扇区置换算法"></a>扇区置换算法</h4><ul>
+<li>Least Recently Used（LRU置换算法）<ul>
+<li>The block that has been in the cache the longest with no reference to it is replaced（最长时间没有被使用的被置换出去）</li>
+</ul>
+</li>
+<li>Least Frequently Used（LFU置换算法）<ul>
+<li>The block that has experienced the fewest references is replaced（被引用次数最少的块被替换）</li>
+</ul>
+</li>
+</ul>
+<p><strong>Least Recently Used</strong></p>
+<ul>
+<li>The cache consists of a stack of blocks.（扇区按照堆栈的方式来组织。？？？？为什么不用队列）</li>
+<li>Most recently referenced block is on the top of the stack.（最近使用的块放置在栈顶）</li>
+<li>When a block is referenced or brought into the cache, it is placed on the top of the stack.（当一个块被引用或放入缓存时，它被放在堆栈的顶部）</li>
+<li>The block on the bottom of the stack isremoved when a new block is brought in.（）</li>
+<li>Blocks don’t actually move around in main memory.</li>
+</ul>
+<p><strong>Least Frequently Used</strong></p>
+<ul>
+<li>A counter is associated with each block.（每个块有个计数器）</li>
+<li>Counter is incremented each time block accessed.（计数器在每次访问块时递增）</li>
+<li>Block with smallest count is selected for replacement(计数最小的被换出去)</li>
+<li>Some blocks may be referenced many times in a short period of time and then not needed any more.（有些块可能在短时间内被多次引用，然后就不再需要了）</li>
+</ul>
+<p><strong>Frequency-Based Replacement Algorithm（基于频率的置换算法）</strong></p>
+<ul>
+<li>系统把dik cache中的所有扇区组成一个栈：住于栈项的扇区最近才被访问过；而位于栈底的扇区最久没有被访问过.</li>
+<li>系统从中间某个位置把disk cache中的栈分成两个部分：靠近栈项的部分称为New Section，靠近栈底的部分称为Old Section.</li>
+<li>系统为disk cache中的每个扇区设置一个引用计数器</li>
+<li>当系统从磁盘上把一个新扇区读入disk cache中时，把该扇区放在disk cache的栈顶，并把该扇区的引用计数器置1.</li>
+<li>当disk eache中的某个扇区被用户进程访问时，系统将把该扇区从其原来的位置移到disk cache的栈顶，同时判断该扇区原来是否位于栈的New Section：若是，该扇区的引用计数器的值保持不变；否则，该扇区的引用计数器的值被加1.</li>
+<li>当需要从disk cache中选择一个被置换扇区时，系统将从位于栈的Old Section中的所有扇区中选择引用计数器值最小的那个扇区。</li>
+<li>如果位于栈的Old Section中的所有扇区其引用计数器的值均相等，那么系统将选择位于disk cache底的那个扇区。</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/04/22/JUGuFI.png" alt="Frequency-Based Replacement Algorithm"></p>
+<p><strong>基于频率置换算法的不足</strong></p>
+<ul>
+<li>一个新的扇区被读入disk cache时，它将被置于楼的New Section中，其引用计数器被置1.</li>
+<li>只要该扇区不离开New Section，它的引用计数器的值就一直保持为1.</li>
+<li>当该扇区最终离开New Section时，它的引用计数器的值仍然为1</li>
+<li>如果此时该扇区不能在系统进行扇区置换之前很快地被用户进程引用，那么该扇区很可能被置接出去.</li>
+<li>这意味着，一个在离开New Section时不能很快被引用的扇区（即使是一个经常被引用的扇区）根本没有机会增加自己的引用计数</li>
+<li>显然，这对一个经常被引用但在离开New Section时不能很快被引用的扇区是不合理的.</li>
+</ul>
+<p><strong>基于频率置换算法的改进</strong></p>
+<ul>
+<li>把disk cache中的栈分成三个部分<ul>
+<li>New Section</li>
+<li>Middle Section</li>
+<li>Old Section</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/04/22/JUGTne.png" alt="Use of Three Sections"></p>
+<h4 id="spooing技术-掌握这种思想"><a href="#spooing技术-掌握这种思想" class="headerlink" title="spooing技术(掌握这种思想)"></a>spooing技术(掌握这种思想)</h4><ul>
+<li>核心思想是：在<strong><em>快速辅助存储设备中</em></strong>建立I/O缓冲区，用于缓存从慢速输入设备流入内存的数据，或缓存从内存流向慢速输出设备的数据。</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/04/22/JUJv5R.png" alt="SPOOLing技术实现原理示意图"></p>
+<h3 id="磁盘调度"><a href="#磁盘调度" class="headerlink" title="磁盘调度"></a>磁盘调度</h3><h4 id="Disk-I-O（磁盘I-O）"><a href="#Disk-I-O（磁盘I-O）" class="headerlink" title="Disk I/O（磁盘I/O）"></a>Disk I/O（磁盘I/O）</h4><ul>
+<li>大容量磁盘<ul>
+<li>每条磁道上都有一个读/写磁头，可以并行读/写</li>
+</ul>
+</li>
+<li>中小型磁盘设备<ul>
+<li>每个盘面配置一个磁头，只能串行读/写</li>
+<li>为了读/写某磁道、某扇区的数据，首先让磁头伸/缩，寻找指定磁道，再旋转磁盘，将相应扇区定位到磁头下面</li>
+</ul>
+</li>
+</ul>
+<h4 id="Disk-Performance-Parameters（磁盘性能参数）"><a href="#Disk-Performance-Parameters（磁盘性能参数）" class="headerlink" title="Disk Performance Parameters（磁盘性能参数）"></a>Disk Performance Parameters（磁盘性能参数）</h4><ul>
+<li>To read or write，the disk head must be positioned atthe desired track and at the beginning of the desired sector.（要读取或写入，磁头必须定位在所需的磁道和所需扇区的起始位置）<ul>
+<li>Seek time（寻道时间）.</li>
+<li>Rotational delay or rotational latency（旋转延迟）.</li>
+<li>Access time（访问时间），sum of seek time and rotational delay，the time it takes to get in position to read or write.</li>
+<li>Data transfer，occurs as the sector moves under the head.</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/04/23/JatDMV.png" alt="Timing of a Disk I/O Transfer"></p>
+<h4 id="Seek-Time-寻道时间"><a href="#Seek-Time-寻道时间" class="headerlink" title="Seek Time(寻道时间)"></a>Seek Time(寻道时间)</h4><ul>
+<li>Time it takes to position the head at the desired track.（将磁头放置在所需轨道上所需要的时间）</li>
+<li>假设<ul>
+<li>Ts为寻道时间，</li>
+<li>s为磁盘启动时间，</li>
+<li>m为与磁臂移动速度相关的常数，</li>
+<li>n为当前磁道到指定磁道的距离（即磁臂移动所经过的磁道数）</li>
+</ul>
+</li>
+<li>那么，Ts=m*n+s</li>
+</ul>
+<h4 id="Rotational-Delay（旋转时间）"><a href="#Rotational-Delay（旋转时间）" class="headerlink" title="Rotational Delay（旋转时间）"></a>Rotational Delay（旋转时间）</h4><ul>
+<li>Time it takes for the beginning of the sector to reach the head.（从扇形开始一直到头部）</li>
+<li>假设<ul>
+<li>Tr为旋转延迟，r为磁盘转速（转数/单位时间）</li>
+</ul>
+</li>
+<li>那么Tr = 1/（2r）</li>
+<li>例：<ol>
+<li>对于一个转速为3600rpm的硬盘而言，其每晚特一周的时间为16.7ms，其平均旋转延迟为8.3ms.</li>
+<li>对于一个转速为300rpm的软盘而言，其每旋特一周的时间为200ms，其平均旋转延迟为100ms.</li>
+</ol>
+</li>
+</ul>
+<h4 id="Transfer-Time-传输时间"><a href="#Transfer-Time-传输时间" class="headerlink" title="Transfer Time(传输时间)"></a>Transfer Time(传输时间)</h4><ul>
+<li>传输时间，指从磁盘上读数据或向磁盘上写数据所花费的时间</li>
+<li>假设<ul>
+<li>T为传输时间，</li>
+<li>b为传输的字节数，</li>
+<li>N 为每个磁道上存放的字节数，</li>
+<li>r为磁盘转速（转数/单位时间）</li>
+</ul>
+</li>
+<li>那么T = b/（г*N）</li>
+</ul>
+<h4 id="Total-Average-Access-Time-总平均存取时间"><a href="#Total-Average-Access-Time-总平均存取时间" class="headerlink" title="Total Average Access Time(总平均存取时间)"></a>Total Average Access Time(总平均存取时间)</h4><p><strong>Ta=Ts+Tr+T</strong></p>
+<blockquote>
+<p>当系统访问一组磁盘扇区时，如果能够减少总的寻道时间和总的旋转延迟，那么系统的访问效率将得到提高。</p>
+</blockquote>
+<h3 id="磁盘调度算法"><a href="#磁盘调度算法" class="headerlink" title="磁盘调度算法"></a>磁盘调度算法</h3><h4 id="Disk-Scheduling-Policies"><a href="#Disk-Scheduling-Policies" class="headerlink" title="Disk Scheduling Policies"></a>Disk Scheduling Policies</h4><ul>
+<li>For a single disk there will be a number of I/O requests.（对于单个磁盘，将有许多I/O请求）</li>
+<li>If requests are selected randomly, we will get the worst possible performance.（如果请求是随机选择的，我们将得到最差的性能）</li>
+</ul>
+<h4 id="基于请求者属性的磁盘调度策略"><a href="#基于请求者属性的磁盘调度策略" class="headerlink" title="基于请求者属性的磁盘调度策略"></a>基于请求者属性的磁盘调度策略</h4><ul>
+<li>Random Scheduling Strategy（RSs，随机调度策略）<ul>
+<li>随机地满足各个进程对磁盘的读写请求</li>
+<li>该策略性能最差。可用作评估其它磁盘调度策</li>
+</ul>
+</li>
+<li>First In First Out Strategy（FIFO，先进先出策略）<ul>
+<li>Process request sequentially.</li>
+<li>Fair to all processes.</li>
+<li>Approaches random scheduling in performance if there are many processes.</li>
+</ul>
+</li>
+<li>Priority-Based Strategy（PRI，基于优先级策略）<ul>
+<li>Goal is not to optimize disk use but to meet other objectives.</li>
+<li>Short batch jobs may have higher priority.</li>
+<li>Provide good interactive response time.</li>
+</ul>
+</li>
+<li>Last In First Out Strategy（LIFO，后进先出策略）<ul>
+<li>Good for transaction processing systems.（适用于事务处理系统。）</li>
+<li>The device is given to the most recent user so there should be little arm movement.</li>
+<li>Possibility of starvation since a job may never regain the head of the line.</li>
+</ul>
+</li>
+</ul>
+<h4 id="基于被请求扇区位置的磁盘调度策略"><a href="#基于被请求扇区位置的磁盘调度策略" class="headerlink" title="基于被请求扇区位置的磁盘调度策略"></a>基于被请求扇区位置的磁盘调度策略</h4><ul>
+<li>SSTF算法</li>
+<li>SCAN算法</li>
+<li>C-SCAN算法</li>
+<li>N-step-SCAN算法</li>
+<li>FSCAN算法</li>
+</ul>
+<h4 id="Shortest-Service-Time-First（最短寻道时间优先）"><a href="#Shortest-Service-Time-First（最短寻道时间优先）" class="headerlink" title="Shortest Service Time First（最短寻道时间优先）"></a>Shortest Service Time First（最短寻道时间优先）</h4><ul>
+<li>Select the disk IO request that requires the least movement of the disk arm from its current position.（选择需要从当前位置最少移动磁盘臂的磁盘I/O请求）</li>
+<li>Always choose the minimum Seek time.</li>
+<li>保证在满足两次磁盘读写请求之间磁头移动距离最小，但并不保证在满足一组磁盘读写请求时总的碰头移动距离最小</li>
+<li>该算法的性能比FIFO策略的性能好</li>
+<li>当不断有新的磁盘读写请求被提交时，该算法可能会导致饿死现象。</li>
+</ul>
+<h4 id="SCAN（扫描算法、电梯调度法）"><a href="#SCAN（扫描算法、电梯调度法）" class="headerlink" title="SCAN（扫描算法、电梯调度法）"></a>SCAN（扫描算法、电梯调度法）</h4><ul>
+<li>Arm moves in one direction only, satisfying all outstanding requests until it reaches the last track in that direction.（磁盘臂只向一个方向移动，满足所有未完成的请求，直到它到达该方向的最后一个磁道）</li>
+<li>Direction is reversed.（这个方向的完成之后就会掉头）</li>
+<li>该算法的性能与SSTF算法的性能非常接近；但与SSTF算法相比，该算法避免了饿死现象</li>
+<li>如果当磁头刚刚从靠近磁盘某边的某个磁道上移过并向磁盘另一边移动时，恰好有一个进程请求访问该磁道，那么该请求将被严重推迟。</li>
+</ul>
+<h4 id="C-SCAN（单向扫描算法）"><a href="#C-SCAN（单向扫描算法）" class="headerlink" title="C-SCAN（单向扫描算法）"></a>C-SCAN（单向扫描算法）</h4><ul>
+<li>Restricts scanning to one direction only（限制只扫描一个方向。这个方向完成之后只要重新在开头继续扫描下来）</li>
+<li>When the last track has been visited in one direction, the arm is returned to the opposite end of the disk and the scan begins again.（当最后一个磁道在一个方向上被访问，手臂被返回到磁盘的另一端，扫描再次开始）</li>
+<li>如果当磁头刚刚从靠近磁盘某边的某个磁道上移过并向磁盘另一边移动时，恰好有一个进程请求访问该雄道，那么该请求将被延迟：<ul>
+<li>RSCAN算法：2T</li>
+<li>使用C-SCAN算法：T+Smax</li>
+</ul>
+</li>
+<li>其中，T为磁头从磁盘的一边扫描到另一边所花费的时间，Smax为磁头从磁盘的一边直接返回另一边所花费的时间；通常，T&gt; &gt;Simax.</li>
+</ul>
+<h4 id="N-step-SCAN"><a href="#N-step-SCAN" class="headerlink" title="N-step-SCAN"></a>N-step-SCAN</h4><ul>
+<li>基于各个硅盘读写请求的提交次序把所有硅盘读写请求组织在若干队列中；其中，每个队列包含N个雅盘读写请求；</li>
+<li>如果存在一个长度小于N的硅盘读写请求队列，那么当一个新的磁盘读写请求到达时系统将把它加入到该队列中；</li>
+<li>如果不存在一个长度小于N的硅盘读写请求队列，那么当一个新的磁盘读写请求到达时系统将为其建立一个新的队列；</li>
+<li>系统将使用FTFO策略依次处理每个硅盘读写请求队列；</li>
+<li>系统将使用SCAN算法处理每个队列中的硅盘读写请求。</li>
+<li>该算法避免了“磁臂粘着（Arm Stickiness）”现象.(一直在同一个位置徘徊)</li>
+</ul>
+<h4 id="FSCAN"><a href="#FSCAN" class="headerlink" title="FSCAN"></a>FSCAN</h4><ul>
+<li>Two queues,one queue is empty for new request</li>
+<li>当前所有磁盘读写请求被组织在第一个队列中；系统将使用SCAN算法处理该队列中的磁盘读写请求；</li>
+<li>在系统处理第一个队列中的磁盘读写请求时，如果有新的磁盘读写请求到达，那么新的磁盘读写请求将被组织在第二个队列中；</li>
+<li>一旦第一个队列中的磁盘读写请求被处理完毕，系统便转向第二个队列以便使用SCAN算法处理其中的磁盘读写请求；</li>
+<li>上述第二步和第三步将被系統重复使用。</li>
+</ul>
+<h3 id="磁盘容错技术"><a href="#磁盘容错技术" class="headerlink" title="磁盘容错技术"></a>磁盘容错技术</h3><ul>
+<li>保证磁盘数据的<strong><em>可靠性</em></strong>。</li>
+<li>磁盘容错技术<ul>
+<li>通过在系统中设置<strong><em>冗余部件</em></strong>来提高系统可靠性。</li>
+<li>冗余部件包括增加冗余的磁盘驱动器、磁盘控制器等，使得当磁盘系统某部分出现缺陷或故障时，磁盘仍能正常工作，且不至于造成数据的错误和丢失.</li>
+</ul>
+</li>
+</ul>
+<h4 id="磁盘容错技术级别"><a href="#磁盘容错技术级别" class="headerlink" title="磁盘容错技术级别"></a>磁盘容错技术级别</h4><ul>
+<li>也称为系统容错技术（SFT，System Fault Tolerance），大体分为三个级别：<ol>
+<li>SFT-1低级磁盘容错技术，主要防止磁盘表面介质缺陷所引起的数据丢失；（还是一个盘，但是在这个盘上的重要数据有备份）</li>
+<li>SFT-II中级磁盘容错技术，主要防止磁盘驱动器和磁盘控制器故障所引起的数据丢失；（不仅盘有备份，驱动器和控制器都有备份）</li>
+<li>SFT-I1高级系统容错技术，常使用双服务器，以保证在其中一台服务器出现故障，甚至停止工作时，整个系统仍能照常运作.</li>
+</ol>
+</li>
+</ul>
+<h4 id="第一级容错技术"><a href="#第一级容错技术" class="headerlink" title="第一级容错技术"></a>第一级容错技术</h4><ul>
+<li>最早出现、最基本的容错技术，包括：<ul>
+<li>双份目录和双份文件分配表<ul>
+<li>可在不同的磁盘上或同一磁盘的不同区域中，分别建立维护两份文件目录和FAT.</li>
+<li>当其中一个目录或FAT损坏时，系统便自动启用另一个目录和FAT，同时在磁盘的其它区域再建立新的文件目录和FAT.</li>
+<li>每当系统重新启动时，都要对这两份目录和FAT进行检查，以保证它们的一致性。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="热修复重定向和写后读校验"><a href="#热修复重定向和写后读校验" class="headerlink" title="热修复重定向和写后读校验"></a>热修复重定向和写后读校验</h4><ul>
+<li>热修复重定向<ul>
+<li>系统将一定的磁建容量作为热修复重定向区，围于存放当发现磁盘块有缺陷时的待写数据，并对写入该区的所有数据进行登记，以便于以后对此数据进行问.</li>
+</ul>
+</li>
+<li>写后读校验<ul>
+<li>每次将数据写到磁盘以后，立即从磁盘上读出该块数据，，并进行对比.若写入的数据与读出的数据一致，则表示写入成功；否则，重写数据.若重写后两者仍不一致，则认为该磁盘块有缺陷，便将该块标识为坏块，相应数据写入热修复重定向区中.</li>
+</ul>
+</li>
+</ul>
+<h4 id="第二级容错技术SFT-II"><a href="#第二级容错技术SFT-II" class="headerlink" title="第二级容错技术SFT-II"></a>第二级容错技术SFT-II</h4><ul>
+<li>用于防止磁盘驱动器或磁盘控制器发生故障。包括：<ul>
+<li>磁盘镜像<ul>
+<li>在同一磁盘控制器上，连接两个完全相同的磁盘驱动器。同一数据被先后写到两个驱动器上</li>
+</ul>
+</li>
+<li>磁盘双工<ul>
+<li>将两台完全相同的磁盘驱动器连接到两个磁盘控制器上。数据被同时写到两个磁盘上.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="磁盘双工vs磁盘镜像"><a href="#磁盘双工vs磁盘镜像" class="headerlink" title="磁盘双工vs磁盘镜像"></a>磁盘双工vs磁盘镜像</h4><ul>
+<li>磁盘双工的成本较高；</li>
+<li>可靠性更高；</li>
+<li>对两个磁盘的写入是并行进行，速度较快；</li>
+<li>在某些实现中读数据时，还可使用分离查找技术，从响应快的通道上取得数据，加快读取速度。</li>
+</ul>
+<h3 id="磁盘阵列RAID技术"><a href="#磁盘阵列RAID技术" class="headerlink" title="磁盘阵列RAID技术"></a>磁盘阵列RAID技术</h3><ul>
+<li>RAID磁盘阵列技术能以较低的成本，提供大容量、快速、安全可靠的磁盘存储系统。</li>
+<li>从容错的角度讲，RAID技术应属第二级容错技术，但其内涵远远不止容错。</li>
+</ul>
+<blockquote>
+<p>从早期Redundant Array of Inexpensive Disks（廉价磁盘的冗余阵列）到Redundant Array of Independent Disks（独立磁盘的冗余阵列）</p>
+</blockquote>
+<h4 id="RAID的基本特征"><a href="#RAID的基本特征" class="headerlink" title="RAID的基本特征"></a>RAID的基本特征</h4><ul>
+<li>RAID由两部分构成：碰盘阵列（一组可并行工作的硅盘），及碰盘阵列管理软件</li>
+<li>磁盘阵列管理软件把逻辑上连续的一组数据<strong><em>交叉分布存储</em></strong>在磁盘阵列中的各个磁盘上，好处：磁盘阵列管理软件可以<strong>并行处理</strong>对一组数据中的单个或多个数据的存取请求.</li>
+<li>碰盘阵列管理软件还负责存储相关的校验信息，好处：当硅盘阵列中的某个硅盘发生故障时，磁盘阵列管理软件可以恢复存储在该碰盘上的数据.</li>
+<li>磁盘阵列管理软件屏蔽了雅盘阵列的物理细节，使OS的其它成份不知道磁盘阵列的存在；在它们看来，系统中存在一个大容量的逻辑璀盘。</li>
+</ul>
+<h4 id="条带Strip的粒度"><a href="#条带Strip的粒度" class="headerlink" title="条带Strip的粒度"></a>条带Strip的粒度</h4><ul>
+<li>条带可以是细柱度的（如一个字节或字），也可以是粗柱度的（如一个扇区或多个扇区）.</li>
+<li>若采用细粒度条带（每个磁盘都有这个进程的数据，一个请求，所有的磁盘都要动，其他进程的请求来的时候无法响应），几乎每个存取请求都会导致同时存取RAID中的所有磁盘，使得无法同时响应多个存取请求。因此，细柱度的条带只利于对单个存取请求进行并行处理</li>
+<li>若采用粗粒度条带，不会使每个存取请求都同时存取RAID中的所有磁盘；但，多个独立的存取请求通常会导致同时存取RAID中的所有磁盘。显然，粗粒度的条带只利于对多个独立的存取请求进行并行处理</li>
+<li>磁盘阵列管理软件在存储数据的同时还将存储相关的校验信息；</li>
+<li>使得当磁盘阵列中的某个磁盘发生故障时，磁盘阵列管理软件可以恢复存储在该磁盘上的数据。</li>
+</ul>
+<h4 id="RAID中的数据校验方式"><a href="#RAID中的数据校验方式" class="headerlink" title="RAID中的数据校验方式"></a>RAID中的数据校验方式</h4><ul>
+<li>对数据进行镜像存储，</li>
+<li>对数据进行Hamming编码</li>
+<li>存储数据的奇偶校验信息</li>
+</ul>
+<h4 id="RAID中奇偶校验信息的存储布局"><a href="#RAID中奇偶校验信息的存储布局" class="headerlink" title="RAID中奇偶校验信息的存储布局"></a>RAID中奇偶校验信息的存储布局</h4><ul>
+<li>用一组专用磁盘存储奇偶校验信息</li>
+<li>把奇偶校验信息分布存储在各个磁盘上</li>
+<li>如果磁盘阵列管理软件在主机系统中执行，则属软件实现的RAID；如果磁盘阵列管理软件在磁盘子系统中执行，则属硬件实现的RAID，相应的硬件称为RAID控制器或RAID卡.</li>
+<li>采用RAID控制器方案的成本较高，但其效率高，不增加主机负担。此类RAID技术对主机完全透明，在主机看来，RAID就是一个容量大、速度快、可靠性高的磁盘。</li>
+</ul>
+<h4 id="RAID的常见组织形式（6种）"><a href="#RAID的常见组织形式（6种）" class="headerlink" title="RAID的常见组织形式（6种）"></a>RAID的常见组织形式（6种）</h4><ul>
+<li>RAID Level 0<ul>
+<li>只有交叉存储，没有冗余，no-redundan，所以可靠性不高，但是成本较低，速率高</li>
+<li>仅使用了条带化技术</li>
+<li>不存储數据的校验信息</li>
+<li>能提供大容量、快速的磁盘存储能力，</li>
+<li>具备最好的读/写性能和最低的成本</li>
+<li>磁盘的利用率是100%</li>
+<li>但其安全性最低，其中任何一个磁盘损坏便会导致整个系统不可用</li>
+</ul>
+</li>
+<li>RAID Level 1<ul>
+<li>仅使用了磁盘镜像或磁盘双工技术；</li>
+<li>能提供最好的安全性，其中任何一个磁盘损坏都不会导致数据丢失；</li>
+<li>但磁盘容量的利用率只有50%，相对于其它RAID组织形式，成本较高；</li>
+<li>相对于RAID 0，RAID 1的读性能较好</li>
+</ul>
+</li>
+<li>RAID Level 2(redundancy through Hamming code)<ul>
+<li>使用细粒度Strip</li>
+<li>对数据进行Hamming编码：能纠正1位错误，检测2位错误（无法修复）</li>
+<li>Hamming编码信息存放在专用的磁盘上</li>
+<li>相对于RAID1，RAID2成本较低；但相对于RAID Level 3.4.5，RAID2成本较高；</li>
+<li>相对于RAID Level 4，5，RAID2具有较好的数据传输性能，但具有较差的I/O请求响应能力（花太多时间在校验上面）</li>
+</ul>
+</li>
+<li>RAID Level 3(bit-interleaved parity)<ul>
+<li>使用细粒度Strip</li>
+<li>存儲数据的奇偶校验信息</li>
+<li>奇偶校验信息存放在一个专用的磁盘上(这样，这个盘的速度就成了一个瓶颈，使无法并行读取数据)</li>
+<li>相对于RAID Level 2，RAID3成本较低</li>
+</ul>
+</li>
+<li>RAID Level 4(block-level parity)<ul>
+<li>使用粗粒度Strip</li>
+<li>存储数据的奇偶校验信息</li>
+<li>奇偶校验信息存放在专用的磁盘上(其缺点同3)</li>
+<li>当用户进程请求把一个尺寸较小的数据写入RAID中时，需要读两次磁盘、写两次磁盘（rite Penalt）（读原始信息和校验信息）</li>
+<li>任何情况下，一个写请求都会导致磁盘阵列管理软件访问奇偶校验盘；因此，多个独立的写请求很难真正并行处理。（Parity disk become a bottleck）</li>
+</ul>
+</li>
+<li>RAID Level 5(block-level distributed parity)<ul>
+<li>使用粗粒度Strip</li>
+<li>存储数据的奇偶校验信息</li>
+<li>奇偶校验信息分布存储在各个磁盘上</li>
+<li>多个独立的写请求可以真正地被并行处理。</li>
+</ul>
+</li>
+<li>还可对基本RAID级别进行组合</li>
+</ul>
+<h4 id="RAID的优点"><a href="#RAID的优点" class="headerlink" title="RAID的优点"></a>RAID的优点</h4><ul>
+<li>效率高<ul>
+<li>系统可以并行存取存储在RAID中的数据。</li>
+</ul>
+</li>
+<li>可靠性高<ul>
+<li>系统可以恢复存储在故障磁盘中的数据</li>
+</ul>
+</li>
+<li>性价比高<ul>
+<li>磁盘阵列可以用廉价磁盘组成。</li>
+</ul>
+</li>
+</ul>
+<h3 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h3><p>【1】sectors（分区、扇区）<br>【2】transaction （事务）<br>【3】redundan（冗余）</p>
+
+            </div>
+            <hr/>
+
+            
+            <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.88rem;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-large waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fa fa-close"></i></a>
+            <h4 class="reward-title">觉得可以就打钱给我买糖吃</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>转载规则</span>
+        </p>
+        
+            <div class="center-align">
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                    <img alt=""
+                         style="border-width:0"
+                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+                </a>
+            </div>
+            <br/>
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《Operating System(7)》
+                </span> 由
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/04/21/cao-zuo-xi-tong-7/" property="cc:attributionName"
+               rel="cc:attributionURL">
+                何必酷
+            </a> 采用
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                知识共享署名 4.0 国际许可协议
+            </a>进行许可。
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '0832266fa5f4e404f663',
+        clientSecret: '8472ad3803edc301eeeb98767910e11bb2d201da',
+        repo: 'RyouLmusic.github.io',
+        owner: 'RyouLmusic',
+        admin: "RyouLmusic",
+        id: '2020-04-21T19-20-16',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2020/04/21/cao-zuo-xi-tong-7/">
+                    <div class="card-image">
+                        
+                        <img src="https://cdn.pixabay.com/photo/2016/11/22/19/24/archive-1850170_960_720.jpg" class="responsive-img" alt="Operating System(7)">
+                        
+                        <span class="card-title">Operating System(7)</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            OS
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-21
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Operating-System/" class="post-category" target="_blank">
+                                    Operating System
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/OS/" target="_blank">
+                        <span class="chip bg-color">OS</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/04/16/cao-zuo-xi-tong-6/">
+                    <div class="card-image">
+                        
+                        <img src="https://cdn.pixabay.com/photo/2017/06/22/11/54/town-2430571_960_720.jpg" class="responsive-img" alt="Operating System(6)">
+                        
+                        <span class="card-title">Operating System(6)</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            OS
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-16
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Operating-System/" class="post-category" target="_blank">
+                                    Operating System
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/OS/" target="_blank">
+                        <span class="chip bg-color">OS</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">153.6k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/RyouLmusic" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1768045935@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=485734107" class="tooltipped" data-tooltip="QQ联系我: 485734107" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!--单击显示烟花-->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/js/fireworks.js"></script>
+
+<!-- 
+雪花特效 
+<script type="text/javascript" src="\js\snow.js"></script>
+-->
+
+
+<!--单击显示文字-->
+<script type="text/javascript" src="/js/click_show_text.js"></script>
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+    <script src="/libs/others/clicklove.js"></script>
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>
