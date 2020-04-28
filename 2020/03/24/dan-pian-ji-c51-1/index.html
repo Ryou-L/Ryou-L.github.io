@@ -423,14 +423,14 @@
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                        8.4k
+                        10k
                     </div>
                     
 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                        32 分
+                        38 分
                     </div>
                     
                 
@@ -1264,7 +1264,82 @@ SETB TRO; 启动TO工作
 WAIT:JNB TFO，WAIT; 定时未到，循环等待
 CLR TFO;  定时到，清TFO /
 CPL P1.0;   由P1.0输出，信号取反
-SJMP WAIT; 循环输出方波</code></pre>
+SJMP WAIT; 循环输出方波</code></pre><h3 id="串行通信接口"><a href="#串行通信接口" class="headerlink" title="串行通信接口"></a>串行通信接口</h3><h4 id="串行数据通信基本原理"><a href="#串行数据通信基本原理" class="headerlink" title="串行数据通信基本原理"></a>串行数据通信基本原理</h4><ul>
+<li>计算机的数据传送有并行和串行两种方式。</li>
+<li>并行传送的特点是：各数据位同时传送，传送速度快、效率高。但需要的数据线多，因此传送成本高。并行数据传送的距离通常小于30米。</li>
+<li>串行传送的特点是：数据传送按位顺序进行，最少只需一根传输线即可完成，成本低，但速度慢。串行数据传送的距离可以从几米到几千公里。</li>
+</ul>
+<blockquote>
+<p>串行数据传送又分为是步传送和同步传送两种方式。在单片机中，主要使用异步传送方式。</p>
+</blockquote>
+<h5 id="异步串行通信的字符格式"><a href="#异步串行通信的字符格式" class="headerlink" title="异步串行通信的字符格式"></a>异步串行通信的字符格式</h5><ul>
+<li>异步串行数据通信以字符为单位，即一次传送一个字符。异步通信的数据格式为：<ul>
+<li>1位起始位（为低电平）；5-8位数据位（紧跟着起始位），表示要传送的有效数据（低位在前）；1位奇偶校验位（可有可无）：1、1.5或2位停止位（为高电平）。从起始位开始到停止位结束的时间间隔称为一帧。就是一个字符的完整通信格式。因此也把串行通信的字符格式称为帧格式。</li>
+</ul>
+</li>
+</ul>
+<h5 id="串行通信的数据通路形式"><a href="#串行通信的数据通路形式" class="headerlink" title="串行通信的数据通路形式"></a>串行通信的数据通路形式</h5><p>串行数据通信有以下几种数据通路形式：</p>
+<ul>
+<li>单工形式A发，B接。</li>
+<li>半双工形式：A发或接，B接或发。</li>
+<li>全双工形式：A发、接，B接、发。</li>
+</ul>
+<h5 id="串行通信的传送速率"><a href="#串行通信的传送速率" class="headerlink" title="串行通信的传送速率"></a>串行通信的传送速率</h5><ul>
+<li>传送速率用于说明数据传送的快慢。在串行通讯中，数据是按位进行传送的。因此，传送速度用每秒传送数据位数目来表示，称之为波特率（Baud），每秒传送一个数据位就是一波特。即：1波特=1bps（位/秒）</li>
+<li>常用波特率有：75，110，300，600，1200，2400，4800，9600，19200.</li>
+</ul>
+<h4 id="串行通信接口电路"><a href="#串行通信接口电路" class="headerlink" title="串行通信接口电路"></a>串行通信接口电路</h4><ul>
+<li>串行数据通信中主要有两个技术问题。</li>
+<li>数据传送：数据传送主要解达传送中的标准格式及工作方式签问题数据转换：</li>
+<li>数据转换是指数据的串并转换</li>
+</ul>
+<h4 id="异步串行通信常用接口"><a href="#异步串行通信常用接口" class="headerlink" title="异步串行通信常用接口"></a>异步串行通信常用接口</h4><ul>
+<li>TTL电平直接连接（-+5V）</li>
+<li>RS-232C （-+12V）</li>
+<li>RS-422，RS-485（0-5V）</li>
+<li>20mA电流环</li>
+</ul>
+<h3 id="MCS-51单片机串行口"><a href="#MCS-51单片机串行口" class="headerlink" title="MCS-51单片机串行口"></a>MCS-51单片机串行口</h3><blockquote>
+<p>MCS-51单片机片内有一个全双工串行口，E可以实现是步串行通信，还可以作为同i移位窗在器来使用<br>定时器T1作为串行通信波特率发生器</p>
+</blockquote>
+<p>启动发送：MOV SBUF，A；SBUF-A）<br>启动接收：MOV A，SBUF；A-（SBUF）</p>
+<h4 id="与串行通信有关的寄存器"><a href="#与串行通信有关的寄存器" class="headerlink" title="与串行通信有关的寄存器"></a>与串行通信有关的寄存器</h4><p>与串行通信控制有关的专用寄存器有：</p>
+<ul>
+<li>SCON：串行控制，用来设定串行口的工作方式</li>
+<li>PCON：电源控制，可控制波特率。</li>
+<li>IE：设置串行中断允许。</li>
+</ul>
+<h5 id="串行控制寄存器SCON"><a href="#串行控制寄存器SCON" class="headerlink" title="串行控制寄存器SCON"></a>串行控制寄存器SCON</h5><p>SCON格式如下：</p>
+<blockquote>
+<p>9F 9E 9D 9C 9B 9A 99 98=&gt;SM0 SM1 SM2 REN TB8 RB8 TI RI</p>
+</blockquote>
+<p>各位功能说明如下：<br>SM0，SM1：串口工作方式选择位</p>
+<ul>
+<li>0 0一方式0：同步移位寄存器，波特率固定。</li>
+<li>0 1一方式1：8位异步，波特率可变。</li>
+<li>1 0一方式2：9位异步，波特率固定。</li>
+<li>1 1一方式3：9位异步，波特率可变。</li>
+</ul>
+<p>REN:决定是否接收<br>TB8，RB8分别是第九位发送和接收</p>
+<p>由软件置位（SETB TB8）或复位（CLR TB8）</p>
+<p>在双机通信中，该位作为奇偶校验位；在多机通信中用来表示D7~DO是地址领或数据帧。即：<br>D8=0：表示数据帧<br>D8=1：表示地址帧.</p>
+<p>TI：发送中断标志。<br>在发送停止位之前，该位由硬件置位，中请中断，CPU响应中断后，可以发送下一帧数据。该位必须由软件清零。</p>
+<p>RI：接收中断标志<br>在接收到停止位的一半时，该位由硬件置位（还需考虑SM2的设定），申请中断，CPU响应中断后，可以接收下一帧数据。该位也必须由软件清零。</p>
+<p>SM2：多机通信控制位，主要用于方式2、3中。</p>
+<h5 id="电源控制寄存器PCON"><a href="#电源控制寄存器PCON" class="headerlink" title="电源控制寄存器PCON"></a>电源控制寄存器PCON</h5><p>PCON格式如下：<br>SMOD……(87H)</p>
+<ul>
+<li>它主要是为CHMOS型单片机的电源控制而设置的。对HMOS型单片机，除了最高位（SMOD）之外，其它位都虚设的，SMOD是串行口波特率的倍增位。</li>
+<li>当：SMOD=1时，串行口波特率加倍。系统复位时，SMOD=0，可由下列指令设置：</li>
+<li>MOV PCON, #80H ; SMOD&lt;–1</li>
+<li>MOV PCON, #00H ; SMOD&lt;–0</li>
+</ul>
+<h4 id="串行口的工作方式"><a href="#串行口的工作方式" class="headerlink" title="串行口的工作方式"></a>串行口的工作方式</h4><h5 id="（1）方式0"><a href="#（1）方式0" class="headerlink" title="（1）方式0"></a>（1）方式0</h5><p>方式0为同步移位寄存器方式。RXD端作为数据移位的入口或出口，TXD端提供移位时钟脉冲，移位数据的发送和接收以8位为一帧，不设起始位和停止位，低位在前高位在后，波特率是固定的，为fosc/12，即一个机器周期移位一次。</p>
+<h5 id="（2）方式1"><a href="#（2）方式1" class="headerlink" title="（2）方式1"></a>（2）方式1</h5><p>方式1的帧格式为:起始 D0|D1 | D2 |D3 |D4 | D5|D6 |D7|停止</p>
+<p>数据发送<br>数据发送是由一条写发送寄存器（MOV SBUF，A）指令开始的。此后在串行口由硬件自动加入起始位和停止位，构成一个完整的帧格式。然后在移位脉冲的作用下，由TXD端串行输出。一个字符顿发送完后，使TXD端输出线维持高电平，并将11置位，通知CPU可以发送下一个字符。</p>
+<p>数据接收<br>接收数据时，应使REN=1，在此前提下，串行口采样RXD端，当采样到从1到0的跳变时，就认定是接收到了起始位。随后在移位脉冲的控制下，把接收到的数据位移入接收寄存器中。直到停止位到来之后把它送入到RB8中，并置位RI，通知CPU从SBUF取走接收到的一个字符。</p>
+<h5 id="（3）方式2和方式3"><a href="#（3）方式2和方式3" class="headerlink" title="（3）方式2和方式3"></a>（3）方式2和方式3</h5><p>串行口工作在方式2、3时，为9位异步通信口，发送和接收1帧信息由11位组成，即：</p>
+<p>方式2、3的区别是：波特率设置不同方式2的波特率是固定的。即：波特率-fosc/32或fosc/64</p>
+
             </div>
             <hr/>
 
@@ -1493,9 +1568,9 @@ SJMP WAIT; 循环输出方波</code></pre>
                 <a href="/2020/04/11/cao-zuo-xi-tong-4/">
                     <div class="card-image">
                         
-                        <img src="https://cdn.pixabay.com/photo/2020/03/08/07/51/stairs-4911677_960_720.jpg" class="responsive-img" alt="Operating System(4)">
+                        <img src="https://cdn.pixabay.com/photo/2020/03/08/07/51/stairs-4911677_960_720.jpg" class="responsive-img" alt="Operating System(进程管理--进程并发)">
                         
-                        <span class="card-title">Operating System(4)</span>
+                        <span class="card-title">Operating System(进程管理--进程并发)</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1541,9 +1616,9 @@ SJMP WAIT; 循环输出方波</code></pre>
                 <a href="/2020/03/19/cao-zuo-xi-tong-3/">
                     <div class="card-image">
                         
-                        <img src="https://cdn.pixabay.com/photo/2020/03/08/07/51/stairs-4911677_960_720.jpg" class="responsive-img" alt="Operating System(3)">
+                        <img src="https://cdn.pixabay.com/photo/2020/03/08/07/51/stairs-4911677_960_720.jpg" class="responsive-img" alt="Operating System(进程管理--进程调度)">
                         
-                        <span class="card-title">Operating System(3)</span>
+                        <span class="card-title">Operating System(进程管理--进程调度)</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1693,7 +1768,7 @@ SJMP WAIT; 循环输出方波</code></pre>
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">153.6k</span>
+                <span class="white-color">159.9k</span>
             
 
             

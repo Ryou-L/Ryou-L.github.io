@@ -1,0 +1,1364 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="Operating System(文件系统), 何必酷">
+    <meta name="description" content="操作系统–文件系统Abstract
+文件管理系统
+文件的逻辑组织
+文件目录
+文件共享
+文件存储空间的管理
+
+文件管理系统的功能File Management(文件管理)
+File management system is considere">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Operating System(文件系统) | 何必酷</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+        code[class*="language-"], pre[class*="language-"] {
+            white-space: pre !important;
+        }
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">何必酷</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">何必酷</div>
+        <div class="logo-desc">
+            
+            make a friend
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/RyouLmusic" class="waves-effect waves-light" target="_blank">
+                <i class="fa fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/RyouLmusic" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.pixabay.com/photo/2015/09/05/00/30/file-folders-923523_960_720.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        Operating System(文件系统)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/OS/" target="_blank">
+                                <span class="chip bg-color">OS</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Operating-System/" class="post-category" target="_blank">
+                                Operating System
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-04-24
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        4.7k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        20 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="操作系统–文件系统"><a href="#操作系统–文件系统" class="headerlink" title="操作系统–文件系统"></a>操作系统–文件系统</h1><h3 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h3><ul>
+<li>文件管理系统</li>
+<li>文件的逻辑组织</li>
+<li>文件目录</li>
+<li>文件共享</li>
+<li>文件存储空间的管理</li>
+</ul>
+<h3 id="文件管理系统的功能"><a href="#文件管理系统的功能" class="headerlink" title="文件管理系统的功能"></a>文件管理系统的功能</h3><h4 id="File-Management-文件管理"><a href="#File-Management-文件管理" class="headerlink" title="File Management(文件管理)"></a>File Management(文件管理)</h4><ul>
+<li>File management system is considered part of the operating system.（文件管理系统被认为是操作系统的一部分。）</li>
+<li>Input to applications is by means of a file.（应用程序的输入是通过文件的方式实现的。以文件为单位）</li>
+<li>Output is saved in a file for long-term storage.（输出被保存在一个文件中以便长期存储）</li>
+</ul>
+<h4 id="Obiectives-for-a-File-Management-System（文件管理系统的目标）"><a href="#Obiectives-for-a-File-Management-System（文件管理系统的目标）" class="headerlink" title="Obiectives for a File Management System（文件管理系统的目标）"></a>Obiectives for a File Management System（文件管理系统的目标）</h4><ul>
+<li>Meet the data management needs and requirements of the user.（符合系统管理数据的需要及用户的需求）</li>
+<li>Guarantee that the data in the file are valid. </li>
+<li>Optimize performance.（保证系统性能及用户对响应时间的要求）</li>
+<li>Provide IO support for a variety of storage device types.(为多种存储设备类型提供IO支持)</li>
+<li>Minimize or eliminate the potential for lost or destroyed data.（减少或避免数据丢失及损坏）</li>
+<li>Provide a standardized set of I/O interface routines.（提供标准的I/O接口） </li>
+<li>Provide I/O support for multiple users.（支持多用户环境下多个用户的I/O操作）</li>
+</ul>
+<h4 id="File-Management-Functions-文件管理功能"><a href="#File-Management-Functions-文件管理功能" class="headerlink" title="File Management Functions(文件管理功能)"></a>File Management Functions(文件管理功能)</h4><ul>
+<li>Identify and locate a selected file.(识别并定位选定的文件)</li>
+<li>Use a directory to describe the location of all files plus their attributes.(使用目录来描述所有文件及其属性的位置)</li>
+<li>On a shared system describe user access control.(在共享系统上描述用户访问控制:权限)</li>
+<li>Blocking for access to files.(把内存里面的记录组成块存储到磁盘。把磁盘里的块解开变成记录存到内存里面)</li>
+<li>Allocate files to free blocks.（将文件分配给空闲块）</li>
+<li>Manage free storage for available blocks.（管理可用块的空闲存储）</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/04/24/JD54q1.png" alt="Elements of File Management"></p>
+<p>(文件系统和数据库系统：略)</p>
+<blockquote>
+<p>pile（堆：一种文件结构），pipe（管道：拿来通信的）</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/04/24/Jrw1C6.png" alt="File System Software Architecture"></p>
+<h4 id="Device-Drivers-设备驱动"><a href="#Device-Drivers-设备驱动" class="headerlink" title="Device Drivers(设备驱动)"></a>Device Drivers(设备驱动)</h4><ul>
+<li>Lowest level.（最低水平）</li>
+<li>Communicates directly with peripheral devices.（直接与周边设备通讯）</li>
+<li>Responsible for starting I/O operations on a device.（负责启动设备上的I/O操作）</li>
+<li>Processes the completion of an I/O request.（处理I/O请求的完成）</li>
+</ul>
+<h4 id="Basic-File-System（基本文件系统）"><a href="#Basic-File-System（基本文件系统）" class="headerlink" title="Basic File System（基本文件系统）"></a>Basic File System（基本文件系统）</h4><ul>
+<li>Physical I/O（物理I/O）</li>
+<li>Deals with exchanging blocks of data.（处理数据块的交换）</li>
+<li>Concerned with the placement of blocks.（关心数据块的位置）</li>
+<li>Concerned with buffering blocks in main memory.（关心缓冲块在主存中的位置）</li>
+</ul>
+<h4 id="Basic-I-O-Supervisor"><a href="#Basic-I-O-Supervisor" class="headerlink" title="Basic I/O Supervisor"></a>Basic I/O Supervisor</h4><ul>
+<li>Responsible for file I/O initiation and termination（负责文件I/O的启动和终止）</li>
+<li>Control structures are maintained.（控制结构得到维护：磁盘分配表等）</li>
+<li>Concerned with scheduling access to optimize performance.（关注调度访问以优化性能）</li>
+<li>I/O buffers are assigned and secondary memory is allocated.（分配I/O缓冲区，并分配辅助内存）</li>
+<li>Part of the operating system.（属于操作系统的一部分）</li>
+</ul>
+<h4 id="Logical-I-O（逻辑I-O）"><a href="#Logical-I-O（逻辑I-O）" class="headerlink" title="Logical I/O（逻辑I/O）"></a>Logical I/O（逻辑I/O）</h4><ul>
+<li>Enables users and applications to access records.（允许用户和应用程序访问记录）</li>
+<li>Provides general-purpose record I/O capability（提供通用记录I/O功能）</li>
+<li>Maintains basic data about file.（维护文件的基本数据）</li>
+</ul>
+<h4 id="Access-Method（访问方法）"><a href="#Access-Method（访问方法）" class="headerlink" title="Access Method（访问方法）"></a>Access Method（访问方法）</h4><ul>
+<li>Reflect different file structures.（反映不同的文件结构）</li>
+<li>Different ways to store and process data.（存储和处理数据的不同方式）</li>
+<li>如Pile、顺序访问、索引顺序访问、索引访问、Hash访问法等访问方法</li>
+</ul>
+<h3 id="File-Organization-and-Access-Methods（文件组织和访问方法）"><a href="#File-Organization-and-Access-Methods（文件组织和访问方法）" class="headerlink" title="File Organization and Access Methods（文件组织和访问方法）"></a>File Organization and Access Methods（文件组织和访问方法）</h3><h4 id="File-Organization（文件组织）"><a href="#File-Organization（文件组织）" class="headerlink" title="File Organization（文件组织）"></a>File Organization（文件组织）</h4><ul>
+<li>File organization refers to the logical structuring of the records as determined by the way in which they are accessed.（文件组织是指由访问记录的方式决定的记录的逻辑结构）</li>
+<li>The physical organization of the file on secondary storage depends on the blocking strategy and the file allocation strategy.（辅助存储器上文件的物理组织取决于阻塞策略和文件分配策略）</li>
+</ul>
+<h4 id="Criteria-for-File-Organization（文件组织标准）"><a href="#Criteria-for-File-Organization（文件组织标准）" class="headerlink" title="Criteria for File Organization（文件组织标准）"></a>Criteria for File Organization（文件组织标准）</h4><ul>
+<li>Rapid access（快速访问）<ul>
+<li>Needed when accessing a single record.（访问单个记录时需要）</li>
+<li>Not needed for batch mode.（批处理模式时不需要）</li>
+</ul>
+</li>
+<li>Ease of update（易于修改）<ul>
+<li>File on CD-ROM will not be updated, so this is not a concern.（文件位于CD-ROM上的不用考虑易修改）</li>
+</ul>
+</li>
+<li>Economy of storage（成本要低）<ul>
+<li>Should be minimum redundaney in the data.（冗余数据很少）</li>
+<li>Redundaney can be used to speed access such as an index.（但是冗余数据可用于加速访问，如索引）</li>
+</ul>
+</li>
+<li>Simple maintenance（维护简单）</li>
+<li>Reliability（可靠）</li>
+</ul>
+<p><strong>File Organization</strong></p>
+<ul>
+<li>Pile file（堆文件）</li>
+<li>Sequential file（顺序文件）</li>
+<li>Indexed sequential file（索引顺序文件）</li>
+<li>Indexed file（索引文件）</li>
+<li>Direct，or Hashed file（直接或hash文件）</li>
+</ul>
+<h4 id="Pile-file（堆文件）"><a href="#Pile-file（堆文件）" class="headerlink" title="Pile file（堆文件）"></a>Pile file（堆文件）</h4><ul>
+<li>Data are collected in the order they arrive.（数据是按到达的顺序收集的）</li>
+<li>Purpose is to accumulate a mass of data and save it.（目的是积累和保存大量的数据）</li>
+<li>Records may have different fields.（记录可能有不同的域：结构很差）</li>
+<li>No structure.（无结构）</li>
+<li>Record access is by exhaustive search.（记录访问是通过穷举搜索实现的：查询很耗时间）</li>
+</ul>
+<h4 id="Sequential-File（顺序文件）"><a href="#Sequential-File（顺序文件）" class="headerlink" title="Sequential File（顺序文件）"></a>Sequential File（顺序文件）</h4><ul>
+<li>Fixed format used for records.（固定格式用于记录）</li>
+<li>Records are the same length.（记录的长度相同）</li>
+<li>All fields the same (order and length).（所有域都是相同的(顺序和长度)）</li>
+<li>Field names and lengths are attributes of the file.（域和长度是文件的属性）</li>
+<li>One field is the key filed（一个域是关键域）<ul>
+<li>Uniquely identifies the record.（唯一标识记录）</li>
+<li>Records are stored in key sequence.（记录按键顺序存储）</li>
+</ul>
+</li>
+<li>The only one that is easily stored on tapes as well as disk.（这是唯一一个可以轻松存储在磁带和磁盘上的）</li>
+<li>Typically used in batch applications and the applications processing of all records.（通常用于批处理应用程序和处理所有记录的应用程序）</li>
+<li>For querying and/or updating an individual record, it provides poor performance.（对于查询和/或更新单个记录，它提供了糟糕的性能）</li>
+<li>New records are placed in a log file or transaction file.（新记录放在日志文件或事务文件中）</li>
+<li>Batch update is performed to merge the log file with the master file.（执行批量更新以将日志文件与主文件合并:这样可以增加一定的查询速度）</li>
+</ul>
+<h4 id="Indexed-Sequential-File（索引顺序文件-就是多了个目录文件）"><a href="#Indexed-Sequential-File（索引顺序文件-就是多了个目录文件）" class="headerlink" title="Indexed Sequential File（索引顺序文件:就是多了个目录文件）"></a>Indexed Sequential File（索引顺序文件:就是多了个目录文件）</h4><ul>
+<li>It maintains the key characteristic of the sequential file: records are organized in sequence based on a key field.（它保持了顺序文件的关键特征:记录是根据一个关键字段按顺序组织的）<ul>
+<li>Add an index to the file to support random access, and an overflow file.（在文件中添加一个支持随机访问的索引和一个溢出文件）</li>
+<li>Index file contains key field and a pointer to the mainfile, and provides a lookup capability to quickly reach the vicinity of the desired record.（索引文件包含键字段和指向主文件的指针，并提供了快速查找所需记录的功能）</li>
+<li>Overflow file is similar to the log file. It is integrated so that records in the overflow file are located by following a pointer from their processór record.（溢出文件类似于日志文件。它被集成在一起，这样就可以通过跟踪处理器记录中的指针来定位溢出文件中的记录。）</li>
+</ul>
+</li>
+<li>索引顺序文件的每一条记录中都包含一个指向overflow文件的指针（该指针对应用程序透明）<ul>
+<li>New records are added to an overflow file</li>
+<li>如果新记录的前续记录在主文件（或overflow文件）中，则修改主文件（或overflow文件）中该前续记录指针，使之指向overflow文件中的新插入记录</li>
+<li>The overflow is merged with the main file during a batch update.</li>
+<li>Multiple indexes for the same key field can be set up to increiseefficiency.（可以为同一个键字段设置多个索引以提高效率）</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://s1.ax1x.com/2020/04/28/J41AHg.png" alt="Inddexed Sequenttal File"></p>
+<p><strong>例子</strong></p>
+<ul>
+<li>若一级索引文件包含10，000条记录，再为之建立二级索引，其中包含100条记录</li>
+<li>在二级索引文件中平均检索50条记录，可以找到关键字</li>
+<li>再在一级索引文件中平均检索50条记录找到指向主文件的指针</li>
+<li>最后平均检索50条记录，找到目标记录，共计平均检索150条记录</li>
+</ul>
+<h4 id="Indexed-File（索引文件）"><a href="#Indexed-File（索引文件）" class="headerlink" title="Indexed File（索引文件）"></a>Indexed File（索引文件）</h4><ul>
+<li>顺序文件和索引顺序文件都只允许按记录的唯一关键字检索记录，这不符合某些应用需要按多个字段检索记录的要求</li>
+<li>主文件的记录不必按关键字排序</li>
+<li>Uses multiple indexes for different key fields.</li>
+<li>May contain an exhaustive index（完备索引）that contains one entry for every record in the main file.</li>
+<li>May contain a partial index（部分索引）that contains entries to records where the field of interest exists.</li>
+</ul>
+<h4 id="The-Direct-or-Hashed-File（直接文件或哈希文件）"><a href="#The-Direct-or-Hashed-File（直接文件或哈希文件）" class="headerlink" title="The Direct, or Hashed File（直接文件或哈希文件）"></a>The Direct, or Hashed File（直接文件或哈希文件）</h4><ul>
+<li>Directly access a block at a known address.</li>
+<li>Key field required for each record.</li>
+<li>利用Hash函数，根据记录的关键字计算记录的存储位置，并按关键字访问记录，提高记录的访问效率</li>
+<li>常用于访问速率要求高、一次存取一条记录且记录为定长的文件.如文件目录、价格表、名单等文件记录的存取</li>
+</ul>
+<h4 id="File-Directories（文件目录）"><a href="#File-Directories（文件目录）" class="headerlink" title="File Directories（文件目录）"></a>File Directories（文件目录）</h4><ul>
+<li>Contains information about files.（包含有关文件的信息。）<ul>
+<li>Attributes（属性）</li>
+<li>Location（位置）</li>
+<li>Ownership（所有权）</li>
+</ul>
+</li>
+<li>Directory itself is a file owned by the operating system.（目录本身是操作系统拥有的文件）</li>
+<li>Provides mapping between file names and the files themselves.（提供文件名与文件本身之间的映射）</li>
+</ul>
+<h5 id="Structure-for-a-Directory（目录的结构）"><a href="#Structure-for-a-Directory（目录的结构）" class="headerlink" title="Structure for a Directory（目录的结构）"></a>Structure for a Directory（目录的结构）</h5><ul>
+<li>可见，不同系统保存文件目录的方式不同，有的系统将萁中部分信息保存在文件头部，只将一些必要信息如文件名、文件大小、外存中的存储位置等保存在文件目</li>
+<li>对目录文伴的典型操作：<ul>
+<li>Search：按文件名检索文件目录录</li>
+<li>Create file：建立文件时，必须为之建立一个新目录</li>
+<li>Delete file：删除文件时，必须同时删除其文件目</li>
+<li>List Directory：用户常需要列文件目录及文件的某些属性</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>从目录里面找到该文件的Index Node（Inode）（存储着文件的很多属性。）可以从inode得到文件的位置等等信息：这种方式更高效<br>还有一种是目录里面就存放了inode里面的信息，不需要额外的inode</p>
+</blockquote>
+<p><strong>B树的结构</strong></p>
+<h3 id="File-Sharing-文件分享"><a href="#File-Sharing-文件分享" class="headerlink" title="File Sharing(文件分享)"></a>File Sharing(文件分享)</h3><ul>
+<li>In multiuser system，allow files to be shared among users.（在多用户系统中，允许用户之间共享文件）</li>
+<li>Two issues <ul>
+<li>Access rights（访问权限）</li>
+<li>Management of simultaneous access.（并行存取）（同时访问的管理。(并行存取)）</li>
+</ul>
+</li>
+</ul>
+<h4 id="Access-Rights-访问权限"><a href="#Access-Rights-访问权限" class="headerlink" title="Access Rights(访问权限)"></a>Access Rights(访问权限)</h4><ul>
+<li>None<ul>
+<li>User may not know of the existence of the file.（用户可能不知道文件的存在）</li>
+<li>User is not allowed to read the user direetory that includes the file.（不允许用户读取包含该文件的用户目录）</li>
+</ul>
+</li>
+<li>Knowledge（探知）<ul>
+<li>User can only determine that the file exists and who its owner is.（用户只能确定文件存在及其所有者是谁）</li>
+</ul>
+</li>
+<li>Execution（执行）<ul>
+<li>The user can load and execute a program but cannot copy it.（用户可以加载和执行一个程序，但不能复制它）</li>
+</ul>
+</li>
+<li>Reading<ul>
+<li>The user can read the file for any purpose, including copying and execution.（用户可以为任何目的读取文件，包括复制和执行）</li>
+</ul>
+</li>
+<li>Appending（添加） <ul>
+<li>The user can add data to the file but cannot modify or delete any of the file’s contents.（用户可以向文件中添加数据，但不能修改或删除文件的任何内容）</li>
+</ul>
+</li>
+<li>Updating <ul>
+<li>The user can modify, deleted, and add to the file’s data. This includes creating the file, rewriting it, and removing all or part of the data.（用户可以修改、删除和添加到文件的数据。这包括创建文件、重写文件以及删除所有或部分数据）</li>
+</ul>
+</li>
+<li>Changing protection （改变保护）<ul>
+<li>User can change access rights granted to other users.（用户可以更改授予其他用户的访问权限）</li>
+</ul>
+</li>
+<li>Deletion （删除）<ul>
+<li>User can delete the file.（用户可以删除文件）</li>
+</ul>
+</li>
+<li>Owners<ul>
+<li>Has all rights previously listed.（拥有以前列出的所有权利）</li>
+<li>May grant rights to others using the ollowing classes of users.（可将权利授予其他使用该级别用户的用户：下面的……）<ul>
+<li>Specific user （特定的用户）</li>
+<li>User groups （用户组）</li>
+<li>All for public files（所有公共文件：公共用户）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="Simultaneous-Access（同时访问）"><a href="#Simultaneous-Access（同时访问）" class="headerlink" title="Simultaneous Access（同时访问）"></a>Simultaneous Access（同时访问）</h4><ul>
+<li>User may lock entire file when it is to be updated.（当要更新整个文件时，用户可以锁定它）</li>
+<li>User may lock the individual records during the update.（用户可以在更新期间锁定个别记录）</li>
+<li>Mutual exclusion and deadlock are issues for shared access（互斥和死锁是共享访问的问题）</li>
+</ul>
+<h3 id="Record-Blocking记录组块方式"><a href="#Record-Blocking记录组块方式" class="headerlink" title="Record Blocking记录组块方式"></a>Record Blocking记录组块方式</h3><ul>
+<li>记录是存取文件的逻辑单位，而数据块是I/O的基本单位，记录必须组织成数据块以便于I/O</li>
+<li>问题：<ul>
+<li>数据块的长度固定还是可变？</li>
+<li>根据记录的平均长度如何设置数据块的长度？</li>
+</ul>
+</li>
+</ul>
+<h4 id="数据块的长度固定还是可变？"><a href="#数据块的长度固定还是可变？" class="headerlink" title="数据块的长度固定还是可变？"></a>数据块的长度固定还是可变？</h4><p>大多数系统采用固定长度的数据块，以简化I/O操作、Buffer的分配及辅存中数据块的组织管理</p>
+<h4 id="如何设置数据块的长度？"><a href="#如何设置数据块的长度？" class="headerlink" title="如何设置数据块的长度？"></a>如何设置数据块的长度？</h4><ul>
+<li>数据块越大，一次I/O传输的记录就越多</li>
+<li>大数据块适合文件顺序访问，因为这样可以减少I/O次数，加快处理速度</li>
+<li>当随机访问文件，或访问局部性很差时，传输的部分记录不会使用，效率低。</li>
+<li>另外，大数据块需要更大的I/O buffer，增加其管理复杂度</li>
+</ul>
+<h4 id="Fixed-blocking（固定组块法）"><a href="#Fixed-blocking（固定组块法）" class="headerlink" title="Fixed blocking（固定组块法）"></a>Fixed blocking（固定组块法）</h4><ul>
+<li>数据块由固定长度的若干条记录组成</li>
+<li>块内可能会存在一些被浪费空间</li>
+</ul>
+<p><strong>有内零头，不存在外零头</strong></p>
+<h4 id="Variable-Blocking：Spanned（可变长跨块组块法）"><a href="#Variable-Blocking：Spanned（可变长跨块组块法）" class="headerlink" title="Variable Blocking：Spanned（可变长跨块组块法）"></a>Variable Blocking：Spanned（可变长跨块组块法）</h4><ul>
+<li>数据块由变长记录组成，一条记录可以跨越两个数据块，可用指针记载一条跨块存储记录所在的下一数据块</li>
+<li>块内无浪费空间</li>
+</ul>
+<p><strong>没有内外零头</strong></p>
+<h4 id="Variable-Blocking-Unspanned（可变长非跨块组块法）"><a href="#Variable-Blocking-Unspanned（可变长非跨块组块法）" class="headerlink" title="Variable Blocking Unspanned（可变长非跨块组块法）"></a>Variable Blocking Unspanned（可变长非跨块组块法）</h4><ul>
+<li>数据块由变长记录组成</li>
+<li>不允许一条记录跨越两个数据块</li>
+<li>块内可能存在被浪费空间</li>
+</ul>
+<p><strong>有内零头，不存在外零头</strong></p>
+<blockquote>
+<p>记录的大小小于块的大小</p>
+</blockquote>
+<h3 id="Secondary-Storage-Management外部存储管理"><a href="#Secondary-Storage-Management外部存储管理" class="headerlink" title="Secondary Storage Management外部存储管理"></a>Secondary Storage Management外部存储管理</h3><ul>
+<li>Space must be allocated to files.（必须为文件分配空间）</li>
+<li>Must keep track of the space available for allocation.（必须跟踪（管理）可分配的空间）</li>
+</ul>
+<h4 id="Space-Allocated-to-Files"><a href="#Space-Allocated-to-Files" class="headerlink" title="Space Allocated to Files"></a>Space Allocated to Files</h4><ul>
+<li>When a new file is created, is the maximum space required for the file allocated at once?（当创建一个新文件时，一次分配文件所需的最大空间是多少?）</li>
+<li>What size of portion should be used for file allocation?（文件分配应该使用多大的部分?）</li>
+<li>What sort of data structure or table(FAT) is used to keep track of the portions assigned to a file?（使用哪种数据结构或表(FAT)来跟踪分配给文件的部分?）</li>
+</ul>
+<h4 id="Preallocation（预分配策略：一种固定分配策略，以后不再改变文件的大小）"><a href="#Preallocation（预分配策略：一种固定分配策略，以后不再改变文件的大小）" class="headerlink" title="Preallocation（预分配策略：一种固定分配策略，以后不再改变文件的大小）"></a>Preallocation（预分配策略：一种固定分配策略，以后不再改变文件的大小）</h4><ul>
+<li>Need the maximum size for the file at the time of creation.（在创建时需要文件的最大大小）</li>
+<li>Difficult to reliably estimate the maximum potential size of the file.（难以可靠地估计文件的最大潜在大小）</li>
+<li>Tend to overestimated file size so as not to run out of space.（倾向于高估文件大小，以免耗尽空间）</li>
+</ul>
+<h4 id="Dynamic-Allocation（动态分配）"><a href="#Dynamic-Allocation（动态分配）" class="headerlink" title="Dynamic Allocation（动态分配）"></a>Dynamic Allocation（动态分配）</h4><ul>
+<li>Allocates space to a file in portions as needed.</li>
+</ul>
+<h4 id="Portion-Size（分区大小）"><a href="#Portion-Size（分区大小）" class="headerlink" title="Portion Size（分区大小）"></a>Portion Size（分区大小）</h4><ul>
+<li>两个极端情况：<ul>
+<li>足够大：能容纳整个文件</li>
+<li>最小：1个磁盘块大小</li>
+</ul>
+</li>
+<li>Tradeoff：<ul>
+<li>单个文件的效率vs整个系统的效率</li>
+</ul>
+</li>
+</ul>
+<h4 id="Portion-Size-Trade-off"><a href="#Portion-Size-Trade-off" class="headerlink" title="Portion Size: Trade-off"></a>Portion Size: Trade-off</h4><ul>
+<li>Contiguity of space increase performance, especially for Retrieve_Next operations, and greatly for transactions running in a transaction-oriented operating system.</li>
+<li>Having a large number of small portions increase the size of tables needed to manage the allocation information.</li>
+<li>Having fixed-size portions (for example, blocks)simplifies the reallocation of space.</li>
+<li>Having variable-size or small fixed-size portions minimizes waste of unused storage due to overallocation.</li>
+</ul>
+<h4 id="Methods-of-File-Allocation（分配方法）"><a href="#Methods-of-File-Allocation（分配方法）" class="headerlink" title="Methods of File Allocation（分配方法）"></a>Methods of File Allocation（分配方法）</h4><ul>
+<li>Contiguous allocation（连续分配）</li>
+<li>Chained allocation（链接分配）</li>
+<li>Indexed allocation（索引分配）</li>
+</ul>
+<h4 id="Contiguous-allocation（连续分配）"><a href="#Contiguous-allocation（连续分配）" class="headerlink" title="Contiguous allocation（连续分配）"></a>Contiguous allocation（连续分配）</h4><ul>
+<li>Preallocatin strategy using variable-size portions.</li>
+<li>Single set of blocks is allocated to a file at the time of creation.</li>
+<li>Only a single entry in the file allocation table.<ul>
+<li>Starting block and length of the file.</li>
+</ul>
+</li>
+</ul>
+<h4 id="Allocation-Strategies（分配策略：可变分区）"><a href="#Allocation-Strategies（分配策略：可变分区）" class="headerlink" title="Allocation Strategies（分配策略：可变分区）"></a>Allocation Strategies（分配策略：可变分区）</h4><ul>
+<li>First fit：Choose the first unused contiguous group of blocks of sufficient size.</li>
+<li>Best fir：Choose the smallest unused group of sufficient size.（内零头最小）</li>
+<li>Nearest fir：Choose the unused group of sufficient size that is closest to the previous allocation for the file to increase locality.</li>
+</ul>
+<h4 id="Contiguous-Allocation-（连续的分配）"><a href="#Contiguous-Allocation-（连续的分配）" class="headerlink" title="Contiguous Allocation （连续的分配）"></a>Contiguous Allocation （连续的分配）</h4><ul>
+<li>External fragmentation will occur.（外零头存在）</li>
+<li>It is necessary to perform a compaction algorithm to free up additional space on the disk.（必须执行压缩算法来释放磁盘上的额外空间）</li>
+</ul>
+<h4 id="Chained-Allocation（链接分配：没有外零头-）"><a href="#Chained-Allocation（链接分配：没有外零头-）" class="headerlink" title="Chained Allocation（链接分配：没有外零头**）"></a>Chained Allocation（链接分配：没有外零头**）</h4><ul>
+<li>Allocation on basis of individual block.</li>
+<li>Each block contains a pointer to the next block in the chain.</li>
+<li>Only single entry in the file allocation table.<ul>
+<li>Starting block and length of file</li>
+</ul>
+</li>
+<li>No external fragmentation.</li>
+<li>Best for sequential files.</li>
+<li>No accommodation of the principle of locality.</li>
+</ul>
+<h4 id="Chained-Allocation（链接分配）"><a href="#Chained-Allocation（链接分配）" class="headerlink" title="Chained Allocation（链接分配）"></a>Chained Allocation（链接分配）</h4><ul>
+<li>To select an individual block of a file requires tracing trough the chain to the desired block.（要选择文件中的一个块，需要通过链跟踪到所需的块）</li>
+<li>To access many blocks at a time, a series of accesses to different parts of the disk are required.（为了一次访问多个块，需要对磁盘的不同部分进行一系列访问）</li>
+<li>To overcome this problem, some system periodically consolidate files.（为了克服这个问题，一些系统定期合并文件）</li>
+</ul>
+<h4 id="Indexed-Allocation（索引分配）"><a href="#Indexed-Allocation（索引分配）" class="headerlink" title="Indexed Allocation（索引分配）"></a>Indexed Allocation（索引分配）</h4><ul>
+<li>File allocation table contains a separate one-level index for each file.（一级索引）</li>
+<li>The index has one entry for each portion allocated to the file.</li>
+<li>The file index for a file is kept in a separate block，and the file allocation table contains block number for the index.</li>
+<li>Allocation may be on the basis of fixed-size blocks.</li>
+<li><strong>Or allocation may be on the basis of variable-size portions.</strong><br>Indexed Allocation</li>
+<li>Eliminates external fragmentation.</li>
+<li>File consolidation may be done from timeto time, reducing the size of the index in the case of variable-size portions. </li>
+<li>Supports both sequential and direct access to the file, and thus is the most popular form of file allocation.</li>
+</ul>
+<h4 id="多级索引文件"><a href="#多级索引文件" class="headerlink" title="多级索引文件"></a>多级索引文件</h4><p><img src="https://s1.ax1x.com/2020/04/28/JI88pj.png" alt="多级索引文件结构"></p>
+<h3 id="Free-Space-Management（空闲空间管理）"><a href="#Free-Space-Management（空闲空间管理）" class="headerlink" title="Free Space Management（空闲空间管理）"></a>Free Space Management（空闲空间管理）</h3><p>Disk Allocation Table：</p>
+<ul>
+<li>Bit table（位表）</li>
+<li>Chained free portion（空闲分区链）</li>
+<li>Indexing（索引）</li>
+</ul>
+<h4 id="Bit-Table"><a href="#Bit-Table" class="headerlink" title="Bit Table"></a>Bit Table</h4><ul>
+<li>位表，又称为位示图，其中的每一位对应一个磁盘块。位的值为0或1，分别表示磁盘块空闲，或磁盘块已分配</li>
+<li>利用位表容易找到一个或一组空闲盘块</li>
+<li>位表适合于以上各种文件分配方法</li>
+<li>位表很小，可以装入内存</li>
+</ul>
+<h4 id="Chained-Free-Portion"><a href="#Chained-Free-Portion" class="headerlink" title="Chained Free Portion"></a>Chained Free Portion</h4><ul>
+<li>每个空闲分区包含一个指向下一个分区的指针，并记载分区大小</li>
+<li>无空闲分区表空间开销</li>
+<li>适合于各种文件分配方法</li>
+<li>若每次分配一个磁盘块，则可取空闲分区链的第一个盘块进行分配，并调整空闲分区链首指针和分区链大小</li>
+<li>若采用可变分区法，可用首次适应算法，从链表头开始查找，找到的第一个适合的分区则可分配，然后调整空闲分区链首指针和分区链大小</li>
+</ul>
+<h4 id="Indexing"><a href="#Indexing" class="headerlink" title="Indexing"></a>Indexing</h4><ul>
+<li>将空闲分区视为文件，按文件存储空间分配法为空闲分区建立索引</li>
+<li>索引表中为每一个空闲分区建立一个索引项</li>
+<li>为可变分区建立索引比为磁盘块建立索引效率高</li>
+<li>适合于各种文件分配法</li>
+</ul>
+<blockquote>
+<p>这部分学得有点不是很理解，以后有时间再补</p>
+</blockquote>
+<h3 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h3><p>【1】pile（堆）<br>【2】pipe（管道）<br>【3】Sequential（顺序）<br>【4】indexed（索引）<br>【5】hashed（哈希）<br>【6】Maintains （维护）<br>【7】batch（一批）<br>【8】Simultaneous（同时的）</p>
+
+            </div>
+            <hr/>
+
+            
+            <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.88rem;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-large waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fa fa-close"></i></a>
+            <h4 class="reward-title">觉得可以就打钱给我买糖吃</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>转载规则</span>
+        </p>
+        
+            <div class="center-align">
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                    <img alt=""
+                         style="border-width:0"
+                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+                </a>
+            </div>
+            <br/>
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《Operating System(文件系统)》
+                </span> 由
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/04/24/cao-zuo-xi-tong-8/" property="cc:attributionName"
+               rel="cc:attributionURL">
+                何必酷
+            </a> 采用
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                知识共享署名 4.0 国际许可协议
+            </a>进行许可。
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '0832266fa5f4e404f663',
+        clientSecret: '8472ad3803edc301eeeb98767910e11bb2d201da',
+        repo: 'RyouLmusic.github.io',
+        owner: 'RyouLmusic',
+        admin: "RyouLmusic",
+        id: '2020-04-24T13-31-22',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2020/04/24/cao-zuo-xi-tong-8/">
+                    <div class="card-image">
+                        
+                        <img src="https://cdn.pixabay.com/photo/2015/09/05/00/30/file-folders-923523_960_720.jpg" class="responsive-img" alt="Operating System(文件系统)">
+                        
+                        <span class="card-title">Operating System(文件系统)</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            OS
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-24
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Operating-System/" class="post-category" target="_blank">
+                                    Operating System
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/OS/" target="_blank">
+                        <span class="chip bg-color">OS</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/04/21/cao-zuo-xi-tong-7/">
+                    <div class="card-image">
+                        
+                        <img src="https://cdn.pixabay.com/photo/2016/11/22/19/24/archive-1850170_960_720.jpg" class="responsive-img" alt="Operating System(I/O设备管理)">
+                        
+                        <span class="card-title">Operating System(I/O设备管理)</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            OS
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-21
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Operating-System/" class="post-category" target="_blank">
+                                    Operating System
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/OS/" target="_blank">
+                        <span class="chip bg-color">OS</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">159.9k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/RyouLmusic" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1768045935@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=485734107" class="tooltipped" data-tooltip="QQ联系我: 485734107" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!--单击显示烟花-->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/js/fireworks.js"></script>
+
+<!-- 
+雪花特效 
+<script type="text/javascript" src="\js\snow.js"></script>
+-->
+
+
+<!--单击显示文字-->
+<script type="text/javascript" src="/js/click_show_text.js"></script>
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+    <script src="/libs/others/clicklove.js"></script>
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>
